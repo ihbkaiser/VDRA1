@@ -160,7 +160,8 @@ train_treepo() {
   local offload="${VERL_OFFLOAD:-False}"
   local max_prompt=512 max_resp=$((2048 - 512))
   local warm=$(( (STOP_STEP * 3 + 99) / 100 ))
-  export PYTHONPATH="${TREEPO_DIR}:${VDRA_HOME}:${PYTHONPATH:-}"
+  export PYTHONPATH="${TREEPO_DIR}:${VDRA_HOME}:${VDRA_HOME}/modal_app/runtime:${PYTHONPATH:-}"
+  export VDRA_SINGLE_RANK_COLLECTIVES=1
   export VDRA_LOG_DIR="${RUN_DIR}/vdra_logs" VDRA_HOME RAY_TMPDIR="/tmp/ray_${NAME}"
   local watcher=""
   if [[ "${DRY_RUN}" != "1" ]]; then

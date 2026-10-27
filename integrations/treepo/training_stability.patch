@@ -1,0 +1,14 @@
+diff --git a/verl/workers/rollout/vllm_rollout/vllm_rollout_spmd.py b/verl/workers/rollout/vllm_rollout/vllm_rollout_spmd.py
+--- a/verl/workers/rollout/vllm_rollout/vllm_rollout_spmd.py
++++ b/verl/workers/rollout/vllm_rollout/vllm_rollout_spmd.py
+@@ -201 +201 @@
+-            enable_prefix_caching=True,
++            enable_prefix_caching=False,
+@@ -507,0 +508 @@
++            from vdra_core.treepo import random_fallback_block
+@@ -513 +514 @@
+-                fallback_block = np.random.randint(1, min(max_fallback_window, total_blocks)+1)
++                fallback_block = random_fallback_block(total_blocks, max_fallback_window)
+@@ -516 +518 @@
+-                fallback_block = np.random.randint(1, total_blocks+1)
++                fallback_block = random_fallback_block(total_blocks, max_fallback_window)

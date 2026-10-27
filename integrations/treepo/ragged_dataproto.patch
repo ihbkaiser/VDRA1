@@ -1,0 +1,9 @@
+diff --git a/verl/protocol.py b/verl/protocol.py
+--- a/verl/protocol.py
++++ b/verl/protocol.py
+@@ -700,3 +700,4 @@ class DataProto:
+         non_tensor_batch = list_of_dict_to_dict_of_list(list_of_dict=[d.non_tensor_batch for d in data])
++        from vdra_core.treepo import concat_non_tensor_arrays
+         for key, val in non_tensor_batch.items():
+-            non_tensor_batch[key] = np.concatenate(val, axis=0)
++            non_tensor_batch[key] = concat_non_tensor_arrays(val)

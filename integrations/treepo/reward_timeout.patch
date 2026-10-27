@@ -1,0 +1,6 @@
+diff --git a/verl/workers/reward_manager/dapo.py b/verl/workers/reward_manager/dapo.py
+--- a/verl/workers/reward_manager/dapo.py
++++ b/verl/workers/reward_manager/dapo.py
+@@ -114,1 +114,1 @@
+-        self.timeout_seconds = 5
++        self.timeout_seconds = 30

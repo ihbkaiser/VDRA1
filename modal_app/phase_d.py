@@ -839,7 +839,7 @@ def _interrupt_and_resume(
                 "GPUS": "0",
                 "GPUS_PER_RUN": "1",
                 "GPU_GROUPS": "0",
-                "VDRA_SINGLE_RANK_COLLECTIVES": "1" if exp in {"R1", "R2", "R5", "R6"} else "0",
+                "VDRA_SINGLE_RANK_COLLECTIVES": "1",
             }
         )
         log_dir = Path(env["RUNS_DIR"]) / "_logs"

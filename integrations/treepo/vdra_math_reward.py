@@ -13,4 +13,5 @@ from vdra_core import verifier  # noqa: E402
 
 def compute_score(data_source, solution_str, ground_truth, extra_info=None, **kwargs):
     problem = (extra_info or {}).get("problem", "") if isinstance(extra_info, dict) else ""
-    return float(verifier.score(solution_str, str(ground_truth), problem))
+    score = float(verifier.score(solution_str, str(ground_truth), problem))
+    return {"score": score, "acc": score, "extra_info": {}}

@@ -561,7 +561,7 @@ def _run_training(exp: str, seeds: list[str], env: dict[str, str] | None = None)
             "GPU_GROUPS": "0",
             "SEEDS": " ".join(seeds),
             "COMPUTE_MATCHED": "0",
-            "VDRA_SINGLE_RANK_COLLECTIVES": "1" if EXPERIMENTS[exp][1] in {"igpo", "treerl"} else "0",
+            "VDRA_SINGLE_RANK_COLLECTIVES": "1",
             "WANDB_MODE": "offline",
             "HF_HUB_OFFLINE": "1",
             "TRANSFORMERS_OFFLINE": "1",
@@ -868,7 +868,7 @@ def phase_f_igpo_recover_smoke(exp: str, env: dict[str, str]) -> dict[str, Any]:
 def phase_f_treepo_smoke(exp: str, env: dict[str, str]) -> dict[str, Any]:
     if exp != "R3":
         raise ValueError(f"{exp} does not use the 10-minute TreePO smoke")
-    return _run_training(exp, ["42"], env)
+    return _run_treepo_crashfix_one_update(exp, env)
 
 
 @app.function(
@@ -878,7 +878,7 @@ def phase_f_treepo_smoke(exp: str, env: dict[str, str]) -> dict[str, Any]:
 def phase_f_treepo_r4_smoke(exp: str, env: dict[str, str]) -> dict[str, Any]:
     if exp != "R4":
         raise ValueError(f"{exp} is not the TreePO VDRA smoke arm")
-    return _run_training(exp, ["42"], env)
+    return _run_treepo_crashfix_one_update(exp, env)
 
 
 def _phase_f_treepo_smoke_function(exp: str):
@@ -887,6 +887,104 @@ def _phase_f_treepo_smoke_function(exp: str):
     if exp == "R4":
         return phase_f_treepo_r4_smoke
     raise ValueError(f"{exp} does not use TreePO")
+
+
+def _assert_treepo_stability_patch(source_path: Path = Path(
+    "/opt/work/TreePO/verl/workers/rollout/vllm_rollout/vllm_rollout_spmd.py"
+), reward_path: Path = Path("/opt/work/TreePO/vdra_math_reward.py"),
+    reward_manager_path: Path = Path("/opt/work/TreePO/verl/workers/reward_manager/dapo.py"),
+    collective_path: Path = Path("/opt/vdra/modal_app/single_rank_collectives.py"),
+    protocol_path: Path = Path("/opt/work/TreePO/verl/protocol.py")) -> dict[str, bool]:
+    """Fail before spending GPU time if the image lacks the runtime fixes."""
+    source = source_path.read_text(encoding="utf-8", errors="replace")
+    reward_source = reward_path.read_text(encoding="utf-8", errors="replace")
+    reward_manager_source = reward_manager_path.read_text(encoding="utf-8", errors="replace")
+    collective_source = collective_path.read_text(encoding="utf-8", errors="replace")
+    protocol_source = protocol_path.read_text(encoding="utf-8", errors="replace")
+    checks = {
+        "prefix_cache_disabled": "enable_prefix_caching=False" in source,
+        "empty_fallback_guarded": "random_fallback_block(total_blocks, max_fallback_window)" in source,
+        "reward_schema_valid": (
+            '"score": score' in reward_source
+            and '"acc": score' in reward_source
+            and '"extra_info": {}' in reward_source
+        ),
+        "reward_timeout_extended": "self.timeout_seconds = 30" in reward_manager_source,
+        "fsdp_world_one_broadcast_guarded": (
+            'skip_identity("_broadcast_coalesced", group_index=0)' in collective_source
+        ),
+        "ragged_non_tensor_concat_guarded": "concat_non_tensor_arrays(val)" in protocol_source,
+    }
+    failed = [name for name, passed in checks.items() if not passed]
+    if failed:
+        raise RuntimeError(f"TreePO image is missing stability fix(es): {failed}")
+    from vdra_core.treepo import concat_non_tensor_arrays, random_fallback_block
+    import numpy as np
+
+    if random_fallback_block(0) != 0:
+        raise RuntimeError("TreePO empty-response fallback does not restart at the prompt")
+    ragged_probe = concat_non_tensor_arrays(
+        [np.array(["flat"], dtype=object), np.array([[['nested']]], dtype=object)]
+    )
+    if ragged_probe.shape != (2,) or ragged_probe[1].shape != (1, 1):
+        raise RuntimeError("TreePO ragged metadata rows are not preserved during concatenation")
+    return checks
+
+
+def _run_treepo_crashfix_one_update(exp: str, env: dict[str, str]) -> dict[str, Any]:
+    _assert_treepo_stability_patch()
+    result = _run_training(exp, ["42"], env)
+    if result.get("status") != "complete":
+        return result
+
+    run_dir = Path(env["RUNS_DIR"]) / f"{exp}_s42"
+    checkpoint = run_dir / "ckpts" / "global_step_1"
+    if not checkpoint.is_dir():
+        return {**result, "status": "failed", "error": f"missing one-update checkpoint: {checkpoint}"}
+    log_path = Path(env["RUNS_DIR"]) / "_logs" / f"{exp}_gpu0.log"
+    if not log_path.is_file():
+        return {**result, "status": "failed", "error": f"missing trainer log: {log_path}"}
+    trainer_log = log_path.read_text(encoding="utf-8", errors="replace")
+    bad_reward_markers = (
+        "Unexpected task_result type",
+        "Timeout processing item",
+        "Error processing item",
+    )
+    reward_errors = [marker for marker in bad_reward_markers if marker in trainer_log]
+    if reward_errors:
+        return {
+            **result,
+            "status": "failed",
+            "error": f"reward manager reported invalid/default scores: {reward_errors}",
+        }
+
+    evidence: dict[str, Any] = {
+        "checkpoint": str(checkpoint),
+        "prefix_cache_disabled": True,
+        "empty_fallback_guarded": True,
+        "reward_schema_valid": True,
+        "reward_timeout_extended": True,
+    }
+    if exp == "R4":
+        step_logs = sorted((run_dir / "vdra_logs").glob("vdra_steps*.jsonl"))
+        queue_logs = sorted((run_dir / "vdra_logs").glob("vdra_queues*.jsonl"))
+        if not step_logs or not any(path.stat().st_size for path in step_logs):
+            return {**result, "status": "failed", "error": "R4 did not exercise the VDRA proxy estimator"}
+        if not queue_logs or not any(path.stat().st_size for path in queue_logs):
+            return {**result, "status": "failed", "error": "R4 did not write a VDRA allocation queue"}
+        evidence["vdra_step_logs"] = [str(path) for path in step_logs]
+        evidence["vdra_queue_logs"] = [str(path) for path in queue_logs]
+    return {**result, "verification": evidence}
+
+
+def _phase_f_treepo_fix_paths(root: str, exp: str) -> dict[str, str]:
+    """Build Linux volume paths without host-OS path separators."""
+    run_root = f"{root.rstrip('/')}/{exp}"
+    return {
+        "RUNS_DIR": f"{run_root}/runs",
+        "RESULTS_DIR": f"{run_root}/results",
+        "BANKS_DIR": f"{run_root}/banks",
+    }
 
 
 @app.function(
@@ -906,7 +1004,7 @@ def phase_f_treerl_smoke(exp: str, env: dict[str, str]) -> dict[str, Any]:
 def phase_f_treepo_one_update(exp: str, env: dict[str, str]) -> dict[str, Any]:
     if exp != "R4":
         raise ValueError(f"{exp} is not the TreePO VDRA smoke arm")
-    return _run_training(exp, ["42"], env)
+    return _run_treepo_crashfix_one_update(exp, env)
 
 
 @app.function(
@@ -1922,6 +2020,57 @@ def main(
         print(json.dumps({"phase_f_final_methods_smoke": result}, indent=2, sort_keys=True))
         if result.get("status") != "complete":
             raise SystemExit("Phase F final methods smoke did not pass")
+    elif action == "phase_f_treepo_crashfix_smoke":
+        if not run_id or not run_id.isalnum():
+            raise SystemExit("action=phase_f_treepo_crashfix_smoke requires an alphanumeric run_id")
+        root = f"/work/mock/phase_f_treepo_fix_{run_id}"
+        shared_env = {
+            "STOP_STEP": "1",
+            "RESUME_EVERY": "1",
+            "KEEP_EVERY": "1",
+            "MAX_RESTARTS": "0",
+            "EVAL_EVERY_N": "0",
+            "EVAL_AT_END": "0",
+            "EVAL_STEP0": "0",
+            "COMPUTE_MATCHED": "0",
+            "SEEDS": "42",
+            "WORK": "/work",
+            "DATA_DIR": "/work/data_vdra",
+            "MATH_DICT": "/work/source_data/math",
+            "VDRA_B200": "1",
+            "VDRA_CONFIG_JSON": "{}",
+            "WANDB_MODE": "offline",
+            "HF_HUB_OFFLINE": "1",
+            "TRANSFORMERS_OFFLINE": "1",
+            "TREEPO_WIDTH": "2",
+            # Keep the same filtering regime as the real TreePO runs. Tiny
+            # smoke batches can yield too few mixed-accuracy groups and force
+            # several extra rollout batches before a single update.
+            "TREEPO_GEN_BATCH_SIZE": "96",
+            "TREEPO_TRAIN_BATCH_SIZE": "32",
+            "TREEPO_RAY_WAIT_REGISTER_CENTER_TIMEOUT": PHASE_F_TREEPO_RAY_WAIT_REGISTER_CENTER_TIMEOUT,
+        }
+        results: dict[str, Any] = {}
+        for exp, function in (("R3", phase_f_treepo_smoke), ("R4", phase_f_treepo_one_update)):
+            env = {
+                **shared_env,
+                **_phase_f_treepo_fix_paths(root, exp),
+            }
+            try:
+                results[exp] = function.spawn(exp, env).get()
+            except Exception as exc:
+                results[exp] = {"status": "failed", "error": f"{type(exc).__name__}: {exc}"}
+        result = {
+            "run_id": run_id,
+            "status": "complete" if all(
+                isinstance(item, dict) and item.get("status") == "complete"
+                for item in results.values()
+            ) else "failed",
+            "runs": results,
+        }
+        print(json.dumps({"phase_f_treepo_crashfix_smoke": result}, indent=2, sort_keys=True))
+        if result["status"] != "complete":
+            raise SystemExit("R3/R4 TreePO crash-fix smoke did not pass")
     elif action == "phase_f_treerl_retry_smoke":
         if not run_id:
             raise SystemExit("action=phase_f_treerl_retry_smoke requires run_id")
@@ -1937,6 +2086,6 @@ def main(
     else:
         raise ValueError(
             "action must be setup, register_migrated, launch, phase_f_null_smoke, "
-            "phase_f_remaining_smoke, phase_f_final_methods_smoke, "
+            "phase_f_remaining_smoke, phase_f_final_methods_smoke, phase_f_treepo_crashfix_smoke, "
             "phase_f_treerl_retry_smoke, or evaluate"
         )

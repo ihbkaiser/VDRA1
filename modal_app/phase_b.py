@@ -87,6 +87,8 @@ def _training_step(framework: str) -> dict[str, float]:
         os.environ.setdefault("WORLD_SIZE", "1")
         if not dist.is_initialized():
             dist.init_process_group(backend="nccl", init_method="env://", rank=0, world_size=1)
+        install_single_rank_collective_identity()
+        print("[probe] installed world-size-one FSDP collective identities", flush=True)
         model = FSDP(
             nn.Sequential(nn.Linear(128, 128), nn.GELU(), nn.Linear(128, 8)).cuda(),
             device_id=torch.cuda.current_device(),
@@ -256,7 +258,7 @@ def _run_probe(framework: str) -> dict[str, Any]:
             "transformers": "4.51.3",
             "tokenizers": "0.21.1",
             "deepspeed": DEEPSPEED_VERSION if framework in {"igpo", "treerl"} else None,
-            "single_rank_collective_identity": framework in {"igpo", "treerl"},
+            "single_rank_collective_identity": True,
         },
     }
     try:

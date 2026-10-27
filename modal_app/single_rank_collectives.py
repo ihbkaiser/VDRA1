@@ -1,9 +1,9 @@
 """Skip NCCL collectives that are exact identities for a one-rank group.
 
-This is a narrowly scoped B200 compatibility workaround: a world-size-one
-DeepSpeed initialization currently blocks in NCCL broadcast. The wrappers keep
-Torch's original behavior for any group containing more than one rank and for
-asynchronous operations.
+This is a narrowly scoped B200 compatibility workaround: world-size-one
+DeepSpeed and FSDP initialization can block while NCCL creates a communicator
+for identity collectives. The wrappers keep Torch's original behavior for any
+group containing more than one rank and for asynchronous operations.
 """
 
 from __future__ import annotations
@@ -38,7 +38,9 @@ def install_single_rank_collective_identity() -> None:
         setattr(dist, name, wrapper)
 
     # DeepSpeed initializes with broadcast and performs gradient all-reduce.
-    # With one participant both operations return their input unchanged.
+    # FSDP initializes with _broadcast_coalesced. With one participant these
+    # collectives are identities; skipping them avoids unnecessary NCCL setup.
     skip_identity("broadcast", group_index=2)
+    skip_identity("_broadcast_coalesced", group_index=0)
     skip_identity("all_reduce", group_index=2)
     skip_identity("barrier", group_index=0)
