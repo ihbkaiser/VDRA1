@@ -1,0 +1,69 @@
+diff --git a/openrlhf/trainer/ppo_utils/replay_buffer.py b/openrlhf/trainer/ppo_utils/replay_buffer.py
+--- a/openrlhf/trainer/ppo_utils/replay_buffer.py
++++ b/openrlhf/trainer/ppo_utils/replay_buffer.py
+@@ -61,23 +61,50 @@
+ 
+     for i in range(batch_size):
+         batch_kwargs[i]["info"] = {}
+-    for k, v in experience.info.items():
+-        vals = torch.unbind(v)
+-        if v is None:
+-            continue
+-        assert batch_size == len(vals), f"{key}: {len(vals)} != {batch_size},{k},{v}"
+-        for i, vv in enumerate(vals):
+-            if k=="pass_rate" or k=="pass_at_1":
+-                ## use_mcts
+-                # if len(vv)>1:
+-                if vv.dim() != 0:
+-                    batch_kwargs[i]["info"][k] = vv[0].item()
++    info_items = list(experience.info.items())
++    first_info = info_items[0][1] if info_items else None
++    can_pack_info = (
++        isinstance(first_info, torch.Tensor)
++        and first_info.ndim > 0
++        and first_info.shape[0] == batch_size
++        and first_info.numel() == batch_size
++        and all(
++            isinstance(value, torch.Tensor)
++            and value.ndim > 0
++            and value.shape[0] == batch_size
++            and value.numel() == batch_size
++            and value.device == first_info.device
++            and value.dtype == first_info.dtype
++            for _, value in info_items
++        )
++    )
++    if can_pack_info:
++        info_keys = [key for key, _ in info_items]
++        packed_info = torch.stack(
++            [value.detach().reshape(batch_size) for _, value in info_items], dim=0
++        )
++        host_info = packed_info.cpu().tolist()
++        for key_index, key in enumerate(info_keys):
++            for sample_index, value in enumerate(host_info[key_index]):
++                batch_kwargs[sample_index]["info"][key] = value
++    else:
++        for k, v in info_items:
++            if v is None:
++                continue
++            vals = torch.unbind(v)
++            assert batch_size == len(vals), f"{k}: {len(vals)} != {batch_size},{v}"
++            for i, vv in enumerate(vals):
++                if k=="pass_rate" or k=="pass_at_1":
++                    ## use_mcts
++                    # if len(vv)>1:
++                    if vv.dim() != 0:
++                        batch_kwargs[i]["info"][k] = vv[0].item()
++                    else:
++                        batch_kwargs[i]["info"][k] = vv.item()
++                    # batch_kwargs[i]["info"][k] = vv[0].item()
++                    # # batch_kwargs[i]["info"][k] = vv.item()
+                 else:
+                     batch_kwargs[i]["info"][k] = vv.item()
+-                # batch_kwargs[i]["info"][k] = vv[0].item()
+-                # # batch_kwargs[i]["info"][k] = vv.item()
+-            else:
+-                batch_kwargs[i]["info"][k] = vv.item()
+ 
+     items = [BufferItem(**kwargs) for kwargs in batch_kwargs]
+     return items

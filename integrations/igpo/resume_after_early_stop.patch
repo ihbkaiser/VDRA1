@@ -1,0 +1,15 @@
+diff --git a/treetune/runtime/policy_iteration_runtime.py b/treetune/runtime/policy_iteration_runtime.py
+--- a/treetune/runtime/policy_iteration_runtime.py
++++ b/treetune/runtime/policy_iteration_runtime.py
+@@ -213,3 +213,10 @@
+-        if final_checkpoint.exists() and not force_rerun:
++        # An early-stopped run writes the same final marker as a completed run.
++        # Finite stops are also used as chunk boundaries, so allow those runs to
++        # reload their resumable checkpoint and continue toward a later stop.
++        if (
++            final_checkpoint.exists()
++            and not force_rerun
++            and self.early_stop_iteration is None
++        ):
+             logger.info("Final checkpoint already exists. Skipping iteration loop.")
+             return

@@ -1,0 +1,74 @@
+{
+  "source": "remote_artifacts\\modal_phase_d_igpo_pair_20261027_precompiled_cuda\\run.log",
+  "run_scope": "B200 Phase D small R1 profile, max_num_seqs=64, generation batches capped at 64; not a full-length training run",
+  "samples": [
+    {
+      "outer_timestamp": "2026-10-27 01:47:46+07:00 [INFO|on_policy_episode_generator.py:405:275] 2026-10-26 18:47:46,785",
+      "vllm_stats/avg_generation_throughput": 8013.84,
+      "vllm_stats/avg_running_reqs": 63.8,
+      "vllm_stats/avg_pending_reqs": 23.6,
+      "vllm_stats/avg_gpu_kv_cache_usage": 1.86,
+      "vllm_stats/avg_cpu_kv_cache_usage": 0.0,
+      "vllm_stats/total_approx_generation_throughput": 8013.84
+    },
+    {
+      "outer_timestamp": "2026-10-27 01:49:50+07:00 [INFO|on_policy_episode_generator.py:405:275] 2026-10-26 18:49:50,845",
+      "vllm_stats/avg_generation_throughput": 8367.68,
+      "vllm_stats/avg_running_reqs": 63.89,
+      "vllm_stats/avg_pending_reqs": 26.67,
+      "vllm_stats/avg_gpu_kv_cache_usage": 1.96,
+      "vllm_stats/avg_cpu_kv_cache_usage": 0.0,
+      "vllm_stats/total_approx_generation_throughput": 8367.68
+    },
+    {
+      "outer_timestamp": "2026-10-27 01:54:31+07:00 [INFO|on_policy_episode_generator.py:405:3316] 2026-10-26 18:54:31,717",
+      "vllm_stats/avg_generation_throughput": 8260.39,
+      "vllm_stats/avg_running_reqs": 63.56,
+      "vllm_stats/avg_pending_reqs": 24.33,
+      "vllm_stats/avg_gpu_kv_cache_usage": 1.83,
+      "vllm_stats/avg_cpu_kv_cache_usage": 0.0,
+      "vllm_stats/total_approx_generation_throughput": 8260.39
+    },
+    {
+      "outer_timestamp": "2026-10-27 01:56:48+07:00 [INFO|on_policy_episode_generator.py:405:3316] 2026-10-26 18:56:48,361",
+      "vllm_stats/avg_generation_throughput": 7442.31,
+      "vllm_stats/avg_running_reqs": 56.12,
+      "vllm_stats/avg_pending_reqs": 21.75,
+      "vllm_stats/avg_gpu_kv_cache_usage": 1.52,
+      "vllm_stats/avg_cpu_kv_cache_usage": 0.0,
+      "vllm_stats/total_approx_generation_throughput": 7442.31
+    },
+    {
+      "outer_timestamp": "2026-10-27 01:59:09+07:00 [INFO|on_policy_episode_generator.py:405:3316] 2026-10-26 18:59:09,117",
+      "vllm_stats/avg_generation_throughput": 8261.38,
+      "vllm_stats/avg_running_reqs": 64.0,
+      "vllm_stats/avg_pending_reqs": 18.7,
+      "vllm_stats/avg_gpu_kv_cache_usage": 1.79,
+      "vllm_stats/avg_cpu_kv_cache_usage": 0.0,
+      "vllm_stats/total_approx_generation_throughput": 8261.38
+    }
+  ],
+  "summary": {
+    "vllm_stats/avg_generation_throughput": {
+      "mean": 8069.12,
+      "min": 7442.31,
+      "max": 8367.68
+    },
+    "vllm_stats/avg_running_reqs": {
+      "mean": 62.274,
+      "min": 56.12,
+      "max": 64.0
+    },
+    "vllm_stats/avg_pending_reqs": {
+      "mean": 23.01,
+      "min": 18.7,
+      "max": 26.67
+    },
+    "vllm_stats/avg_gpu_kv_cache_usage": {
+      "mean": 1.792,
+      "min": 1.52,
+      "max": 1.96
+    }
+  },
+  "interpretation": "Mean running requests is close to the 64 sequence cap, pending requests remain queued, and GPU KV-cache usage is below 2%. This supports testing max_num_seqs/max_concurrent_generations=96 or 128; it does not prove a speedup or justify changing the shared default. First increase requests while keeping all other settings fixed, then run matched R1/R2 equivalence before freezing the value."
+}

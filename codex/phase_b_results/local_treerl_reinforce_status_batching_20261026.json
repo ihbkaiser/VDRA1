@@ -1,0 +1,27 @@
+{
+  "benchmark": "treerl_reinforce_status_batching",
+  "device": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
+  "torch": "2.2.0+cu121",
+  "cuda": "12.1",
+  "date_utc": "2026-10-26T13:40:26.745576+00:00",
+  "shape": {
+    "minibatches_per_epoch": 48,
+    "metrics_per_minibatch": 10,
+    "cuda_scalar_metrics": 2,
+    "cpu_tensor_metrics": 8,
+    "warmups": 3,
+    "repeats": 9,
+    "world_size": 1
+  },
+  "median_ms": {
+    "per_minibatch": 15.055700001539662,
+    "batched_chunks": 13.388799998210743
+  },
+  "speedup_ratio_per_minibatch_over_batched_chunks": 1.1244995820052344,
+  "host_materializations_per_epoch": {
+    "per_minibatch": 48,
+    "batched_chunks": 6
+  },
+  "max_abs_metric_delta": 0.0,
+  "measurement": "Synthetic single-GPU active TreeRL ReinforceTrainer status path. The baseline stages and materializes each minibatch separately; the candidate stages the same rows, then stacks and materializes groups of at most sync_batch_size rows. World-size-one all_reduce is modeled as an identity, so distributed collective latency and model training are excluded."
+}

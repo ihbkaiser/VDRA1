@@ -1,0 +1,151 @@
+--- a/openrlhf/trainer/ppo_utils/parallel_mcts.py
++++ b/openrlhf/trainer/ppo_utils/parallel_mcts.py
+@@ -86,66 +86,29 @@
+ NUM_PROCESS = 50
+ from transformers import AutoTokenizer
+ 
+-try:
+-    with open("tools/api_configs/api_config_llama3.1_max_request_1.json") as f:
+-        api_checker_config = json.load(f)
+-
+-    EVALUATOR_URLS = []
+-    ips = api_checker_config['ip']
+-    for key, value in ips.items():
+-        EVALUATOR_URLS.extend([key for _ in range(value)])
+-
+-    # with open("./configs/api_config_rm_general.json") as f:
+-    #     rm_api_config = json.load(f)
+-    # with open("/workspace/lurui/openrlhf-glm/openrlhf/trainer/ppo_utils/configs/api_qwen_rm.json") as f:
+-    #     rm_api_config = json.load(f)
+-
+-    with open("tools/api_configs/api_qwen72_v6_rm.json") as f:
+-        rm_api_config = json.load(f)
+-
+-    RM_URLS = []
+-    ips = rm_api_config['ip']
+-    for key, value in ips.items():
+-        RM_URLS.extend([key for _ in range(value)])
+-        
+-        
+-    with open("tools/api_configs/api_extractor.json") as f:
+-        api_extractor_config = json.load(f)
+-
+-    EXTRACTOR_URLS = []
+-    ips = api_extractor_config['ip']
+-    for key, value in ips.items():
+-        EXTRACTOR_URLS.extend([key for _ in range(value)])
+-except:
+-    with open("/workspace/lurui/openrlhf-glm/tools/api_configs/api_config_llama3.1_max_request_1.json") as f:
+-        api_checker_config = json.load(f)
+-
+-    EVALUATOR_URLS = []
+-    ips = api_checker_config['ip']
+-    for key, value in ips.items():
+-        EVALUATOR_URLS.extend([key for _ in range(value)])
+-
+-    # with open("./configs/api_config_rm_general.json") as f:
+-    #     rm_api_config = json.load(f)
+-    # with open("/workspace/lurui/openrlhf-glm/openrlhf/trainer/ppo_utils/configs/api_qwen_rm.json") as f:
+-    #     rm_api_config = json.load(f)
+-
+-    with open("/workspace/lurui/openrlhf-glm/tools/api_configs/api_qwen72_v6_rm.json") as f:
+-        rm_api_config = json.load(f)
+-
+-    RM_URLS = []
+-    ips = rm_api_config['ip']
+-    for key, value in ips.items():
+-        RM_URLS.extend([key for _ in range(value)])
+-        
+-        
+-    with open("/workspace/lurui/openrlhf-glm/tools/api_configs/api_extractor.json") as f:
+-        api_extractor_config = json.load(f)
+-
+-    EXTRACTOR_URLS = []
+-    ips = api_extractor_config['ip']
+-    for key, value in ips.items():
+-        EXTRACTOR_URLS.extend([key for _ in range(value)])
++def _load_api_urls(filename: str) -> list[str]:
++    """Load optional legacy API endpoints without requiring a developer path."""
++    candidates = []
++    configured_dir = os.environ.get("TREERL_API_CONFIG_DIR")
++    if configured_dir:
++        candidates.append(os.path.join(configured_dir, filename))
++    repository_config = os.path.abspath(
++        os.path.join(os.path.dirname(__file__), "../../../tools/api_configs", filename)
++    )
++    candidates.extend(
++        [repository_config, f"/workspace/lurui/openrlhf-glm/tools/api_configs/{filename}"]
++    )
++    config_path = next((path for path in candidates if os.path.isfile(path)), None)
++    if config_path is None:
++        return []
++    with open(config_path, encoding="utf-8") as config_file:
++        ips = json.load(config_file).get("ip", {})
++    return [url for url, count in ips.items() for _ in range(count)]
++
++
++EVALUATOR_URLS = _load_api_urls("api_config_llama3.1_max_request_1.json")
++RM_URLS = _load_api_urls("api_qwen72_v6_rm.json")
++EXTRACTOR_URLS = _load_api_urls("api_extractor.json")
+ 
+ # import cProfile
+ # import line_profiler
+@@ -466,7 +429,7 @@
+                 node.accumulated_value = reward
+             else:
+                 value = get_qwen_remote_reward_model_value(
+-                    urls= RM_URLS, question = self.problem, response = node.aggregate_answer)
++                    urls=RM_URLS, question=self.problem, response=node.aggregate_answer)
+                 if self.use_pure_RM:
+                     a = self.a
+                     b = self.b
+@@ -476,15 +439,10 @@
+                     node.accumulated_value = result
+                 else:
+                     sigmoid_value = 1 / (1 + math.exp(-value))
+-                    coeff = 0.5
+-                    value = reward + coeff * sigmoid_value
+-                    node.accumulated_value = value
++                    node.accumulated_value = reward + 0.5 * sigmoid_value
+         else:
+-            # reward = generate_logits(
+-            #     urls=RM_URLS, user_query = self.problem, assistant_response = node.aggregate_answer,
+-            # )
+-            reward = get_qwen_remote_reward_model_value(
+-                urls= RM_URLS, question = self.problem, response = node.aggregate_answer)
++            reward = 0 if self.use_pure_binary else get_qwen_remote_reward_model_value(
++                urls=RM_URLS, question=self.problem, response=node.aggregate_answer)
+         return reward
+                         
+     def backpropagate(self, node: MCTSNode,gamma=0.9,main_chain=False):
+@@ -1464,7 +1422,8 @@
+ 
+     results = []
+     for path in paths:
+-        path["reward"] = get_qwen_remote_reward_model_value(urls= RM_URLS, question = item[prompt_key], response = path["answer"])
++        path["reward"] = 0 if args.get("use_pure_binary") else get_qwen_remote_reward_model_value(
++            urls=RM_URLS, question=item[prompt_key], response=path["answer"])
+         path["pass_ratio"] = check_result(item[args["prompt_key"]], path["answer"], item[answer_key],checker_urls=EVALUATOR_URLS,extractor_urls=EXTRACTOR_URLS)[-1]
+         results.append(path["pass_ratio"])
+     _sum = sum(results)
+--- a/openrlhf/trainer/ppo_utils/entropy_chain_local_manager.py
++++ b/openrlhf/trainer/ppo_utils/entropy_chain_local_manager.py
+@@ -22,8 +22,6 @@
+         GLM_QA_PROMPT,
+         get_qwen_remote_reward_model_value
+     )
+-from IPython import embed
+-
+ from concurrent.futures import ThreadPoolExecutor
+ from typing import List, Tuple
+ 
+--- a/openrlhf/trainer/ppo_utils/entropy_guided_tree_search.py
++++ b/openrlhf/trainer/ppo_utils/entropy_guided_tree_search.py
+@@ -12,7 +12,6 @@
+ from multiprocessing import Process
+ from filelock import FileLock
+ 
+-from IPython import embed
+ from tqdm import tqdm
+ 
+ # tokenizer = AutoTokenizer.from_pretrained(

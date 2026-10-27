@@ -1,0 +1,49 @@
+{
+  "benchmark": "TreePO timing metric token-count host synchronization",
+  "device": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
+  "torch": "2.3.1+cu121",
+  "shape": {
+    "batch_size": 32,
+    "prompt_length_vector": [
+      32
+    ],
+    "response_length_vector": [
+      32
+    ]
+  },
+  "updates_per_repeat": 48,
+  "repeats": 11,
+  "warmups": 5,
+  "parity": "exact",
+  "separate_item_syncs_ms": [
+    5.012399997212924,
+    5.154099999344908,
+    4.971100002876483,
+    5.578199998126365,
+    6.383500003721565,
+    7.065600002533756,
+    6.222500000149012,
+    5.792000010842457,
+    5.775700003141537,
+    6.939400002011098,
+    6.398400000762194
+  ],
+  "packed_cpu_copy_ms": [
+    5.401200003689155,
+    6.287399999564514,
+    5.008100008126348,
+    5.1488000026438385,
+    5.427700001746416,
+    5.823299987241626,
+    5.108299999847077,
+    6.674400006886572,
+    7.728299999143928,
+    6.632000004174188,
+    7.614900008775294
+  ],
+  "median_separate_item_syncs_ms": 5.792000010842457,
+  "median_packed_cpu_copy_ms": 5.823299987241626,
+  "speedup": 0.9946250448254865,
+  "saved_ms_per_48_updates": -0.03129997639916837,
+  "measurement_scope": "GPU reductions plus host synchronization for two batch token totals; excludes model compute and all training work."
+}

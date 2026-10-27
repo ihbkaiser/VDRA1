@@ -1,0 +1,66 @@
+diff --git a/openrlhf/trainer/ppo_utils/parallel_mcts.py b/openrlhf/trainer/ppo_utils/parallel_mcts.py
+index f4b9575..c952785 100644
+--- a/openrlhf/trainer/ppo_utils/parallel_mcts.py
++++ b/openrlhf/trainer/ppo_utils/parallel_mcts.py
+@@ -205,6 +205,45 @@ def find_repeated_patterns(s, pattern_length=50, threshold=20):
+                          count in ngram_counts.items() if count > threshold}
+     return repeated_patterns
+ 
++
++_REPEAT_PATTERN_HASH_WEIGHTS = np.asarray(
++    [pow(1_000_003, 49 - index, 1 << 64) for index in range(50)], dtype=np.uint64
++)
++
++
++def _has_repeated_patterns_fast(s, pattern_length=50, threshold=20):
++    """Boolean repeated-window check with exact verification for hash hits."""
++    if pattern_length <= 0:
++        return bool(find_repeated_patterns(s, pattern_length, threshold))
++
++    window_count = len(s) - pattern_length + 1
++    if window_count <= 0 or window_count <= threshold:
++        return False
++    if len(s) < 768:
++        return bool(find_repeated_patterns(s, pattern_length, threshold))
++
++    codepoints = np.fromiter(map(ord, s), dtype=np.uint64, count=len(s))
++    windows = np.lib.stride_tricks.sliding_window_view(codepoints, pattern_length)
++    if pattern_length == 50:
++        weights = _REPEAT_PATTERN_HASH_WEIGHTS
++    else:
++        weights = np.asarray(
++            [pow(1_000_003, pattern_length - 1 - index, 1 << 64) for index in range(pattern_length)],
++            dtype=np.uint64,
++        )
++    hashes = windows @ weights
++    unique_hashes, counts = np.unique(hashes, return_counts=True)
++    for hash_value in unique_hashes[counts > threshold]:
++        positions = np.flatnonzero(hashes == hash_value)
++        exact_counts = {}
++        for position in positions:
++            gram = s[int(position) : int(position) + pattern_length]
++            count = exact_counts.get(gram, 0) + 1
++            if count > threshold:
++                return True
++            exact_counts[gram] = count
++    return False
++
+ def split_and_filter(text, split_chars):
+     """
+     根据指定的分割符分割字符串，并去除空白部分
+@@ -867,7 +906,7 @@ class MCTSr(BaseModel):
+ 
+                 exceeds_max_tokens = len(new_aggregate_answer_token) > self.max_token_num
+                 has_repeated_pattern = (
+-                    False if exceeds_max_tokens else bool(find_repeated_patterns(new_aggregate_answer))
++                    False if exceeds_max_tokens else _has_repeated_patterns_fast(new_aggregate_answer)
+                 )
+                 repeat = exceeds_max_tokens or has_repeated_pattern
+ 
+@@ -1802,4 +1841,4 @@ if __name__ == "__main__":
+             # item = {"problem":"A group of $12$ pirates agree to divide a treasure chest of gold coins among themselves as follows. The $k^\\text{th}$ pirate to take a share takes $\\frac{k}{12}$ of the coins that remain in the chest. The number of coins initially in the chest is the smallest number for which this arrangement will allow each pirate to receive a positive whole number of coins. How many coins does the $12^{\\text{th}}$ pirate receive?\n$\\textbf{(A)} \\ 720 \\qquad  \\textbf{(B)} \\ 1296 \\qquad  \\textbf{(C)} \\ 1728 \\qquad  \\textbf{(D)} \\ 1925 \\qquad  \\textbf{(E)} \\ 3850$", "solution": "First prime factorize $196=2^2\\cdot7^2$.  The prime factorization of any divisor of 196 cannot include any primes other than 2 and 7.  We are free to choose either 0, 1, or 2 as the exponent of 2 in the prime factorization of a divisor of 196.  Similarly, we may choose 0, 1, or 2 as the exponent of 7.  In total, there are $3\\times 3=9$ possibilities for the prime factorization of a divisor of 196.  Distinct prime factorizations correspond to distinct integers, so there are $\\boxed{9}$ divisors of 196.","golden_answer":"9"}
+             paths = parallel_mcts(item, llm, tokenize_fn, args)
+             with open("/workspace/lurui/openrlhf-mcts/data/paths.json", "w") as f:
+-                json.dump(paths, f)
+\ No newline at end of file
++                json.dump(paths, f)

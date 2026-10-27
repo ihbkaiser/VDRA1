@@ -1,0 +1,58 @@
+{
+  "date": "2026-10-26",
+  "profile": "anh-nd210020",
+  "modal_app_id": "ap-m8lXEUwV7gUQ4xh4ANigRT",
+  "run_label": "IGPO R1 first-logprob-batches profile",
+  "run_status": "timed_out_after_600_seconds",
+  "completed_work": {
+    "actor_logprob_pass": true,
+    "reference_logprob_pass": true,
+    "ppo_iteration_0": true,
+    "ppo_iteration_1": false
+  },
+  "billing": {
+    "metered_before_usd": 18.68355186,
+    "metered_after_usd": 20.33355731,
+    "incremental_metered_usd": 1.65000545,
+    "billed_after_credits_usd": 0.0,
+    "target_local_cap_usd": 25.0,
+    "local_hard_stop_usd": 23.75
+  },
+  "actor_logprobs": {
+    "batch_count": 129,
+    "first_batch": {
+      "padded_seq_len": 1318,
+      "forward_seconds": 0.364,
+      "collective_enqueue_seconds": 253.157,
+      "host_enqueue_seconds": 253.531
+    },
+    "total_seconds": 257.674,
+    "first_batch_cuda_stages_ms": {
+      "model_forward": 349.243,
+      "logits_float_and_temperature": 3.675,
+      "shift_and_mask": 1.508,
+      "log_softmax": 6.782,
+      "gather_and_mask": 0.031
+    },
+    "later_batches": {
+      "batch_1_collective_enqueue_seconds": 0.0,
+      "batch_2_collective_enqueue_seconds": 0.0
+    }
+  },
+  "reference_logprobs": {
+    "batch_count": 32,
+    "total_seconds": 1.213,
+    "first_batch_collective_enqueue_seconds": 0.001
+  },
+  "training": {
+    "optimization_step_seconds": 8.14,
+    "gpu": "B200",
+    "world_size": 1,
+    "dataset_modified": false
+  },
+  "interpretation": "The first actor gather/pad path dominated the measured actor-logprob pass. Forward CUDA stages were sub-second and later actor batches had near-zero collective enqueue time. The profile records a cold first-call cost in the gather block; it does not establish a steady-state end-to-end speedup. A world-size-one fast path now skips gather and padding, which are identity operations for a single process. Revalidate with the one-update bounded profile.",
+  "artifacts": {
+    "run_log": "remote_artifacts/modal_igpo_logprob_profile_20261026_02/run.log",
+    "exit_code": "remote_artifacts/modal_igpo_logprob_profile_20261026_02/exit_code.txt"
+  }
+}

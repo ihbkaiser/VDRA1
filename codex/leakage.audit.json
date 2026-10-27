@@ -1,0 +1,223 @@
+{
+ "math500": {
+  "n": 500,
+  "exact_duplicates": [],
+  "exact_duplicate_matches": [],
+  "ngram13_overlap": [
+   "test/precalculus/807.json",
+   "test/precalculus/1199.json",
+   "test/counting_and_probability/134.json",
+   "test/algebra/1072.json",
+   "test/geometry/178.json",
+   "test/precalculus/285.json",
+   "test/intermediate_algebra/1247.json",
+   "test/intermediate_algebra/279.json",
+   "test/prealgebra/307.json",
+   "test/algebra/2023.json",
+   "test/prealgebra/1646.json",
+   "test/intermediate_algebra/345.json",
+   "test/geometry/283.json",
+   "test/prealgebra/1297.json",
+   "test/counting_and_probability/159.json",
+   "test/geometry/172.json",
+   "test/counting_and_probability/803.json",
+   "test/algebra/621.json",
+   "test/prealgebra/1003.json",
+   "test/geometry/65.json",
+   "test/precalculus/659.json",
+   "test/algebra/1082.json",
+   "test/geometry/702.json",
+   "test/number_theory/838.json",
+   "test/precalculus/541.json",
+   "test/intermediate_algebra/102.json",
+   "test/counting_and_probability/71.json",
+   "test/precalculus/819.json",
+   "test/prealgebra/2057.json",
+   "test/algebra/1578.json",
+   "test/algebra/2626.json",
+   "test/precalculus/452.json",
+   "test/algebra/694.json",
+   "test/geometry/826.json",
+   "test/prealgebra/1742.json",
+   "test/number_theory/533.json",
+   "test/intermediate_algebra/1300.json",
+   "test/precalculus/881.json",
+   "test/prealgebra/1044.json",
+   "test/geometry/947.json",
+   "test/counting_and_probability/216.json",
+   "test/number_theory/483.json",
+   "test/intermediate_algebra/1566.json",
+   "test/counting_and_probability/1014.json",
+   "test/intermediate_algebra/1166.json",
+   "test/intermediate_algebra/860.json",
+   "test/precalculus/96.json",
+   "test/algebra/1199.json",
+   "test/algebra/853.json",
+   "test/counting_and_probability/761.json",
+   "test/precalculus/1133.json",
+   "test/algebra/2743.json",
+   "test/intermediate_algebra/121.json",
+   "test/prealgebra/1640.json",
+   "test/number_theory/255.json",
+   "test/algebra/2430.json",
+   "test/number_theory/679.json",
+   "test/counting_and_probability/1003.json",
+   "test/precalculus/356.json",
+   "test/geometry/615.json"
+  ]
+ },
+ "aime24": {
+  "n": 30,
+  "exact_duplicates": [],
+  "exact_duplicate_matches": [],
+  "ngram13_overlap": [
+   "62",
+   "65",
+   "69",
+   "73",
+   "84",
+   "88"
+  ]
+ },
+ "aime25": {
+  "n": 30,
+  "exact_duplicates": [],
+  "exact_duplicate_matches": [],
+  "ngram13_overlap": [
+   "6",
+   "7",
+   "8",
+   "10",
+   "11",
+   "13",
+   "18",
+   "20",
+   "21"
+  ]
+ },
+ "amc23": {
+  "n": 40,
+  "exact_duplicates": [],
+  "exact_duplicate_matches": [],
+  "ngram13_overlap": [
+   "11",
+   "13",
+   "20",
+   "21",
+   "25",
+   "26",
+   "27",
+   "29",
+   "33",
+   "43"
+  ]
+ },
+ "olympiadbench": {
+  "n": 674,
+  "exact_duplicates": [
+   "2644",
+   "2713",
+   "2890",
+   "2918"
+  ],
+  "exact_duplicate_matches": [
+   {
+    "eval_id": "2644",
+    "train_ids": [
+     "3895"
+    ]
+   },
+   {
+    "eval_id": "2713",
+    "train_ids": [
+     "9285"
+    ]
+   },
+   {
+    "eval_id": "2890",
+    "train_ids": [
+     "6292"
+    ]
+   },
+   {
+    "eval_id": "2918",
+    "train_ids": [
+     "9888"
+    ]
+   }
+  ],
+  "ngram13_overlap": [
+   "2260",
+   "2261",
+   "2390",
+   "2454",
+   "2607",
+   "2794",
+   "2890",
+   "2918"
+  ]
+ },
+ "diag": {
+  "n": 256,
+  "exact_duplicates": [
+   "math-train-6442",
+   "math-train-585",
+   "math-train-6997"
+  ],
+  "exact_duplicate_matches": [
+   {
+    "eval_id": "math-train-6442",
+    "train_ids": [
+     "6812"
+    ]
+   },
+   {
+    "eval_id": "math-train-585",
+    "train_ids": [
+     "10914"
+    ]
+   },
+   {
+    "eval_id": "math-train-6997",
+    "train_ids": [
+     "3562"
+    ]
+   }
+  ],
+  "ngram13_overlap": [
+   "math-train-2625",
+   "math-train-5732",
+   "math-train-2058",
+   "math-train-5621",
+   "math-train-1247",
+   "math-train-2182",
+   "math-train-1938",
+   "math-train-10171",
+   "math-train-2260",
+   "math-train-5436",
+   "math-train-7952",
+   "math-train-4178",
+   "math-train-4607",
+   "math-train-10378",
+   "math-train-3040",
+   "math-train-2404",
+   "math-train-585",
+   "math-train-9028",
+   "math-train-8309",
+   "math-train-8176",
+   "math-train-8713",
+   "math-train-7189",
+   "math-train-10764",
+   "math-train-6230",
+   "math-train-6997",
+   "math-train-6541",
+   "math-train-6211",
+   "math-train-9952",
+   "math-train-1561",
+   "math-train-5154",
+   "math-train-2155",
+   "math-train-5657",
+   "math-train-2162"
+  ]
+ }
+}

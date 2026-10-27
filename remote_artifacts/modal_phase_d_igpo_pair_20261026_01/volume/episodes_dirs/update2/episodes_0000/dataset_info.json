@@ -1,0 +1,67 @@
+{
+  "citation": "",
+  "description": "",
+  "features": {
+    "query_token_ids": {
+      "feature": {
+        "dtype": "int64",
+        "_type": "Value"
+      },
+      "_type": "Sequence"
+    },
+    "response_token_ids": {
+      "feature": {
+        "dtype": "int64",
+        "_type": "Value"
+      },
+      "_type": "Sequence"
+    },
+    "question_idx": {
+      "dtype": "int64",
+      "_type": "Value"
+    },
+    "query_text": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "response_text": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "reward": {
+      "dtype": "float64",
+      "_type": "Value"
+    },
+    "scores": {
+      "dtype": "float64",
+      "_type": "Value"
+    },
+    "advantages": {
+      "feature": {
+        "dtype": "float64",
+        "_type": "Value"
+      },
+      "_type": "Sequence"
+    },
+    "values": {
+      "feature": {
+        "dtype": "float64",
+        "_type": "Value"
+      },
+      "_type": "Sequence"
+    },
+    "actor_shifted_log_probs": {
+      "feature": {
+        "dtype": "float64",
+        "_type": "Value"
+      },
+      "_type": "Sequence"
+    },
+    "leaf": {
+      "dtype": "bool",
+      "_type": "Value"
+    }
+  },
+  "homepage": "",
+  "license": ""
+}

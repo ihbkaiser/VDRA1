@@ -1,0 +1,35 @@
+{
+  "date": "2026-10-26",
+  "execution": "remote CPU-only Modal preflight",
+  "function": "preflight_igpo_eval_config",
+  "framework": "igpo",
+  "status": "pass",
+  "gpu_allocated": false,
+  "expected_model_path": "/work/hf_cache/model",
+  "runs": {
+    "R1": {
+      "early_stop_iteration": 4,
+      "model_path_fields_checked": 8,
+      "evaluation_pipeline_count": 6,
+      "evaluation_tokenizer_paths_checked": 6,
+      "all_paths_match": true
+    },
+    "R2": {
+      "early_stop_iteration": 4,
+      "model_path_fields_checked": 8,
+      "evaluation_pipeline_count": 6,
+      "evaluation_tokenizer_paths_checked": 6,
+      "all_paths_match": true
+    }
+  },
+  "budget_preflight": {
+    "profile": "anh-nd210020",
+    "metered_cost_before_usd": 17.52354072,
+    "reserve_seconds_at_b200_rate": 300,
+    "reserved_usd_including_non_gpu_headroom": 0.7708,
+    "local_hard_stop_usd": 19.0,
+    "passed": true
+  },
+  "metered_cost_after_usd": 17.52354634,
+  "active_tasks_after": 0
+}

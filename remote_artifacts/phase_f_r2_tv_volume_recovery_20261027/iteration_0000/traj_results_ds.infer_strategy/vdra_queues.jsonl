@@ -1,0 +1,23 @@
+{"queue_id": 0, "size": 2, "budget": 12, "allocated": 12, "waited_s": 1.0022196769714355, "node_ids": ["2251/r", "3086/r"], "coefs": [0.4999999999989652, 0.49991403088821], "k_v": [6, 6], "capped": [false, false], "n_v": [6, 6]}
+{"queue_id": 0, "size": 2, "budget": 12, "allocated": 12, "waited_s": 1.0015335083007812, "node_ids": ["7212/r", "35/r"], "coefs": [0.49999999124436695, 0.49999999999048583], "k_v": [6, 6], "capped": [false, false], "n_v": [6, 6]}
+{"queue_id": 0, "size": 1, "budget": 6, "allocated": 1, "waited_s": 1.0015487670898438, "node_ids": ["2251/r/3"], "coefs": [0.0], "k_v": [1], "capped": [true], "n_v": [1]}
+{"queue_id": 0, "size": 1, "budget": 6, "allocated": 4, "waited_s": 1.0008313655853271, "node_ids": ["3086/r/0"], "coefs": [0.3513010292974811], "k_v": [4], "capped": [true], "n_v": [4]}
+{"queue_id": 0, "size": 1, "budget": 6, "allocated": 6, "waited_s": 1.0243678092956543, "node_ids": ["2251/r/0"], "coefs": [0.49534966651066814], "k_v": [6], "capped": [false], "n_v": [6]}
+{"queue_id": 0, "size": 1, "budget": 6, "allocated": 6, "waited_s": 1.000884771347046, "node_ids": ["2251/r/4"], "coefs": [0.4999999999992543], "k_v": [6], "capped": [false], "n_v": [6]}
+{"queue_id": 0, "size": 2, "budget": 12, "allocated": 12, "waited_s": 1.0013117790222168, "node_ids": ["3086/r/1", "3086/r/4"], "coefs": [0.49996508878787693, 0.2999999999999877], "k_v": [6, 3], "capped": [false, true], "n_v": [9, 3]}
+{"queue_id": 0, "size": 1, "budget": 6, "allocated": 6, "waited_s": 1.1107888221740723, "node_ids": ["3086/r/2"], "coefs": [0.49804629481905555], "k_v": [6], "capped": [false], "n_v": [6]}
+{"queue_id": 0, "size": 1, "budget": 6, "allocated": 6, "waited_s": 1.0012257099151611, "node_ids": ["2251/r/2"], "coefs": [0.49840940168883235], "k_v": [6], "capped": [false], "n_v": [6]}
+{"queue_id": 0, "size": 1, "budget": 6, "allocated": 6, "waited_s": 1.0019924640655518, "node_ids": ["2251/r/5"], "coefs": [0.4999965984927011], "k_v": [6], "capped": [false], "n_v": [6]}
+{"queue_id": 0, "size": 1, "budget": 6, "allocated": 6, "waited_s": 1.2764124870300293, "node_ids": ["2251/r/1"], "coefs": [0.4999999995490151], "k_v": [6], "capped": [false], "n_v": [6]}
+{"queue_id": 0, "size": 1, "budget": 6, "allocated": 6, "waited_s": 1.0012414455413818, "node_ids": ["35/r/0"], "coefs": [0.49999999998651395], "k_v": [6], "capped": [false], "n_v": [6]}
+{"queue_id": 0, "size": 1, "budget": 6, "allocated": 6, "waited_s": 1.0004355907440186, "node_ids": ["7212/r/0"], "coefs": [0.3538640239201784], "k_v": [6], "capped": [false], "n_v": [6]}
+{"queue_id": 0, "size": 1, "budget": 6, "allocated": 6, "waited_s": 1.0026235580444336, "node_ids": ["35/r/3"], "coefs": [0.4999999982772785], "k_v": [6], "capped": [false], "n_v": [6]}
+{"queue_id": 0, "size": 1, "budget": 6, "allocated": 6, "waited_s": 1.002054214477539, "node_ids": ["35/r/1"], "coefs": [0.4999999772298358], "k_v": [6], "capped": [false], "n_v": [6]}
+{"queue_id": 0, "size": 1, "budget": 6, "allocated": 6, "waited_s": 1.0029044151306152, "node_ids": ["35/r/4"], "coefs": [0.4537505652314023], "k_v": [6], "capped": [false], "n_v": [6]}
+{"queue_id": 0, "size": 1, "budget": 6, "allocated": 6, "waited_s": 1.000586986541748, "node_ids": ["35/r/2"], "coefs": [0.4999999678195758], "k_v": [6], "capped": [false], "n_v": [6]}
+{"queue_id": 0, "size": 1, "budget": 6, "allocated": 6, "waited_s": 1.0024209022521973, "node_ids": ["35/r/5"], "coefs": [0.49999999999832756], "k_v": [6], "capped": [false], "n_v": [6]}
+{"queue_id": 0, "size": 1, "budget": 6, "allocated": 5, "waited_s": 1.000687837600708, "node_ids": ["7212/r/1"], "coefs": [0.37369064689463555], "k_v": [5], "capped": [true], "n_v": [5]}
+{"queue_id": 0, "size": 1, "budget": 6, "allocated": 6, "waited_s": 1.0016334056854248, "node_ids": ["7212/r/2"], "coefs": [0.4999999874006523], "k_v": [6], "capped": [false], "n_v": [6]}
+{"queue_id": 0, "size": 1, "budget": 6, "allocated": 6, "waited_s": 1.002166986465454, "node_ids": ["7212/r/3"], "coefs": [0.4999999999961141], "k_v": [6], "capped": [false], "n_v": [6]}
+{"queue_id": 0, "size": 1, "budget": 6, "allocated": 6, "waited_s": 1.001988410949707, "node_ids": ["7212/r/4"], "coefs": [0.49999984030193007], "k_v": [6], "capped": [false], "n_v": [6]}
+{"queue_id": 0, "size": 1, "budget": 6, "allocated": 6, "waited_s": 1.0007941722869873, "node_ids": ["7212/r/5"], "coefs": [0.49999999995553984], "k_v": [6], "capped": [false], "n_v": [6]}

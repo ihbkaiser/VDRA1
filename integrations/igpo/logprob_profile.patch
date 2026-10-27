@@ -1,0 +1,104 @@
+diff --git a/treetune/trainers/ppo_trainer.py b/treetune/trainers/ppo_trainer.py
+--- a/treetune/trainers/ppo_trainer.py
++++ b/treetune/trainers/ppo_trainer.py
+@@ -1963,6 +1963,7 @@
+         async_host_copy = False
+         profile_log_probs = os.environ.get("VDRA_LOGPROB_PROFILE") == "1"
+         profile_started = time.perf_counter()
++        profile_previous_batch_end = profile_started
+         for batch_index, inputs in enumerate(
+             tqdm(
+                 data_loader,
+@@ -1970,6 +1971,8 @@
+                 disable=not self._is_main_process(),
+             )
+         ):
++            if profile_log_probs and batch_index < 3:
++                batch_fetch_seconds = time.perf_counter() - profile_previous_batch_end
+             batch_started = time.perf_counter()
+             with torch.no_grad():
+                 # Assume every sequence is padded from the right
+@@ -1983,7 +1986,9 @@
+                     f"{self.args.per_device_eval_batch_size}."
+                 )
+ 
++                input_transfer_started = time.perf_counter()
+                 inputs = {k: v.to(model_engine.device) for k, v in inputs.items()}
++                input_transfer_seconds = time.perf_counter() - input_transfer_started
+ 
+                 # Compute the sequence lengths as we need to extract
+                 # the log probs of the non-padded tokens
+@@ -1991,9 +1996,13 @@
+                 seq_lengths = seq_lengths.unsqueeze(1)  # Shape: (batch_size, 1)
+ 
+                 # Compute the log probabilities for each token
++                forward_started = time.perf_counter()
+                 outputs = self._forward_pass_actor(
+                     model_engine, inputs, return_all_logps=True
+                 )
++                if profile_log_probs and batch_index < 3 and inputs["input_ids"].is_cuda:
++                    torch.cuda.synchronize(inputs["input_ids"].device)
++                forward_seconds = time.perf_counter() - forward_started
+                 logps = outputs["all_logps"].detach()
+                 assert logps.shape[1] == inputs["input_ids"].shape[1] - 1
+ 
+@@ -2001,10 +2010,12 @@
+                 # Note that after all_gather, the order in which the batches were
+                 # distributed across processes is preserved. So, concatenating
+                 # them along the batch dimension will give us the original order.
++                collective_started = time.perf_counter()
+                 seq_lengths = gather(seq_lengths)
+                 logps = gather(
+                     pad_across_processes(logps, dim=1, pad_index=0.0, pad_first=False)
+                 )
++                collective_enqueue_seconds = time.perf_counter() - collective_started
+ 
+                 assert (
+                     logps.shape[0]
+@@ -2014,6 +2025,7 @@
+                 # Stage padded batches into pinned host memory asynchronously.
+                 # CUDA boolean indexing would synchronize to learn its dynamic
+                 # output size, so keep padding until CPU list materialization.
++                host_copy_started = time.perf_counter()
+                 host_logps = torch.empty(
+                     logps.shape,
+                     dtype=logps.dtype,
+@@ -2031,19 +2043,37 @@
+                 host_seq_lengths.copy_(
+                     seq_lengths, non_blocking=seq_lengths.is_cuda
+                 )
++                host_copy_enqueue_seconds = time.perf_counter() - host_copy_started
+                 host_log_prob_chunks.append(host_logps)
+                 host_seq_length_chunks.append(host_seq_lengths)
+ 
+             if profile_log_probs and batch_index < 3:
++                profile_cuda_sync_seconds = 0.0
++                if logps.is_cuda:
++                    profile_cuda_sync_started = time.perf_counter()
++                    torch.cuda.synchronize(logps.device)
++                    profile_cuda_sync_seconds = (
++                        time.perf_counter() - profile_cuda_sync_started
++                    )
+                 logger.info(
+                     "Logprob profile: column=%s batch=%d padded_seq_len=%d "
+-                    "batch_seconds_before_host_copy_enqueue=%.3f elapsed_seconds_before_deferred_sync=%.3f",
++                    "input_transfer_seconds=%.3f forward_seconds=%.3f "
++                    "collective_enqueue_seconds=%.3f host_copy_enqueue_seconds=%.3f "
++                    "batch_fetch_seconds=%.3f host_enqueue_seconds=%.3f "
++                    "profile_cuda_sync_seconds=%.3f elapsed_seconds_before_deferred_sync=%.3f",
+                     column_name,
+                     batch_index,
+                     inputs["input_ids"].shape[1],
++                    input_transfer_seconds,
++                    forward_seconds,
++                    collective_enqueue_seconds,
++                    host_copy_enqueue_seconds,
++                    batch_fetch_seconds,
+                     time.perf_counter() - batch_started,
++                    profile_cuda_sync_seconds,
+                     time.perf_counter() - profile_started,
+                 )
++                profile_previous_batch_end = time.perf_counter()
+ 
+         # Wait for all queued device-to-host copies once, then build ragged lists
+         # from CPU memory without synchronizing once per batch.

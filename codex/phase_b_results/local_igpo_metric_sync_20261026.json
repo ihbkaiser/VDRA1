@@ -1,0 +1,41 @@
+{
+  "device": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
+  "torch": "2.3.1+cu121",
+  "cuda": "12.1",
+  "date_utc": "2026-10-26T08:33:12.388316+00:00",
+  "shape": {
+    "updates": 48,
+    "weighted_metrics_per_update": 15
+  },
+  "median_ms": {
+    "sync_each_update": 42.50710000633262,
+    "count_tensor_on_device": 37.8577000083169
+  },
+  "speedup_ratio_old_over_new": 1.1228125321135278,
+  "max_abs_result_delta": 0.0,
+  "ratio_skip_branch": {
+    "threshold": 1.1,
+    "median_ms": {
+      "sync_each_update": 3.1069999968167394,
+      "tensor_mask_on_device": 4.794499996933155
+    },
+    "speedup_ratio_old_over_new": 0.6480342056114632,
+    "max_abs_loss_delta": 0.0,
+    "measurement": "synthetic PPO ratio-threshold branch; old path synchronizes via .item() for every update; new path applies the same threshold mask on-device"
+  },
+  "ratio_skip_with_backward": {
+    "shape": {
+      "updates": 48,
+      "tokens_per_update": 2048
+    },
+    "median_ms": {
+      "sync_each_update": 37.76790000847541,
+      "tensor_mask_on_device": 41.422700000111945
+    },
+    "speedup_ratio_old_over_new": 0.9117681852794082,
+    "max_abs_loss_delta": 0.0,
+    "max_abs_gradient_delta": 0.0,
+    "measurement": "synthetic PPO ratio-threshold forward/backward loop with 2048 tokens/update; old path calls .item() per update; new path applies a tensor mask"
+  },
+  "measurement": "synthetic PPO metric-weighting loop; old path calls CUDA scalar .item() once per update; new path keeps token count on device; includes Python loop and final CUDA synchronization"
+}

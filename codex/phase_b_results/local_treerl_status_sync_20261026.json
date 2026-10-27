@@ -1,0 +1,21 @@
+{
+  "device": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
+  "torch": "2.3.1+cu121",
+  "cuda": "12.1",
+  "date_utc": "2026-10-26T08:43:39.684623+00:00",
+  "shape": {
+    "updates": 48,
+    "metrics_per_update": 8,
+    "cuda_scalar_metrics": 3,
+    "python_scalar_metrics": 5,
+    "warmups": 3,
+    "repeats": 7
+  },
+  "median_ms": {
+    "old_per_metric": 46.15020001074299,
+    "packed_vector": 14.078799998969771
+  },
+  "speedup_ratio_old_over_packed": 3.277992443540648,
+  "max_abs_metric_delta": 0.0,
+  "measurement": "Synthetic single-GPU TreeRL PPO status loop. The old path materializes three CUDA scalar metrics with .item() and copies/reduces/copies each of eight fields independently. The packed path inserts three detached CUDA scalars into one FP32 vector and copies its result to CPU once. World-size-one all_reduce is an identity, matching the Phase B shim; transformer work and multi-rank collective latency are excluded."
+}

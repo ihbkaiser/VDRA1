@@ -1,0 +1,295 @@
+{
+    "directory": "/work/mock/phase_d_v2/runs",
+    "early_stop_iteration": 2,
+    "episode_generator": {
+        "append_bos_to_query": false,
+        "append_eos_to_response": false,
+        "dataset_num_samples_per_iteration": 4,
+        "dataset_sample_with_replacement": false,
+        "dataset_shuffle_before_portion": true,
+        "dataset_shuffle_on_each_iteration": true,
+        "fill_missing_episodes": true,
+        "gpu_offset": 0,
+        "inference_strategy": {
+            "M": 600,
+            "answer_extractor": {
+                "node_key_name": "text",
+                "type": "identity"
+            },
+            "branch_factor_strategy": {
+                "branch_factors": [
+                    {
+                        "branch_factor": 6,
+                        "depth": 0
+                    },
+                    {
+                        "branch_factor": 6,
+                        "depth": 1
+                    },
+                    {
+                        "branch_factor": 6,
+                        "depth": 2
+                    }
+                ],
+                "type": "list"
+            },
+            "guidance_llm": {
+                "api_base": "none",
+                "api_key": "EMPTY",
+                "caching": false,
+                "max_calls_per_min": 1000000,
+                "max_retries": 10,
+                "model": "/work/hf_cache/models--deepseek-ai--DeepSeek-R1-Distill-Qwen-1.5B/snapshots/ad9f0ae0864d7fbcd1cd905e3c6c5b069cc8b562",
+                "tokenizer_name": "/work/hf_cache/models--deepseek-ai--DeepSeek-R1-Distill-Qwen-1.5B/snapshots/ad9f0ae0864d7fbcd1cd905e3c6c5b069cc8b562",
+                "type": "openai_vllm"
+            },
+            "max_concurrent_generations": 64,
+            "max_concurrent_programs": 16,
+            "max_depth": 3,
+            "no_cache": true,
+            "node_expander": {
+                "model_context_size": 2048,
+                "node_text_template": "{chain_of_thought}",
+                "program": "{{prefix}}{{gen \"chain_of_thought\" temperature={temperature} top_p={top_p} max_tokens={max_tokens} seed={seed} logprobs={logprobs} save_stop_text=\"stop_text\" stop={stop} n={num_samples}}}",
+                "program_kwargs": {
+                    "logprobs": 1,
+                    "max_tokens": 4096,
+                    "stop": "\"\n\n\nProblem:\"",
+                    "temperature": 0.6,
+                    "top_p": 1
+                },
+                "tokenizer": {
+                    "hf_model_name": "/work/hf_cache/models--deepseek-ai--DeepSeek-R1-Distill-Qwen-1.5B/snapshots/ad9f0ae0864d7fbcd1cd905e3c6c5b069cc8b562",
+                    "type": "pretrained"
+                },
+                "type": "efficient_iid"
+            },
+            "question_field": "query",
+            "question_template": "<\uff5cbegin\u2581of\u2581sentence\uff5c><\uff5cUser\uff5c>Solve the following math problem efficiently and clearly.  The last line of your response should be of the following format: 'Therefore, the final answer is: $\\boxed{{ANSWER}}$. I hope it is correct' (without quotes) where ANSWER is just the final number or expression that solves the problem. Think step by step before answering.\n\n{query}<\uff5cAssistant\uff5c><think>\n",
+            "samples": 8,
+            "type": "spo_logged"
+        },
+        "initial_model_name_or_path": "/work/hf_cache/models--deepseek-ai--DeepSeek-R1-Distill-Qwen-1.5B/snapshots/ad9f0ae0864d7fbcd1cd905e3c6c5b069cc8b562",
+        "max_question_length": 200,
+        "max_sequence_length": null,
+        "question_sampler": {
+            "type": "random"
+        },
+        "question_template": "<\uff5cbegin\u2581of\u2581sentence\uff5c><\uff5cUser\uff5c>Solve the following math problem efficiently and clearly.  The last line of your response should be of the following format: 'Therefore, the final answer is: $\\boxed{{ANSWER}}$. I hope it is correct' (without quotes) where ANSWER is just the final number or expression that solves the problem. Think step by step before answering.\n\n{query}<\uff5cAssistant\uff5c><think>\n",
+        "reward_function": {
+            "math_task": {
+                "answer_prefix": null,
+                "dataset_dict_path": "/work/data_vdra/math-nodiag",
+                "ensure_fit_in_context_size": false,
+                "few_shot_dataset_path": "data/solution_samples_same_dist_as_math_train_from_prm800k",
+                "inplace_split_solution": true,
+                "load_dataset_dict": true,
+                "prepend_in_context_few_shot": false,
+                "type": "math"
+            },
+            "penalize_unfinished_response": true,
+            "type": "math_reward_function",
+            "unfinished_response_penalty": 0
+        },
+        "task": {
+            "answer_prefix": null,
+            "dataset_dict_path": "/work/data_vdra/math-nodiag",
+            "ensure_fit_in_context_size": false,
+            "few_shot_dataset_path": "data/solution_samples_same_dist_as_math_train_from_prm800k",
+            "inplace_split_solution": true,
+            "load_dataset_dict": true,
+            "prepend_in_context_few_shot": false,
+            "type": "math"
+        },
+        "total_num_iterations": 1000,
+        "type": "hybrid_episode_generator_resumable",
+        "value_estimation_inference_strategy": {
+            "answer_extractor": {
+                "node_key_name": "text",
+                "type": "identity"
+            },
+            "guidance_llm": {
+                "api_base": "none",
+                "api_key": "EMPTY",
+                "caching": false,
+                "max_calls_per_min": 1000000,
+                "max_retries": 10,
+                "model": "/work/hf_cache/models--deepseek-ai--DeepSeek-R1-Distill-Qwen-1.5B/snapshots/ad9f0ae0864d7fbcd1cd905e3c6c5b069cc8b562",
+                "tokenizer_name": "/work/hf_cache/models--deepseek-ai--DeepSeek-R1-Distill-Qwen-1.5B/snapshots/ad9f0ae0864d7fbcd1cd905e3c6c5b069cc8b562",
+                "type": "openai_vllm"
+            },
+            "max_concurrent_generations": 512,
+            "max_concurrent_programs": 512,
+            "max_depth": 100,
+            "no_cache": true,
+            "node_expander": {
+                "model_context_size": 2048,
+                "node_text_template": "{chain_of_thought}",
+                "program": "{{prefix}}{{gen \"chain_of_thought\" temperature={temperature} top_p={top_p} max_tokens={max_tokens} seed={seed} logprobs={logprobs} save_stop_text=\"stop_text\" stop={stop} n={num_samples}}}",
+                "program_kwargs": {
+                    "logprobs": 1,
+                    "max_tokens": 4096,
+                    "stop": "\"\n\n\nProblem:\"",
+                    "temperature": 0.6,
+                    "top_p": 1
+                },
+                "tokenizer": {
+                    "hf_model_name": "/work/hf_cache/models--deepseek-ai--DeepSeek-R1-Distill-Qwen-1.5B/snapshots/ad9f0ae0864d7fbcd1cd905e3c6c5b069cc8b562",
+                    "type": "pretrained"
+                },
+                "type": "efficient_iid"
+            },
+            "question_field": "query",
+            "question_template": "{query}",
+            "samples": 4,
+            "type": "cot"
+        },
+        "vllm_gpu_memory_utilization": 0.25,
+        "vllm_min_available_gpu_memory_mb": 20480,
+        "vllm_server": {
+            "enable_prefix_caching": true,
+            "max_num_seqs": 64,
+            "swap_space": null
+        },
+        "wait_until_memory_release": false
+    },
+    "episodes_cloud_log_steps": 50,
+    "evaluate_every_n_iterations": 100000,
+    "evaluate_gpu": 0,
+    "evaluation_vllm_server": {},
+    "exp_name": "R1_s42",
+    "global_vars": {
+        "debug_mode": false,
+        "dirs": {
+            "data": "data",
+            "experiments": "experiments"
+        },
+        "seed": 42,
+        "wandb_dir": "./wandb"
+    },
+    "inference_pipelines": [],
+    "num_episodes_per_iteration": 64,
+    "num_iterations": 1000,
+    "prompt_library": {
+        "tree": {
+            "expansion": {
+                "iid": "{{prefix}}{{gen \"chain_of_thought\" temperature={temperature} top_p={top_p} max_tokens={max_tokens} seed={seed} logprobs={logprobs} save_stop_text=\"stop_text\" stop={stop} n={num_samples}}}"
+            },
+            "question_template": "<\uff5cbegin\u2581of\u2581sentence\uff5c><\uff5cUser\uff5c>Solve the following math problem efficiently and clearly.  The last line of your response should be of the following format: 'Therefore, the final answer is: $\\boxed{{ANSWER}}$. I hope it is correct' (without quotes) where ANSWER is just the final number or expression that solves the problem. Think step by step before answering.\n\n{query}<\uff5cAssistant\uff5c><think>\n"
+        }
+    },
+    "tokenizer": {
+        "hf_model_name": "/work/hf_cache/models--deepseek-ai--DeepSeek-R1-Distill-Qwen-1.5B/snapshots/ad9f0ae0864d7fbcd1cd905e3c6c5b069cc8b562",
+        "type": "pretrained"
+    },
+    "trainer": {
+        "actor_deepspeed_config": {
+            "bf16": {
+                "enabled": "auto"
+            },
+            "gradient_accumulation_steps": "auto",
+            "gradient_clipping": "auto",
+            "optimizer": {
+                "params": {
+                    "betas": "auto",
+                    "eps": "auto",
+                    "lr": "auto",
+                    "weight_decay": "auto"
+                },
+                "type": "AdamW"
+            },
+            "scheduler": {
+                "params": {
+                    "last_batch_iteration": -1,
+                    "total_num_steps": "auto",
+                    "warmup_max_lr": "auto",
+                    "warmup_min_lr": "auto",
+                    "warmup_num_steps": "auto"
+                },
+                "type": "WarmupDecayLR"
+            },
+            "train_batch_size": "auto",
+            "train_micro_batch_size_per_gpu": "auto",
+            "zero_allow_untested_optimizer": true,
+            "zero_optimization": {
+                "allgather_bucket_size": 500000000,
+                "allgather_partitions": true,
+                "contiguous_gradients": true,
+                "overlap_comm": false,
+                "reduce_bucket_size": "auto",
+                "reduce_scatter": true,
+                "stage": 0
+            }
+        },
+        "actor_model": {
+            "disable_dropout": true,
+            "hf_model_name": "/work/hf_cache/models--deepseek-ai--DeepSeek-R1-Distill-Qwen-1.5B/snapshots/ad9f0ae0864d7fbcd1cd905e3c6c5b069cc8b562",
+            "pretrained_args": {
+                "use_flash_attention_2": true
+            },
+            "type": "pretrained_causal_lm"
+        },
+        "cache_deepspeed_engines": true,
+        "critic_deepspeed_config": null,
+        "critic_model": null,
+        "general_training_args": {
+            "bf16": true,
+            "checkpoint_keep_steps": 2,
+            "dataloader_num_workers": 1,
+            "dataloader_pin_memory": false,
+            "gradient_accumulation_steps": null,
+            "gradient_checkpointing": true,
+            "learning_rate": 1e-06,
+            "logging_steps": 1,
+            "max_grad_norm": 1,
+            "per_device_eval_batch_size": 2,
+            "per_device_train_batch_size": 2,
+            "save_steps": 2,
+            "seed": 42,
+            "target_train_batch_size": 32,
+            "warmup_ratio": 0.03,
+            "weight_decay": 0
+        },
+        "move_reference_model_to_cpu": true,
+        "num_epochs_per_iteration": 1,
+        "params": {
+            "adap_kl_ctrl": false,
+            "cliprange": 0.2,
+            "cliprange_value": 0.2,
+            "gamma": 1,
+            "init_kl_coef": 0,
+            "kl_penalty_loss_clip_max": 1000000000,
+            "kl_penalty_loss_clip_min": 0,
+            "kl_penalty_loss_type": "control_variate",
+            "lam": 1,
+            "temperature": 0.6,
+            "use_prob_mask": true,
+            "use_score_norm": false,
+            "use_score_scaling": false,
+            "whiten_advantages": true,
+            "whiten_rewards": false
+        },
+        "reference_deepspeed_config": {
+            "bf16": {
+                "enabled": true
+            },
+            "gradient_accumulation_steps": "auto",
+            "prescale_gradients": false,
+            "train_batch_size": "auto",
+            "train_micro_batch_size_per_gpu": "auto",
+            "wall_clock_breakdown": false
+        },
+        "reference_model": {
+            "hf_model_name": "/work/hf_cache/models--deepseek-ai--DeepSeek-R1-Distill-Qwen-1.5B/snapshots/ad9f0ae0864d7fbcd1cd905e3c6c5b069cc8b562",
+            "pretrained_args": {
+                "use_flash_attention_2": true
+            },
+            "type": "pretrained_causal_lm"
+        },
+        "report_entropy": false,
+        "save_hf_critic_checkpoint": false,
+        "type": "ppo"
+    },
+    "type": "policy_iteration",
+    "use_deepspeed": true
+}

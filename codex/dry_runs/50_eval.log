@@ -1,0 +1,103 @@
+﻿bash.exe : [2026-10-25 20:32:26] + python3 /d/vdra_experiments/vdra_experiments/analysis/gpu_hours.py --run_dir 
+/d/vdra_experiments/vdra_experiments/work/runs/R1_s42 --framework treetune --gpus 2 --out 
+/d/vdra_experiments/vdra_experiments/work/results/gpu_hours/R1_s42.json
+At line:2 char:748
++ ...  R2 R3 R4 R5 R6' bash '$script'"; $out = & $bash -c $cmd 2>&1; $rc =  ...
++                                              ~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([2026-10-25 20:...urs/R1_s42.json:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[2026-10-25 20:32:26] + python3 /d/vdra_experiments/vdra_experiments/analysis/gpu_hours.py --run_dir 
+/d/vdra_experiments/vdra_experiments/work/runs/R2_s42 --framework treetune --gpus 2 --out 
+/d/vdra_experiments/vdra_experiments/work/results/gpu_hours/R2_s42.json
+[2026-10-25 20:32:26] + python3 /d/vdra_experiments/vdra_experiments/analysis/gpu_hours.py --run_dir 
+/d/vdra_experiments/vdra_experiments/work/runs/R3_s42 --framework verl --gpus 2 --out 
+/d/vdra_experiments/vdra_experiments/work/results/gpu_hours/R3_s42.json
+[2026-10-25 20:32:26] + python3 /d/vdra_experiments/vdra_experiments/analysis/gpu_hours.py --run_dir 
+/d/vdra_experiments/vdra_experiments/work/runs/R4_s42 --framework verl --gpus 2 --out 
+/d/vdra_experiments/vdra_experiments/work/results/gpu_hours/R4_s42.json
+[2026-10-25 20:32:26] + python3 /d/vdra_experiments/vdra_experiments/analysis/gpu_hours.py --run_dir 
+/d/vdra_experiments/vdra_experiments/work/runs/R5_s42 --framework openrlhf --gpus 3 --out 
+/d/vdra_experiments/vdra_experiments/work/results/gpu_hours/R5_s42.json
+[2026-10-25 20:32:26] + python3 /d/vdra_experiments/vdra_experiments/analysis/gpu_hours.py --run_dir 
+/d/vdra_experiments/vdra_experiments/work/runs/R6_s42 --framework openrlhf --gpus 3 --out 
+/d/vdra_experiments/vdra_experiments/work/results/gpu_hours/R6_s42.json
+[2026-10-25 20:32:26] eval jobs: 6
+[2026-10-25 20:32:26] [queue] GPUS=0 :: 
+PYTHONPATH=/d/vdra_experiments/vdra_experiments/work/igpo:/d/vdra_experiments/vdra_experiments python3 
+/d/vdra_experiments/vdra_experiments/analysis/eval_pending.py --run_dir 
+/d/vdra_experiments/vdra_experiments/work/runs/R1_s42 --run_id R1_s42 --gpus $GPUS --dataset 
+math500=/d/vdra_experiments/vdra_experiments/work/igpo/data/math:test 
+aime24=/d/vdra_experiments/vdra_experiments/work/igpo/data/aime24 
+aime25=/d/vdra_experiments/vdra_experiments/work/igpo/data/aime25 
+amc23=/d/vdra_experiments/vdra_experiments/work/igpo/data/amc23 
+olympiadbench=/d/vdra_experiments/vdra_experiments/work/igpo/data/olympiadbench_hf --out_dir 
+/d/vdra_experiments/vdra_experiments/work/results/eval --gpu_hours_json 
+/d/vdra_experiments/vdra_experiments/work/results/gpu_hours/R1_s42.json --sample_k 2 --include_step0 --base_model 
+'deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B'
+[2026-10-25 20:32:26] [queue] dry run; job not executed
+[2026-10-25 20:32:26] [queue] GPUS=0 :: 
+PYTHONPATH=/d/vdra_experiments/vdra_experiments/work/igpo:/d/vdra_experiments/vdra_experiments python3 
+/d/vdra_experiments/vdra_experiments/analysis/eval_pending.py --run_dir 
+/d/vdra_experiments/vdra_experiments/work/runs/R2_s42 --run_id R2_s42 --gpus $GPUS --dataset 
+math500=/d/vdra_experiments/vdra_experiments/work/igpo/data/math:test 
+aime24=/d/vdra_experiments/vdra_experiments/work/igpo/data/aime24 
+aime25=/d/vdra_experiments/vdra_experiments/work/igpo/data/aime25 
+amc23=/d/vdra_experiments/vdra_experiments/work/igpo/data/amc23 
+olympiadbench=/d/vdra_experiments/vdra_experiments/work/igpo/data/olympiadbench_hf --out_dir 
+/d/vdra_experiments/vdra_experiments/work/results/eval --gpu_hours_json 
+/d/vdra_experiments/vdra_experiments/work/results/gpu_hours/R2_s42.json --sample_k 2 --include_step0 --base_model 
+'deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B'
+[2026-10-25 20:32:26] [queue] dry run; job not executed
+[2026-10-25 20:32:26] [queue] GPUS=0 :: 
+PYTHONPATH=/d/vdra_experiments/vdra_experiments/work/igpo:/d/vdra_experiments/vdra_experiments python3 
+/d/vdra_experiments/vdra_experiments/analysis/eval_pending.py --run_dir 
+/d/vdra_experiments/vdra_experiments/work/runs/R3_s42 --run_id R3_s42 --gpus $GPUS --dataset 
+math500=/d/vdra_experiments/vdra_experiments/work/igpo/data/math:test 
+aime24=/d/vdra_experiments/vdra_experiments/work/igpo/data/aime24 
+aime25=/d/vdra_experiments/vdra_experiments/work/igpo/data/aime25 
+amc23=/d/vdra_experiments/vdra_experiments/work/igpo/data/amc23 
+olympiadbench=/d/vdra_experiments/vdra_experiments/work/igpo/data/olympiadbench_hf --out_dir 
+/d/vdra_experiments/vdra_experiments/work/results/eval --gpu_hours_json 
+/d/vdra_experiments/vdra_experiments/work/results/gpu_hours/R3_s42.json --sample_k 2 --include_step0 --base_model 
+'deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B'
+[2026-10-25 20:32:26] [queue] dry run; job not executed
+[2026-10-25 20:32:26] [queue] GPUS=0 :: 
+PYTHONPATH=/d/vdra_experiments/vdra_experiments/work/igpo:/d/vdra_experiments/vdra_experiments python3 
+/d/vdra_experiments/vdra_experiments/analysis/eval_pending.py --run_dir 
+/d/vdra_experiments/vdra_experiments/work/runs/R4_s42 --run_id R4_s42 --gpus $GPUS --dataset 
+math500=/d/vdra_experiments/vdra_experiments/work/igpo/data/math:test 
+aime24=/d/vdra_experiments/vdra_experiments/work/igpo/data/aime24 
+aime25=/d/vdra_experiments/vdra_experiments/work/igpo/data/aime25 
+amc23=/d/vdra_experiments/vdra_experiments/work/igpo/data/amc23 
+olympiadbench=/d/vdra_experiments/vdra_experiments/work/igpo/data/olympiadbench_hf --out_dir 
+/d/vdra_experiments/vdra_experiments/work/results/eval --gpu_hours_json 
+/d/vdra_experiments/vdra_experiments/work/results/gpu_hours/R4_s42.json --sample_k 2 --include_step0 --base_model 
+'deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B'
+[2026-10-25 20:32:27] [queue] dry run; job not executed
+[2026-10-25 20:32:27] [queue] GPUS=0 :: 
+PYTHONPATH=/d/vdra_experiments/vdra_experiments/work/igpo:/d/vdra_experiments/vdra_experiments python3 
+/d/vdra_experiments/vdra_experiments/analysis/eval_pending.py --run_dir 
+/d/vdra_experiments/vdra_experiments/work/runs/R5_s42 --run_id R5_s42 --gpus $GPUS --dataset 
+math500=/d/vdra_experiments/vdra_experiments/work/igpo/data/math:test 
+aime24=/d/vdra_experiments/vdra_experiments/work/igpo/data/aime24 
+aime25=/d/vdra_experiments/vdra_experiments/work/igpo/data/aime25 
+amc23=/d/vdra_experiments/vdra_experiments/work/igpo/data/amc23 
+olympiadbench=/d/vdra_experiments/vdra_experiments/work/igpo/data/olympiadbench_hf --out_dir 
+/d/vdra_experiments/vdra_experiments/work/results/eval --gpu_hours_json 
+/d/vdra_experiments/vdra_experiments/work/results/gpu_hours/R5_s42.json --sample_k 2 --include_step0 --base_model 
+'deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B'
+[2026-10-25 20:32:27] [queue] dry run; job not executed
+[2026-10-25 20:32:27] [queue] GPUS=0 :: 
+PYTHONPATH=/d/vdra_experiments/vdra_experiments/work/igpo:/d/vdra_experiments/vdra_experiments python3 
+/d/vdra_experiments/vdra_experiments/analysis/eval_pending.py --run_dir 
+/d/vdra_experiments/vdra_experiments/work/runs/R6_s42 --run_id R6_s42 --gpus $GPUS --dataset 
+math500=/d/vdra_experiments/vdra_experiments/work/igpo/data/math:test 
+aime24=/d/vdra_experiments/vdra_experiments/work/igpo/data/aime24 
+aime25=/d/vdra_experiments/vdra_experiments/work/igpo/data/aime25 
+amc23=/d/vdra_experiments/vdra_experiments/work/igpo/data/amc23 
+olympiadbench=/d/vdra_experiments/vdra_experiments/work/igpo/data/olympiadbench_hf --out_dir 
+/d/vdra_experiments/vdra_experiments/work/results/eval --gpu_hours_json 
+/d/vdra_experiments/vdra_experiments/work/results/gpu_hours/R6_s42.json --sample_k 2 --include_step0 --base_model 
+'deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B'
+[2026-10-25 20:32:27] [queue] dry run; job not executed

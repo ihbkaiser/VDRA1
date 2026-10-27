@@ -1,0 +1,57 @@
+diff --git a/treetune/trainers/ppo_trainer.py b/treetune/trainers/ppo_trainer.py
+index a481778..f970abc 100644
+--- a/treetune/trainers/ppo_trainer.py
++++ b/treetune/trainers/ppo_trainer.py
+@@ -1660,10 +1660,37 @@ class PPOTrainer(DeepSpeedPolicyTrainer):
+             self.state.global_step - _globalstep_last_logged
+         ) * self.args.gradient_accumulation_steps
+ 
+-        if "_num_participating_tokens" in accumulated_metrics:
+-            num_participating_tokens = accumulated_metrics["_num_participating_tokens"]
+-            dist.all_reduce(num_participating_tokens, op=dist.ReduceOp.SUM)
+-            num_participating_tokens = num_participating_tokens.item()
++        # Pack scalar tensor metrics by dtype so logging performs one collective
++        # and one host synchronization per dtype instead of per metric.
++        tensor_metrics_by_dtype = {}
++        for metric_name, metric_value in accumulated_metrics.items():
++            if (
++                metric_name.startswith("_")
++                and metric_name != "_num_participating_tokens"
++            ):
++                continue
++            if not isinstance(metric_value, torch.Tensor):
++                continue
++            metric_value = metric_value.to(actor.device)
++            tensor_metrics_by_dtype.setdefault(metric_value.dtype, []).append(
++                (metric_name, metric_value.reshape(()))
++            )
++
++        reduced_tensor_metrics = {}
++        for dtype in sorted(tensor_metrics_by_dtype, key=str):
++            named_values = tensor_metrics_by_dtype[dtype]
++            packed_values = torch.stack([value for _, value in named_values])
++            dist.all_reduce(packed_values, op=dist.ReduceOp.SUM)
++            host_values = packed_values.cpu().tolist()
++            reduced_tensor_metrics.update(
++                (name, value)
++                for (name, _), value in zip(named_values, host_values)
++            )
++
++        if "_num_participating_tokens" in reduced_tensor_metrics:
++            num_participating_tokens = reduced_tensor_metrics[
++                "_num_participating_tokens"
++            ]
+         else:
+             num_participating_tokens = 1
+ 
+@@ -1678,9 +1705,7 @@ class PPOTrainer(DeepSpeedPolicyTrainer):
+             )
+ 
+             if isinstance(metric_value, torch.Tensor):
+-                metric_value = metric_value.to(actor.device)
+-                dist.all_reduce(metric_value, op=dist.ReduceOp.SUM)
+-                metric_value = metric_value.item()
++                metric_value = reduced_tensor_metrics[metric_name]
+                 divisor = dist.get_world_size()
+             else:
+                 assert not is_weighed_by_num_actions

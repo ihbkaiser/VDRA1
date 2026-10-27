@@ -1,0 +1,7 @@
+# Phase F R3-R6 local cap update - 2026-10-27
+
+- The user's latest authorization sets the local additional-spend cap to $27. `modal_app/phase_d_budget.py` now has a $25.65 safety stop.
+- The R3-R6-only runner reserves 45 GPU minutes plus a $0.25 non-GPU cushion: $4.9372. With the current $19.93099707 additional meter, the local budget gate passes. The full path adds 10 minutes for R2-TV recovery, reserves $5.9788, and the local budget gate rejects it by $0.2598.
+- Added `--r3-r6-only` to `scripts/run_phase_f_remaining_smoke_with_budget.py` and the `phase_c.py` entrypoint. It explicitly skips R2-TV recovery; reports `status=partial` and `phase_f_certification=not_certified_r2_tv_recovery_skipped`; and only reports `r3_r6_status=complete` after all four methods complete and R4/R6 budget audits pass.
+- TDD evidence: the cap/runner/gate tests failed before implementation for the old $28 cap, missing CLI flag, and missing subset gate. After implementation, `py -3.12 -m pytest -q tests/test_phase_f_runner_cli.py tests/test_phase_c_paths.py tests/test_phase_d.py` passed 34 tests with two protobuf deprecation warnings. `modal run modal_app/phase_c.py --help` exposes `--r3-r6-only`.
+- Fresh Modal state remains profile `billionaireproject8`, $87.10290662 metered, and no training task. The external workspace spend limit still blocks app creation. No deployment was attempted in this update.

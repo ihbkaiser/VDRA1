@@ -1,0 +1,46 @@
+{
+  "device": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
+  "torch": "2.3.1+cu121",
+  "cuda": "12.1",
+  "date_utc": "2026-10-26T08:09:44Z",
+  "results": [
+    {
+      "shape": [
+        1,
+        128,
+        151936
+      ],
+      "median_ms_per_forward_backward": {
+        "log_softmax": 3.921834627787272,
+        "selected_logsumexp": 6.956288019816081
+      },
+      "speedup_ratio_old_over_new": 0.563782669236137,
+      "peak_extra_bytes": {
+        "log_softmax": 233375232,
+        "selected_logsumexp": 155586048
+      },
+      "max_abs_logprob_delta": 9.5367431640625e-07,
+      "max_abs_gradient_delta": 6.984919309616089e-10,
+      "measurement": "synthetic float32 logits; selected-token log-prob extraction plus backward; excludes transformer forward"
+    },
+    {
+      "shape": [
+        2,
+        128,
+        151936
+      ],
+      "median_ms_per_forward_backward": {
+        "log_softmax": 7.762432098388672,
+        "selected_logsumexp": 13.828693389892578
+      },
+      "speedup_ratio_old_over_new": 0.5613279490354635,
+      "peak_extra_bytes": {
+        "log_softmax": 466749440,
+        "selected_logsumexp": 311171072
+      },
+      "max_abs_logprob_delta": 9.5367431640625e-07,
+      "max_abs_gradient_delta": 1.1641532182693481e-09,
+      "measurement": "synthetic float32 logits; selected-token log-prob extraction plus backward; excludes transformer forward"
+    }
+  ]
+}

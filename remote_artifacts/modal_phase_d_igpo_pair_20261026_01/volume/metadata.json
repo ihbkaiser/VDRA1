@@ -1,0 +1,19 @@
+{
+    "exp_name": "R1_s42",
+    "gpus_info": [
+        {
+            "capability": [
+                10,
+                0
+            ],
+            "clock": 1965.0,
+            "cores": 148,
+            "cuda_core": "unknown",
+            "free_memory": 3854.0,
+            "memory_clock": 3996.0,
+            "name": "NVIDIA B200",
+            "threads": 303104,
+            "total_memory": 4095.9999990463257
+        }
+    ]
+}

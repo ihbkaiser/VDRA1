@@ -1,0 +1,23 @@
+diff --git a/verl/trainer/ppo/core_algos.py b/verl/trainer/ppo/core_algos.py
+index 6f4e32d..5b9d8dd 100644
+--- a/verl/trainer/ppo/core_algos.py
++++ b/verl/trainer/ppo/core_algos.py
+@@ -288,6 +288,10 @@ def compute_tree_reinforce_plus_plus_baseline_outcome_advantage(
+     traj_idx2adv_list = {traj_idx : [] for traj_idx, _ in enumerate(index)} # {traj_idx: [{"score": tensor, "group_size": int}, ...] } 记录每个叶子节点在不同 tree (group) 算出来的分数和 group size
+ 
+     with torch.no_grad():
++        # The tree grouping below is scalar Python work. Stage all per-trajectory
++        # scores once instead of synchronizing the GPU for every scalar tensor.
++        score_device = scores.device
++        scores = scores.cpu()
+         # 初始化
+         bsz = scores.shape[0]
+         max_tree_depth = max([len(uid.split("#"))-1 for uid in index])
+@@ -349,6 +353,7 @@ def compute_tree_reinforce_plus_plus_baseline_outcome_advantage(
+                 scores[i] = torch.tensor([item["score"] for item in traj_idx2adv_list[i]]).mean()
+         else:
+             raise NotImplementedError
++        scores = scores.to(score_device)
+         scores = scores.unsqueeze(-1).tile([1, response_length]) * response_mask
+         scores = verl_F.masked_whiten(scores, response_mask) * response_mask
+         

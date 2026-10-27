@@ -1,0 +1,14 @@
+diff --git a/treetune/main.py b/treetune/main.py
+index dd0bd6f..5f17a5d 100644
+--- a/treetune/main.py
++++ b/treetune/main.py
+@@ -37,7 +37,8 @@ class EntryPoint(object):
+     _runtime = None
+     _config = None
+ 
+-    def __init__(self, configs: str, debug_mode: bool = None):
++    def __init__(self, configs: str, debug_mode: bool = None, local_rank: int = None):
++        # DeepSpeed adds this worker flag to argv; rank setup uses its environment.
+         # Lazy import to avoid long startup time.
+         from treetune import logging_utils
+

@@ -1,0 +1,2 @@
+{"framework": "treetune", "generated_tokens": 32418, "grad_norm": 3.9087348, "loss": -6e-08, "mean_reward": 0.5776909722222222, "rollout_count": 64, "update": 1}
+{"framework": "treetune", "generated_tokens": 33113, "grad_norm": 3.60384393, "loss": -0.00010729, "mean_reward": 0.5438368055555556, "rollout_count": 64, "update": 2}

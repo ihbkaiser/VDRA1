@@ -1,0 +1,35 @@
+{
+  "source": "codex/phase_b_results/phase_d_partial_R1_run_meta.jsonl",
+  "framework_run": "R1 seed 42; partial failed Phase D attempts",
+  "device": "NVIDIA B200",
+  "container_attempts": 12,
+  "unique_container_ids": 12,
+  "container_wall_seconds_total": 3651.148,
+  "container_approx_cost_usd_total": 6.338392,
+  "startup_benchmark_count": 12,
+  "startup_benchmark_seconds_total": 720.001,
+  "startup_benchmark_allocated_cost_usd_total": 1.249921,
+  "startup_benchmark_share_of_container_wall_time": 0.1972,
+  "startup_benchmark_iterations_per_second_median": 6981.812,
+  "step0_evaluation_seconds": [
+    165.036
+  ],
+  "archived_timing_observation": {
+    "source": "codex/phase_b_results/phase_d_partial_R1_gpu0.log",
+    "stage": "R1 current actor log probabilities",
+    "progress_batches": 108,
+    "first_batch_seconds": 476.5,
+    "progress_total_seconds_approx": 483.0,
+    "remaining_107_batches_seconds_approx": 6.5,
+    "interpretation_limit": "The archived log does not distinguish DataLoader wait from GPU execution, and rollout logs are interleaved. The root cause is unverified."
+  },
+  "projected_successful_phase_d_framework_call": {
+    "record_container_start_calls": 4,
+    "unique_modal_containers": 1,
+    "fresh_60s_benchmarks_with_cache": 1,
+    "benchmark_seconds_saved": 180,
+    "allocated_cost_saved_usd": 0.31248,
+    "basis": "Call graph: baseline, VDRA, and each arm's resume are launched sequentially in one mock_*_pair Modal function. This is a projection; no successful Phase D pair has yet verified it."
+  },
+  "measurement_limit": "The 12 observed attempts each had a distinct Modal container, so this cache would not remove their required per-container benchmark. It removes repeated benchmarks only when multiple Phase D trainer launches share one Modal container."
+}

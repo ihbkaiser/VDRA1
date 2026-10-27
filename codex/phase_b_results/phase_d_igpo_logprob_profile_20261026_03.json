@@ -1,0 +1,64 @@
+{
+  "date": "2026-10-26",
+  "profile": "anh-nd210020",
+  "modal_app_id": "ap-dblR2xVEe2mdbNdIUf1mYV",
+  "run_label": "IGPO R1 one-policy-iteration logprob profile",
+  "run_status": "complete",
+  "timeout_seconds": 600,
+  "configuration": {
+    "framework": "treetune",
+    "experiment": "R1",
+    "seed": 42,
+    "gpu": "B200",
+    "world_size": 1,
+    "stop_step": 1,
+    "resume_every": 1,
+    "policy_iterations_completed": 1,
+    "deepspeed_optimizer_steps_in_iteration": 2,
+    "dataset_modified": false
+  },
+  "billing": {
+    "metered_before_usd": 19.76355731,
+    "metered_after_usd": 20.56356193,
+    "incremental_metered_usd": 0.80000462,
+    "billed_after_credits_usd": 0.0,
+    "target_local_cap_usd": 25.0,
+    "local_hard_stop_usd": 23.75,
+    "workspace_budget_usd": 36.0
+  },
+  "actor_logprobs": {
+    "batch_count": 84,
+    "total_seconds": 2.877,
+    "first_batch": {
+      "padded_seq_len": 1318,
+      "forward_seconds": 0.313,
+      "collective_enqueue_seconds": 0.0,
+      "host_enqueue_seconds": 0.323,
+      "cuda_stages_ms": {
+        "model_forward": 298.486,
+        "logits_float_and_temperature": 4.047,
+        "shift_and_mask": 1.336,
+        "log_softmax": 6.677,
+        "gather_and_mask": 0.032
+      }
+    }
+  },
+  "reference_logprobs": {
+    "batch_count": 32,
+    "total_seconds": 1.122,
+    "first_batch_collective_enqueue_seconds": 0.0
+  },
+  "comparison_to_previous_profile": {
+    "previous_app_id": "ap-m8lXEUwV7gUQ4xh4ANigRT",
+    "previous_actor_first_batch_padded_seq_len": 1318,
+    "previous_actor_first_batch_collective_enqueue_seconds": 253.157,
+    "current_actor_first_batch_collective_enqueue_seconds": 0.0,
+    "reduction_in_first_batch_gather_block_seconds": 253.157,
+    "caveat": "Both first batches had the same padded sequence length, but the profiles used different stop steps and batch counts. The actor-pass totals are not a controlled end-to-end comparison."
+  },
+  "interpretation": "Skipping gather and cross-process padding at world size one removed the cold first-batch collective block in this profile. These operations are identity operations for one process, and the multi-process path is unchanged. The measurement establishes this component result, not an end-to-end training speedup for IGPO or a result for TreePO/TreeRL.",
+  "artifacts": {
+    "run_log": "remote_artifacts/modal_igpo_logprob_profile_20261026_03/run.log",
+    "exit_code": "remote_artifacts/modal_igpo_logprob_profile_20261026_03/exit_code.txt"
+  }
+}

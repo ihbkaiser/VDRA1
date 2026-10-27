@@ -1,0 +1,111 @@
+diff --git a/openrlhf/trainer/reinforce_trainer.py b/openrlhf/trainer/reinforce_trainer.py
+--- a/openrlhf/trainer/reinforce_trainer.py
++++ b/openrlhf/trainer/reinforce_trainer.py
+@@ -300,8 +300,52 @@
+ 
+                 # for DP
+                 # weighted mean for kl
+-                status["kl"] *= status["response_length"]
+-                status = self.strategy.all_reduce(status)
++                kl_value = status["kl"]
++                response_length_value = status["response_length"]
++                if (
++                    isinstance(kl_value, torch.Tensor)
++                    and isinstance(response_length_value, torch.Tensor)
++                    and kl_value.device == response_length_value.device
++                ):
++                    # Match the legacy Python-float product before FP32 reduction.
++                    status["kl"] = kl_value.double() * response_length_value.double()
++                elif isinstance(kl_value, torch.Tensor) or isinstance(response_length_value, torch.Tensor):
++                    # Mixed device placement is unusual, but keep its legacy result
++                    # well-defined instead of multiplying tensors across devices.
++                    kl_scalar = kl_value.item() if isinstance(kl_value, torch.Tensor) else kl_value
++                    length_scalar = (
++                        response_length_value.item()
++                        if isinstance(response_length_value, torch.Tensor)
++                        else response_length_value
++                    )
++                    status["kl"] = float(kl_scalar) * float(length_scalar)
++                else:
++                    status["kl"] = float(kl_value) * float(response_length_value)
++
++                status_keys = list(status)
++                cpu_values = []
++                device_positions = []
++                device_values = []
++                for index, key in enumerate(status_keys):
++                    value = status[key]
++                    if isinstance(value, torch.Tensor) and value.is_cuda:
++                        cpu_values.append(0.0)
++                        device_positions.append(index)
++                        device_values.append(value.detach().float().reshape(()))
++                    else:
++                        if isinstance(value, torch.Tensor):
++                            value = value.item()
++                        cpu_values.append(float(value))
++
++                status_vector = torch.tensor(cpu_values, dtype=torch.float32, device=device)
++                if device_values:
++                    status_vector.index_copy_(
++                        0,
++                        torch.tensor(device_positions, dtype=torch.long, device=device),
++                        torch.stack(device_values),
++                    )
++                status_vector = self.strategy.all_reduce(status_vector)
++                status = dict(zip(status_keys, status_vector.cpu().tolist()))
+                 status["kl"] /= status["response_length"]
+ 
+                 status_list.append(status)
+@@ -329,11 +373,11 @@
+                 status_mean[k] /= len(status_list)
+         return status_mean
+ 
+-    def training_step(self, experience: Experience) -> Dict[str, float]:
++    def training_step(self, experience: Experience) -> Dict[str, Union[int, float, Tensor]]:
+         status = self.training_step_actor(experience)
+         return status
+ 
+-    def training_step_actor(self, experience: Experience) -> Dict[str, float]:
++    def training_step_actor(self, experience: Experience) -> Dict[str, Union[int, float, Tensor]]:
+         self.actor.train()
+ 
+         num_actions = experience.action_mask.size(1)
+@@ -392,7 +436,7 @@
+                 # after the complete model norm has been reduced.
+                 grad_norm_parts.append(grad_data.norm(2).to(dtype=torch.float64))
+         if grad_norm_parts:
+-            grad_norm = torch.linalg.vector_norm(torch.stack(grad_norm_parts)).item()
++            grad_norm = torch.linalg.vector_norm(torch.stack(grad_norm_parts)).detach()
+         else:
+             grad_norm = 0.0
+         
+@@ -430,25 +474,25 @@
+ 
+         # status
+         status = {
+-            "policy_loss": actor_loss.item(),
++            "policy_loss": actor_loss.detach(),
+             "grad_norm": grad_norm,
+         }
+         if self.pretrain_dataloader is not None:
+-            status["ptx_loss"] = ptx_loss.item()
++            status["ptx_loss"] = ptx_loss.detach()
+         for k, v in experience.info.items():
+             # if k == "reward":  
+             #     print("here is reward",k, v,v.shape(), v.mean().item())
+             if k == "kl":
+                 status[k] = (
+                     (v * experience.info["response_length"]).sum() / experience.info["response_length"].sum()
+-                ).item()
++                ).detach()
+             # elif (k == "reward") and self.strategy.args.process_supervision:
+             #     if (v != 0).sum() == 0:
+             #         status[k] = 0
+             #     else:
+             #         status[k] = (v.sum() / (v != 0).sum()).item()
+             else:
+-                status[k] = v.mean().item()
++                status[k] = v.mean().detach()
+         return status
+ 
+     def save_logs_only(self, logs_dict, step):

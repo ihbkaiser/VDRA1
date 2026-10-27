@@ -1,0 +1,76 @@
+{
+  "device": "AMD64 Family 25 Model 80 Stepping 0, AuthenticAMD",
+  "python": "3.11.8",
+  "measurement": "allocate_queue only; no model, proxy, or framework work",
+  "results": [
+    {
+      "queue_size": 1,
+      "budget": 6,
+      "calls_per_repeat": 10000,
+      "repeats": 5,
+      "median_microseconds_per_queue": 4.096290000597946,
+      "samples_microseconds_per_queue": [
+        3.9412500002072197,
+        4.096290000597946,
+        4.10870000050636,
+        4.101650000666268,
+        4.089040000690147
+      ],
+      "last_allocation": [
+        6
+      ]
+    },
+    {
+      "queue_size": 4,
+      "budget": 24,
+      "calls_per_repeat": 10000,
+      "repeats": 5,
+      "median_microseconds_per_queue": 12.150590000965167,
+      "samples_microseconds_per_queue": [
+        12.263120000716299,
+        12.150590000965167,
+        12.078860000474378,
+        12.343119998695329,
+        12.147830000321846
+      ],
+      "last_allocation": [
+        4,
+        6,
+        7,
+        7
+      ]
+    },
+    {
+      "queue_size": 16,
+      "budget": 96,
+      "calls_per_repeat": 10000,
+      "repeats": 5,
+      "median_microseconds_per_queue": 47.44846999965375,
+      "samples_microseconds_per_queue": [
+        47.26745999942068,
+        47.44846999965375,
+        48.6081800001557,
+        47.48533999954816,
+        47.123549999378156
+      ],
+      "last_allocation": [
+        4,
+        5,
+        6,
+        6,
+        7,
+        8,
+        8,
+        4,
+        5,
+        6,
+        6,
+        7,
+        7,
+        8,
+        4,
+        5
+      ]
+    }
+  ]
+}

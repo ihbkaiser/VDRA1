@@ -1,0 +1,167 @@
+{
+  "combined_old_stack_to_b200_comparison": {
+    "compared_tokens": 60,
+    "current_stack": {
+      "name": "current_b200",
+      "tokenizers": "0.21.1",
+      "torch": "2.7.0+cu128",
+      "transformers": "4.51.3",
+      "vllm": "0.9.2"
+    },
+    "legacy_stack": {
+      "name": "legacy_h100",
+      "tokenizers": "0.15.2",
+      "torch": "2.1.2",
+      "transformers": "4.38.1",
+      "vllm": "0.4.0.post1"
+    },
+    "max_abs_per_token_diff": 0.11044645309448242,
+    "model_revision": "ad9f0ae0864d7fbcd1cd905e3c6c5b069cc8b562",
+    "prompts": [
+      {
+        "compared_tokens": 7,
+        "max_abs_diff": 0.05937480926513672,
+        "text": "Compute 2 + 2.",
+        "token_count": 8
+      },
+      {
+        "compared_tokens": 19,
+        "max_abs_diff": 0.11044645309448242,
+        "text": "If $x^2 - 5x + 6=0$, find the roots.",
+        "token_count": 20
+      },
+      {
+        "compared_tokens": 17,
+        "max_abs_diff": 0.08876919746398926,
+        "text": "What is the period of $y = \\tan \\frac{x}{2}$?",
+        "token_count": 18
+      },
+      {
+        "compared_tokens": 17,
+        "max_abs_diff": 0.10091006755828857,
+        "text": "A rectangle has side lengths 3 and 4. What is its diagonal length?",
+        "token_count": 18
+      }
+    ],
+    "tokenizer_sha256": {
+      "config.json": "37bd455e9679d2959536270fed49d25cc7c290a64f6e52abb97c71345a9cee41",
+      "tokenizer.json": "88145e3c3249adc2546ede277e9819d6e405e19072456e4b521cbc724bd60773",
+      "tokenizer_config.json": "8ac8c85fb242563c2260baec0909debd69d718af6a0b3d90e6cab62b4d341cd5"
+    }
+  },
+  "cross_architecture_max_abs_diff": 0.11044645309448242,
+  "current_b200_approx_cost_usd": 0.13605654850196838,
+  "current_b200_elapsed_seconds": 78.37358784675598,
+  "current_h100_approx_cost_usd": 0.08129919140601159,
+  "current_h100_elapsed_seconds": 74.11047530174255,
+  "current_stack_gpu_comparison": {
+    "compared_tokens": 60,
+    "current_stack": {
+      "name": "current_b200",
+      "tokenizers": "0.21.1",
+      "torch": "2.7.0+cu128",
+      "transformers": "4.51.3",
+      "vllm": "0.9.2"
+    },
+    "legacy_stack": {
+      "name": "current_h100",
+      "tokenizers": "0.21.1",
+      "torch": "2.7.0+cu128",
+      "transformers": "4.51.3",
+      "vllm": "0.9.2"
+    },
+    "max_abs_per_token_diff": 0.11535978317260742,
+    "model_revision": "ad9f0ae0864d7fbcd1cd905e3c6c5b069cc8b562",
+    "prompts": [
+      {
+        "compared_tokens": 7,
+        "max_abs_diff": 0.11264801025390625,
+        "text": "Compute 2 + 2.",
+        "token_count": 8
+      },
+      {
+        "compared_tokens": 19,
+        "max_abs_diff": 0.11535978317260742,
+        "text": "If $x^2 - 5x + 6=0$, find the roots.",
+        "token_count": 20
+      },
+      {
+        "compared_tokens": 17,
+        "max_abs_diff": 0.10645508766174316,
+        "text": "What is the period of $y = \\tan \\frac{x}{2}$?",
+        "token_count": 18
+      },
+      {
+        "compared_tokens": 17,
+        "max_abs_diff": 0.09972023963928223,
+        "text": "A rectangle has side lengths 3 and 4. What is its diagonal length?",
+        "token_count": 18
+      }
+    ],
+    "tokenizer_sha256": {
+      "config.json": "37bd455e9679d2959536270fed49d25cc7c290a64f6e52abb97c71345a9cee41",
+      "tokenizer.json": "88145e3c3249adc2546ede277e9819d6e405e19072456e4b521cbc724bd60773",
+      "tokenizer_config.json": "8ac8c85fb242563c2260baec0909debd69d718af6a0b3d90e6cab62b4d341cd5"
+    }
+  },
+  "legacy_approx_cost_usd": 0.07672990084052086,
+  "legacy_elapsed_seconds": 69.94521498680115,
+  "max_abs_per_token_diff": 0.1506361961364746,
+  "model_revision": "ad9f0ae0864d7fbcd1cd905e3c6c5b069cc8b562",
+  "ok": true,
+  "same_gpu_stack_comparison": {
+    "compared_tokens": 60,
+    "current_stack": {
+      "name": "current_h100",
+      "tokenizers": "0.21.1",
+      "torch": "2.7.0+cu128",
+      "transformers": "4.51.3",
+      "vllm": "0.9.2"
+    },
+    "legacy_stack": {
+      "name": "legacy_h100",
+      "tokenizers": "0.15.2",
+      "torch": "2.1.2",
+      "transformers": "4.38.1",
+      "vllm": "0.4.0.post1"
+    },
+    "max_abs_per_token_diff": 0.1506361961364746,
+    "model_revision": "ad9f0ae0864d7fbcd1cd905e3c6c5b069cc8b562",
+    "prompts": [
+      {
+        "compared_tokens": 7,
+        "max_abs_diff": 0.14946889877319336,
+        "text": "Compute 2 + 2.",
+        "token_count": 8
+      },
+      {
+        "compared_tokens": 19,
+        "max_abs_diff": 0.11981010437011719,
+        "text": "If $x^2 - 5x + 6=0$, find the roots.",
+        "token_count": 20
+      },
+      {
+        "compared_tokens": 17,
+        "max_abs_diff": 0.1506361961364746,
+        "text": "What is the period of $y = \\tan \\frac{x}{2}$?",
+        "token_count": 18
+      },
+      {
+        "compared_tokens": 17,
+        "max_abs_diff": 0.11719369888305664,
+        "text": "A rectangle has side lengths 3 and 4. What is its diagonal length?",
+        "token_count": 18
+      }
+    ],
+    "tokenizer_sha256": {
+      "config.json": "37bd455e9679d2959536270fed49d25cc7c290a64f6e52abb97c71345a9cee41",
+      "tokenizer.json": "88145e3c3249adc2546ede277e9819d6e405e19072456e4b521cbc724bd60773",
+      "tokenizer_config.json": "8ac8c85fb242563c2260baec0909debd69d718af6a0b3d90e6cab62b4d341cd5"
+    }
+  },
+  "tokenizer_sha256": {
+    "config.json": "37bd455e9679d2959536270fed49d25cc7c290a64f6e52abb97c71345a9cee41",
+    "tokenizer.json": "88145e3c3249adc2546ede277e9819d6e405e19072456e4b521cbc724bd60773",
+    "tokenizer_config.json": "8ac8c85fb242563c2260baec0909debd69d718af6a0b3d90e6cab62b4d341cd5"
+  }
+}

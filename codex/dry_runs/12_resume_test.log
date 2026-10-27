@@ -1,0 +1,19 @@
+﻿bash.exe : [2026-10-25 20:32:24] [R1] phase 1: train until update 4, then kill
+At line:2 char:748
++ ...  R2 R3 R4 R5 R6' bash '$script'"; $out = & $bash -c $cmd 2>&1; $rc =  ...
++                                              ~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([2026-10-25 20:...te 4, then kill:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[2026-10-25 20:32:24] + bash /d/vdra_experiments/vdra_experiments/scripts/20_train.sh R1 42 8 resumetest_R1
+[2026-10-25 20:32:24] [R2] phase 1: train until update 4, then kill
+[2026-10-25 20:32:24] + bash /d/vdra_experiments/vdra_experiments/scripts/20_train.sh R2 42 8 resumetest_R2
+[2026-10-25 20:32:24] [R3] phase 1: train until update 4, then kill
+[2026-10-25 20:32:24] + bash /d/vdra_experiments/vdra_experiments/scripts/20_train.sh R3 42 8 resumetest_R3
+[2026-10-25 20:32:24] [R4] phase 1: train until update 4, then kill
+[2026-10-25 20:32:24] + bash /d/vdra_experiments/vdra_experiments/scripts/20_train.sh R4 42 8 resumetest_R4
+[2026-10-25 20:32:24] [R5] phase 1: train until update 4, then kill
+[2026-10-25 20:32:24] + bash /d/vdra_experiments/vdra_experiments/scripts/20_train.sh R5 42 8 resumetest_R5
+[2026-10-25 20:32:24] [R6] phase 1: train until update 4, then kill
+[2026-10-25 20:32:24] + bash /d/vdra_experiments/vdra_experiments/scripts/20_train.sh R6 42 8 resumetest_R6
+[2026-10-25 20:32:24] report: /d/vdra_experiments/vdra_experiments/work/results/audit/resume_test.txt

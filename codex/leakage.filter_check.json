@@ -1,0 +1,50 @@
+{
+  "status": "local_end_to_end_check_passed",
+  "checked_on": "2026-10-26",
+  "source_volume": "vdra-work/source_data/math",
+  "evaluation_volumes": [
+    "vdra-work/source_data/math:test",
+    "vdra-work/source_data/aime24",
+    "vdra-work/source_data/aime25",
+    "vdra-work/source_data/amc23",
+    "vdra-work/source_data/olympiadbench_hf"
+  ],
+  "exports_generated_in_local_temporary_directory": true,
+  "remote_volume_modified": false,
+  "counts": {
+    "source_train_rows": 11500,
+    "diagnostic_rows": 256,
+    "default_training_rows": 11244,
+    "filtered_training_rows": 11236
+  },
+  "excluded_original_train_indices": [458, 3562, 3895, 6292, 6812, 9285, 9888, 10914],
+  "export_consistency": {
+    "all_eight_indices_removed_from_math_nodiag_train_parquet_and_treerl_jsonl": true,
+    "diagnostic_ids_and_hashes_identical": true,
+    "diag256_jsonl_identical": true,
+    "validation_and_test_splits_identical": true
+  },
+  "automatic_exact_duplicate_counts_before": {
+    "math500": 0,
+    "aime24": 0,
+    "aime25": 0,
+    "amc23": 0,
+    "olympiadbench": 4,
+    "diag": 3
+  },
+  "automatic_exact_duplicate_counts_after": {
+    "math500": 0,
+    "aime24": 0,
+    "aime25": 0,
+    "amc23": 0,
+    "olympiadbench": 0,
+    "diag": 0
+  },
+  "filtered_leakage_checker_exit_code": 0,
+  "manual_notation_match": {
+    "diagnostic_id": "math-train-5154",
+    "original_train_index": 458,
+    "included_in_exclusion_list": true,
+    "note": "The automated normalizer does not identify this notation-equivalent pair."
+  }
+}

@@ -1,0 +1,31 @@
+{
+ "vdra_constant_nonnominal": {},
+ "spo_nonnominal": {},
+ "allocation_match": false,
+ "vdra_only_tree_signatures": [
+  [
+   "2117",
+   "{\"0\":[6],\"1\":[6,6,6,6,6,6],\"2\":[6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6]}",
+   1
+  ],
+  [
+   "35",
+   "{\"0\":[6],\"1\":[6,6,6,6,6,6],\"2\":[6,6,6,6,6,6]}",
+   1
+  ]
+ ],
+ "spo_only_tree_signatures": [
+  [
+   "2117",
+   "{\"0\":[6],\"1\":[6,6,6,6,6,6],\"2\":[6,6,6,6,6,6,6,6,6,6,6,6,6,6]}",
+   1
+  ],
+  [
+   "35",
+   "{\"0\":[6],\"1\":[6,6,6,6,6,6],\"2\":[6,6,6,6,6,6,6,6,6,6,6,6]}",
+   1
+  ]
+ ],
+ "pass": false,
+ "note": "children counts can be < 6 only when the expander returns fewer samples (context exhausted); such cases must appear equally in both runs"
+}

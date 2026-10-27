@@ -1,0 +1,47 @@
+diff --git a/treetune/trainers/ppo_trainer.py b/treetune/trainers/ppo_trainer.py
+--- a/treetune/trainers/ppo_trainer.py
++++ b/treetune/trainers/ppo_trainer.py
+@@ -489,4 +489,16 @@
+         # Step 1: Rescale and clip the scores if needed
+         episodes = self._rescale_and_clip_scores(episodes)
+ 
++        if os.environ.get("VDRA_METRICS_JSONL"):
++            self._vdra_rollout_metrics = {
++                "rollout_count": len(episodes),
++                "generated_tokens": sum(
++                    len(row["response_token_ids"]) for row in episodes
++                ),
++                "mean_reward": float(np.mean(episodes["scores"])),
++            }
++            self._vdra_last_training_metrics = {}
++
+         kls = self._log_episodes_metrics(episodes)
+@@ -697,4 +709,18 @@
+         self.state.iteration += 1
+ 
+         progress_bar.close()
++
++        if os.environ.get("VDRA_METRICS_JSONL") and self._is_main_process():
++            from modal_app.metric_capture import write_training_metrics
++
++            rollout_metrics = self._vdra_rollout_metrics
++            train_metrics = self._vdra_last_training_metrics
++            write_training_metrics(
++                "treetune",
++                int(self.state.iteration),
++                rollout_count=rollout_metrics["rollout_count"],
++                generated_tokens=rollout_metrics["generated_tokens"],
++                mean_reward=rollout_metrics["mean_reward"],
++                loss=train_metrics.get("actor/loss"),
++                grad_norm=train_metrics.get("actor/grad_norm"),
++            )
+ 
+     def _training_step(
+@@ -1731,5 +1745,7 @@
+         # First log the metrics on the progress bar
+         progress_bar.set_postfix(logs)
++        if os.environ.get("VDRA_METRICS_JSONL"):
++            self._vdra_last_training_metrics = dict(logs)
+ 
+         # Add "train/" prefix for clarity.
+         logs = {f"train/{k}": v for k, v in logs.items()}

@@ -1,0 +1,13 @@
+diff --git a/treetune/runtime/policy_iteration_runtime.py b/treetune/runtime/policy_iteration_runtime.py
+index 0326ec8..e06e758 100644
+--- a/treetune/runtime/policy_iteration_runtime.py
++++ b/treetune/runtime/policy_iteration_runtime.py
+@@ -327,7 +327,7 @@ class PolicyIterationRuntime(DistributedRuntime):
+                 if (
+                     self.distributed_state.is_main_process
+                 ):  # Evaluate only on the main process
+-                    if iteration % self.evaluate_every_n_iterations == 0:
++                    if self.inference_pipeline_configs and iteration % self.evaluate_every_n_iterations == 0:
+                         t0_eval = time.time()
+                         self.evaluate(iteration, latest_policy_path)
+                         t_eval = time.time() - t0_eval

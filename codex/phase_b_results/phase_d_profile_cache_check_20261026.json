@@ -1,0 +1,14 @@
+{
+  "measurement": "Mocked local runtime check of modal_app.phase_c._record_container_start; run_start_benchmark was replaced with a fixed 60-second metadata row.",
+  "modal_container_id": "local-profile-cache-check-unique",
+  "records_written": 2,
+  "benchmark_calls": 1,
+  "first_event": "container_start",
+  "first_allocated_benchmark_cost_usd": 0.10416,
+  "second_event": "container_profile_reused",
+  "second_benchmark_seconds": 0.0,
+  "second_benchmark_measurement_seconds": 60.0,
+  "second_allocated_benchmark_cost_usd": 0.0,
+  "source_call_id": "call-first",
+  "result": "PASS"
+}

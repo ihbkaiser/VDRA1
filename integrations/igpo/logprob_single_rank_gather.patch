@@ -1,0 +1,19 @@
+diff --git a/treetune/trainers/ppo_trainer.py b/treetune/trainers/ppo_trainer.py
+--- a/treetune/trainers/ppo_trainer.py
++++ b/treetune/trainers/ppo_trainer.py
+@@ -2014,8 +2014,11 @@
+                 # distributed across processes is preserved. So, concatenating
+                 # them along the batch dimension will give us the original order.
+                 collective_started = time.perf_counter()
+-                seq_lengths = gather(seq_lengths)
+-                logps = gather(
+-                    pad_across_processes(logps, dim=1, pad_index=0.0, pad_first=False)
+-                )
++                if self.distributed_state.num_processes > 1:
++                    seq_lengths = gather(seq_lengths)
++                    logps = gather(
++                        pad_across_processes(
++                            logps, dim=1, pad_index=0.0, pad_first=False
++                        )
++                    )
+                 collective_enqueue_seconds = time.perf_counter() - collective_started

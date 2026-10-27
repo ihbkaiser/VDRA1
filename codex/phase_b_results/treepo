@@ -1,0 +1,25 @@
+{"benchmark": "bf16_matmul_4096_fixed_60s", "benchmark_iterations": 432045, "benchmark_iterations_per_second": 7200.739153286589, "benchmark_seconds": 60.00009038, "cuda": "12.8", "driver": "610.57.04", "event": "container_start", "gpu": "NVIDIA B200", "gpu_compute_capability": "10.0", "gpu_memory_bytes": 191490555904, "host": "modal", "host_cpu": "unknown", "image_id": "im-VBr9aNOSTFgCoaSdNp3KP1", "time": 1792937386.2097847, "torch": "2.7.0+cu128"}
+
+    "completion_text": "5 +",
+    "completion_token_ids": [
+      20,
+      488
+    ],
+    "model": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
+    "prompt": "Compute 2 + 2.",
+    "prompt_logprobs_nonempty": 7,
+    "prompt_logprobs_positions": 8,
+    "prompt_token_ids": [
+      151646,
+      46254,
+      220,
+      17,
+      488,
+      220,
+      17,
+      13
+    ],
+    "tokenizer_class": "LlamaTokenizerFast",
+    "tokenizer_name_or_path": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B"
+  }
+}

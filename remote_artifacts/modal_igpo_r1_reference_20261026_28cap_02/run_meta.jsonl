@@ -1,0 +1,7 @@
+{"allocated_benchmark_cost_usd": 0.10416023146261601, "benchmark": "bf16_matmul_4096_fixed_60s", "benchmark_iterations": 416497, "benchmark_iterations_per_second": 6941.601241156081, "benchmark_reused": false, "benchmark_seconds": 60.00013333100001, "container_call_id": null, "container_id": "ta-01M5WHB2TVHHXNWP5C9BSGWXMR", "cuda": "12.8", "driver": "610.57.04", "event": "container_start", "experiment": "R1", "gpu": "NVIDIA B200", "gpu_compute_capability": "10.0", "gpu_memory_bytes": 191490555904, "host": "modal", "host_cpu": "x86_64", "image_id": "im-CuLXZXjg6mvsztaAly4eXd", "run": "R1", "seed": 42, "time": 1793032888.9141622, "torch": "2.7.0+cu128"}
+{"event": "start", "time": 1793032904.2726097, "host": "modal", "cuda_visible_devices": "0", "run": "R1", "seed": 42, "stop": 2, "chunk_stop": 2, "gpus": "0", "framework": "treetune", "keep_every": 2, "resume_every": 2, "eval_every_n": 0, "attempt": 1, "resume_from": 0, "variant": "{}"}
+{"event": "beat", "time": 1793033025.9983869, "host": "modal", "cuda_visible_devices": "0"}
+{"event": "beat", "time": 1793033147.812356, "host": "modal", "cuda_visible_devices": "0"}
+{"event": "beat", "time": 1793033269.8265429, "host": "modal", "cuda_visible_devices": "0"}
+{"event": "beat", "time": 1793033391.7398825, "host": "modal", "cuda_visible_devices": "0"}
+{"event": "end", "time": 1793033505.6315093, "host": "modal", "cuda_visible_devices": "0", "rc": 0}

@@ -1,0 +1,22 @@
+﻿[manifest] 6 runs -> D:/vdra_experiments/vdra_experiments/work/results/runs.csv
+bash.exe : [2026-10-25 20:32:27] + python3 /d/vdra_experiments/vdra_experiments/analysis/stats.py --eval 
+/d/vdra_experiments/vdra_experiments/work/results/eval/*.jsonl --runs 
+/d/vdra_experiments/vdra_experiments/work/results/runs.csv --out 
+/d/vdra_experiments/vdra_experiments/work/results/stats --step 220
+At line:2 char:748
++ ...  R2 R3 R4 R5 R6' bash '$script'"; $out = & $bash -c $cmd 2>&1; $rc =  ...
++                                              ~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([2026-10-25 20:...tats --step 220:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[2026-10-25 20:32:27] + python3 /d/vdra_experiments/vdra_experiments/analysis/budget_audit.py --logs 
+/d/vdra_experiments/vdra_experiments/work/runs/R2_s42 --out 
+/d/vdra_experiments/vdra_experiments/work/results/audit/R2_s42.json
+[2026-10-25 20:32:27] + python3 /d/vdra_experiments/vdra_experiments/analysis/budget_audit.py --logs 
+/d/vdra_experiments/vdra_experiments/work/runs/R4_s42 --out 
+/d/vdra_experiments/vdra_experiments/work/results/audit/R4_s42.json
+[2026-10-25 20:32:27] + python3 /d/vdra_experiments/vdra_experiments/analysis/budget_audit.py --logs 
+/d/vdra_experiments/vdra_experiments/work/runs/R6_s42 --out 
+/d/vdra_experiments/vdra_experiments/work/results/audit/R6_s42.json
+[2026-10-25 20:32:27] + python3 /d/vdra_experiments/vdra_experiments/analysis/figures.py --results 
+/d/vdra_experiments/vdra_experiments/work/results --out /d/vdra_experiments/vdra_experiments/work/results/figures

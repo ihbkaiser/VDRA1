@@ -1,0 +1,16 @@
+{
+  "call_id": "8c9bb06cfa5e47eebb37c38a47027943-R1",
+  "experiment": "R1",
+  "seeds": [
+    "42"
+  ],
+  "gpu": "B200",
+  "image_id": "im-S4RTIKrXf3pP8KLJFsKCyv",
+  "started_at": 1793045816.780206,
+  "approx_cost_usd_per_second": 0.001736,
+  "status": "complete",
+  "ended_at": 1793046889.2883918,
+  "wall_seconds": 1072.508183479309,
+  "approx_cost_usd": 1.8618742065200804,
+  "error": null
+}

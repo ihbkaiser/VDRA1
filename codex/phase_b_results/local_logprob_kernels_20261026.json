@@ -1,0 +1,201 @@
+{
+  "device": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
+  "torch": "2.3.1+cu121",
+  "cuda": "12.1",
+  "date_utc": "2026-10-26T08:14:36.495327+00:00",
+  "measurement": "CUDA synthetic logits-to-selected-token logprob forward/backward; excludes model forward",
+  "warmup_iterations": 3,
+  "measured_iterations": 8,
+  "results": [
+    {
+      "dtype": "torch.float32",
+      "shapes": [
+        {
+          "shape": [
+            1,
+            128,
+            151936
+          ],
+          "methods": {
+            "full_log_softmax_gather": {
+              "median_ms_forward_backward": 3.9459840059280396,
+              "peak_extra_allocated_bytes": 311166464,
+              "max_abs_output_delta_vs_full": 0.0,
+              "max_abs_gradient_delta_vs_full": 0.0,
+              "relative_speed_vs_full": 1.0
+            },
+            "selected_logsumexp": {
+              "median_ms_forward_backward": 7.073280096054077,
+              "peak_extra_allocated_bytes": 311169024,
+              "max_abs_output_delta_vs_full": 1.9073486328125e-06,
+              "max_abs_gradient_delta_vs_full": 5.820766091346741e-10,
+              "relative_speed_vs_full": 0.5578718716553243
+            },
+            "cross_entropy_ignore_index": {
+              "median_ms_forward_backward": 3.9342079162597656,
+              "peak_extra_allocated_bytes": 311166464,
+              "max_abs_output_delta_vs_full": 0.0,
+              "max_abs_gradient_delta_vs_full": 0.0,
+              "relative_speed_vs_full": 1.002993255546969
+            }
+          }
+        },
+        {
+          "shape": [
+            2,
+            128,
+            151936
+          ],
+          "methods": {
+            "full_log_softmax_gather": {
+              "median_ms_forward_backward": 7.752703905105591,
+              "peak_extra_allocated_bytes": 622331904,
+              "max_abs_output_delta_vs_full": 0.0,
+              "max_abs_gradient_delta_vs_full": 0.0,
+              "relative_speed_vs_full": 1.0
+            },
+            "selected_logsumexp": {
+              "median_ms_forward_backward": 14.16806411743164,
+              "peak_extra_allocated_bytes": 622337024,
+              "max_abs_output_delta_vs_full": 1.9073486328125e-06,
+              "max_abs_gradient_delta_vs_full": 5.529727786779404e-10,
+              "relative_speed_vs_full": 0.54719571007355
+            },
+            "cross_entropy_ignore_index": {
+              "median_ms_forward_backward": 7.77676796913147,
+              "peak_extra_allocated_bytes": 622331904,
+              "max_abs_output_delta_vs_full": 0.0,
+              "max_abs_gradient_delta_vs_full": 0.0,
+              "relative_speed_vs_full": 0.9969056471632692
+            }
+          }
+        },
+        {
+          "shape": [
+            1,
+            512,
+            151936
+          ],
+          "methods": {
+            "full_log_softmax_gather": {
+              "median_ms_forward_backward": 15.528448104858398,
+              "peak_extra_allocated_bytes": 1244662784,
+              "max_abs_output_delta_vs_full": 0.0,
+              "max_abs_gradient_delta_vs_full": 0.0,
+              "relative_speed_vs_full": 1.0
+            },
+            "selected_logsumexp": {
+              "median_ms_forward_backward": 27.825663566589355,
+              "peak_extra_allocated_bytes": 1244673024,
+              "max_abs_output_delta_vs_full": 1.9073486328125e-06,
+              "max_abs_gradient_delta_vs_full": 6.402842700481415e-10,
+              "relative_speed_vs_full": 0.5580620950043977
+            },
+            "cross_entropy_ignore_index": {
+              "median_ms_forward_backward": 15.433728218078613,
+              "peak_extra_allocated_bytes": 1244662784,
+              "max_abs_output_delta_vs_full": 0.0,
+              "max_abs_gradient_delta_vs_full": 0.0,
+              "relative_speed_vs_full": 1.0061372006453264
+            }
+          }
+        }
+      ]
+    },
+    {
+      "dtype": "torch.bfloat16",
+      "shapes": [
+        {
+          "shape": [
+            1,
+            128,
+            151936
+          ],
+          "methods": {
+            "full_log_softmax_gather": {
+              "median_ms_forward_backward": 2.044416069984436,
+              "peak_extra_allocated_bytes": 159385088,
+              "max_abs_output_delta_vs_full": 0.0,
+              "max_abs_gradient_delta_vs_full": 0.0,
+              "relative_speed_vs_full": 1.0
+            },
+            "selected_logsumexp": {
+              "median_ms_forward_backward": 3.737600088119507,
+              "peak_extra_allocated_bytes": 159387648,
+              "max_abs_output_delta_vs_full": 0.0625,
+              "max_abs_gradient_delta_vs_full": 2.09808349609375e-05,
+              "relative_speed_vs_full": 0.5469863071982749
+            },
+            "cross_entropy_ignore_index": {
+              "median_ms_forward_backward": 2.009600043296814,
+              "peak_extra_allocated_bytes": 159385088,
+              "max_abs_output_delta_vs_full": 0.0,
+              "max_abs_gradient_delta_vs_full": 0.0,
+              "relative_speed_vs_full": 1.0173248536711341
+            }
+          }
+        },
+        {
+          "shape": [
+            2,
+            128,
+            151936
+          ],
+          "methods": {
+            "full_log_softmax_gather": {
+              "median_ms_forward_backward": 3.9639039039611816,
+              "peak_extra_allocated_bytes": 311166464,
+              "max_abs_output_delta_vs_full": 0.0,
+              "max_abs_gradient_delta_vs_full": 0.0,
+              "relative_speed_vs_full": 1.0
+            },
+            "selected_logsumexp": {
+              "median_ms_forward_backward": 7.296511888504028,
+              "peak_extra_allocated_bytes": 311170048,
+              "max_abs_output_delta_vs_full": 0.0625,
+              "max_abs_gradient_delta_vs_full": 3.0517578125e-05,
+              "relative_speed_vs_full": 0.5432601172358102
+            },
+            "cross_entropy_ignore_index": {
+              "median_ms_forward_backward": 3.920896053314209,
+              "peak_extra_allocated_bytes": 311166464,
+              "max_abs_output_delta_vs_full": 0.0,
+              "max_abs_gradient_delta_vs_full": 0.0,
+              "relative_speed_vs_full": 1.0109688831486923
+            }
+          }
+        },
+        {
+          "shape": [
+            1,
+            512,
+            151936
+          ],
+          "methods": {
+            "full_log_softmax_gather": {
+              "median_ms_forward_backward": 7.811583995819092,
+              "peak_extra_allocated_bytes": 622331904,
+              "max_abs_output_delta_vs_full": 0.0,
+              "max_abs_gradient_delta_vs_full": 0.0,
+              "relative_speed_vs_full": 1.0
+            },
+            "selected_logsumexp": {
+              "median_ms_forward_backward": 14.526463985443115,
+              "peak_extra_allocated_bytes": 622339072,
+              "max_abs_output_delta_vs_full": 0.0625,
+              "max_abs_gradient_delta_vs_full": 2.765655517578125e-05,
+              "relative_speed_vs_full": 0.5377484846723218
+            },
+            "cross_entropy_ignore_index": {
+              "median_ms_forward_backward": 8.087039947509766,
+              "peak_extra_allocated_bytes": 622331904,
+              "max_abs_output_delta_vs_full": 0.0,
+              "max_abs_gradient_delta_vs_full": 0.0,
+              "relative_speed_vs_full": 0.9659385939134015
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

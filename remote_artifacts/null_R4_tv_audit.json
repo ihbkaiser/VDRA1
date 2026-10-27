@@ -1,0 +1,15 @@
+{
+ "n_queues": 0,
+ "n_nodes": 0,
+ "budget_violations": 0,
+ "violation_examples": [],
+ "budget_evidence_complete": false,
+ "cv_n_v": null,
+ "share_n_v_eq_1": null,
+ "n_v_hist": {},
+ "share_capped": null,
+ "mean_queue_size": null,
+ "mean_queue_wait_s": null,
+ "gate_G1_headroom_ok": null,
+ "gate_G1_budget_ok": false
+}

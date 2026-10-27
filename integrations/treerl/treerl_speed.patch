@@ -1,0 +1,671 @@
+diff --git a/openrlhf/trainer/reinforce_trainer.py b/openrlhf/trainer/reinforce_trainer.py
+--- a/openrlhf/trainer/reinforce_trainer.py
++++ b/openrlhf/trainer/reinforce_trainer.py
+@@ -228,30 +228,20 @@
+                 # experience = self.experience_maker.make_experience(rand_prompts, use_mcts = self.use_mcts, use_vinevalue = self.use_vinevalue, sample_table = self.sample_table, **self.generate_kwargs)
+                 experience = self.experience_maker.make_experience(rand_prompts, use_mcts = self.use_mcts, use_vinevalue = self.use_vinevalue,use_sentence_level_value = False, **self.generate_kwargs)
+ 
+-                # print prompt/answer in each update step
+-                # if global_step % update_timesteps == 0:
+-
+-                try:
+-                    sequences = experience.sequences.clone().detach()
+-                    if torch.is_tensor(sequences):
+-                        sequences = sequences.cpu().tolist()
+-
+-                    for i, sequence in enumerate(sequences):
+-                        # sequence = sequences[0]
+-                        # sequence[sequence >= self.tokenizer.vocab_size] = self.tokenizer.eos_token_id
+-
+-                        vocab_size = len(self.tokenizer.additional_special_tokens) + self.tokenizer.vocab_size
+-                        sequence = [min(x, vocab_size - 1) for x in sequence]
+-                        
+-                        output = self.tokenizer.decode(sequence, skip_special_tokens=False)
+-                        self.strategy.print(output.replace("<|endoftext|>", "").strip())
+-                        # output = self.tokenizer.batch_decode(sequences, skip_special_tokens=True)
+-                        # self.strategy.print(output[0].replace("<|endoftext|>", ""))
+-                        if i > 3:
+-                            break
+-
+-                except Exception as e:
+-                    self.strategy.print(str("Error in decoding prompt/answer: ") + str (e))
++                # Decoding even four full generated sequences forces a GPU-to-CPU
++                # sync for every prompt micro-batch. Keep it available for debugging.
++                if os.environ.get("VDRA_TREERL_VERBOSE") == "1":
++                    try:
++                        sequences = experience.sequences.detach().cpu().tolist()
++                        for i, sequence in enumerate(sequences):
++                            vocab_size = len(self.tokenizer.additional_special_tokens) + self.tokenizer.vocab_size
++                            sequence = [min(x, vocab_size - 1) for x in sequence]
++                            output = self.tokenizer.decode(sequence, skip_special_tokens=False)
++                            self.strategy.print(output.replace("<|endoftext|>", "").strip())
++                            if i > 3:
++                                break
++                    except Exception as e:
++                        self.strategy.print("Error in decoding prompt/answer: " + str(e))
+                         
+                 self.replay_buffer.append(experience)
+ 
+@@ -394,16 +384,20 @@
+         # grad norm calculation of deepspeed - by lurui
+         # reference https://github.com/deepspeedai/DeepSpeed/issues/5883
+         import deepspeed.utils
+-        grad_norm = 0.0
++        grad_norm_parts = []
+         for param in self.actor.model.module.parameters():
+             grad_data = deepspeed.utils.safe_get_full_grad(param)
+-            # if self.strategy.is_rank_0():
+-                # print("grad_data.norm(2): ", grad_data.norm(2))
+-            grad_norm += grad_data.norm(2).item() ** 2
+-        grad_norm = grad_norm ** 0.5
++            if grad_data is not None:
++                # Keep each per-parameter norm on device and synchronize once
++                # after the complete model norm has been reduced.
++                grad_norm_parts.append(grad_data.norm(2).to(dtype=torch.float64))
++        if grad_norm_parts:
++            grad_norm = torch.linalg.vector_norm(torch.stack(grad_norm_parts)).item()
++        else:
++            grad_norm = 0.0
+         
+         # Print some debug information
+-        if self.strategy.is_rank_0():
++        if self.strategy.is_rank_0() and os.environ.get("VDRA_TREERL_VERBOSE") == "1":
+             self.strategy.print(f"Debug - Gradient norm: {grad_norm}")
+             
+         # ptx loss
+diff --git a/openrlhf/trainer/ppo_utils/experience_maker.py b/openrlhf/trainer/ppo_utils/experience_maker.py
+--- a/openrlhf/trainer/ppo_utils/experience_maker.py
++++ b/openrlhf/trainer/ppo_utils/experience_maker.py
+@@ -35,6 +35,16 @@
+ )
+ import os
+ import time
++
++
++def _treerl_debug_enabled():
++    return os.environ.get("VDRA_TREERL_VERBOSE") == "1"
++
++
++def _treerl_debug_print(*args, **kwargs):
++    """Print verbose rollout diagnostics only when explicitly requested."""
++    if _treerl_debug_enabled():
++        print(*args, **kwargs)
+ 
+ from openrlhf.trainer.ppo_utils.parallel_mcts import parallel_mcts
+ from openrlhf.trainer.ppo_utils.entropy_guided_tree_search import parallel_entropy_guided_tree
+@@ -2056,8 +2066,13 @@
+     def sample_responses_bymcts(self, prompts: List[str], num_trace_per_sample: int = 1,file_name = "test.jsonl", **generate_kwargs):
+         # if self.strategy.args.process_supervision:
+         #     return self.sample_responses_prm(prompts, num_trace_per_sample, **generate_kwargs)
+-        torch.cuda.empty_cache()
+-        print("prompts: ",len(prompts), prompts)
++        # The previous rollout batch clears unused allocator blocks on exit.
++        # Keep one initial cleanup for startup, then avoid a redundant clear
++        # before every prompt batch.
++        if not getattr(self, "_vdra_mcts_cache_initialized", False):
++            torch.cuda.empty_cache()
++            self._vdra_mcts_cache_initialized = True
++        _treerl_debug_print("prompts: ", len(prompts), prompts)
+             
+         device = torch.cuda.current_device()
+ 
+@@ -2137,7 +2152,7 @@
+             )
+ 
+             batch_size_multiplier = len(sequences) // forward_batch_size
+-            print("batch_size_multiplier",batch_size_multiplier)
++            _treerl_debug_print("batch_size_multiplier", batch_size_multiplier)
+ 
+             for micro_i in range(batch_size_multiplier):
+                 micro_sequences = sequences[micro_i * forward_batch_size: (micro_i + 1) * forward_batch_size]
+@@ -2165,7 +2180,7 @@
+                 # rewards
+                 r_refs = []
+                 r_refs_remote = []
+-                print("self.remote_reward_url and micro_labels",self.remote_reward_url,micro_labels)
++                _treerl_debug_print("self.remote_reward_url and micro_labels", self.remote_reward_url, micro_labels)
+                 if self.remote_reward_url and micro_labels:
+                     queries = self.tokenizer.batch_decode(micro_sequences.cpu(), skip_special_tokens=False)
+                     
+@@ -2313,12 +2328,14 @@
+             )
+             # raw_remote_rewards = torch.tensor(raw_remote_rewards).to(torch.cuda.current_device())
+             raw_remote_rewards = raw_remote_rewards.to(torch.cuda.current_device())            
+-            print(f"--------******* num_queries: {len(queries)}, num_labels: {len(labels)}, length_ratio: {overlong_mask.sum() / overlong_mask.numel()}")
++            if os.environ.get("VDRA_TREERL_VERBOSE") == "1":
++                print(f"--------******* num_queries: {len(queries)}, num_labels: {len(labels)}, length_ratio: {overlong_mask.sum() / overlong_mask.numel()}")
+ 
+             r_remote = raw_remote_rewards
+             if self.strategy.get_rank() <= 3:
+                 # print the first sample and result
+-                print(f"---------- queries: {queries[0]} labels: {labels[0]} raw_rewards: {raw_remote_rewards[0]}")
++                if _treerl_debug_enabled():
++                    _treerl_debug_print(f"---------- queries: {queries[0]} labels: {labels[0]} raw_rewards: {raw_remote_rewards[0]}")
+             # r = [raw_rewards]
+             if self.strategy.args.mask_repeated_samples:
+                 repeated_mask = overlong_mask
+@@ -2345,17 +2362,17 @@
+             value = None
+ 
+         assert not (self.strategy.args.normalize_reward_from_multi_traces_with_rloo and self.strategy.args.normalize_reward_from_multi_traces), f"normalize_reward_from_multi_traces_with_rloo and normalize_reward_from_multi_traces cannot be set to True at the same time"
+-        print("num_trace_per_sample",num_trace_per_sample,)
++        _treerl_debug_print("num_trace_per_sample", num_trace_per_sample)
+ 
+         if self.strategy.args.mask_repeated_samples:
+             # r = r * repeated_mask
+             # r_min = r.min().item()
+             # r[repeated_mask == 0] = max(-1, r_min - 1)
+             if self.strategy.args.inner_repetition_penalty:
+-                print("repetition_penalty closed")
++                _treerl_debug_print("repetition_penalty closed")
+                 pass
+             else:
+-                print("repeated_mask", repeated_mask.shape,"r", r.shape)
++                _treerl_debug_print("repeated_mask", repeated_mask.shape, "r", r.shape)
+                 r[repeated_mask == 0] = -1
+ 
+         if self.remote_reward_url:
+@@ -2372,7 +2389,7 @@
+                 r = r * pass_rate_mask
+         else:
+             pass_rate = torch.zeros(action_log_probs.shape[0], device=device)
+-        print("_raw_reward",_raw_reward.shape,_raw_reward[0])
++        _treerl_debug_print("_raw_reward", _raw_reward.shape, _raw_reward[0])
+ 
+         torch.cuda.empty_cache()
+ 
+@@ -3132,7 +3149,7 @@
+             def decode_fn(ids):
+                 return self.tokenizer.decode(ids, skip_special_tokens=False)
+ 
+-            print("use entropy tree")
++            _treerl_debug_print("use entropy tree")
+             if "glm" in self.current_model.lower():
+                 args = {
+                     "temperature": kwargs.get("temperature", 1.2),
+@@ -3208,7 +3225,7 @@
+             if _os.environ.get("VDRA_TREERL_EOS_IDS"):
+                 # e.g. DeepSeek-R1-Distill: "151643"; vLLM needs integer stop ids
+                 args["eos_tokens"] = [int(x) for x in _os.environ["VDRA_TREERL_EOS_IDS"].split(",")]
+-            print("entropy args:",args)
++            _treerl_debug_print("entropy args:", args)
+             system_prompt = kwargs.get("system_prompt", None)
+             if self.strategy.args.training_type == "general":
+                 paths, raw_avg_reward = parallel_entropy_guided_tree(item, llm, args, self.tokenize_fn, decode_fn,system_prompt=system_prompt)  
+@@ -3218,7 +3235,7 @@
+             # print(input_ids)
+         else:
+             system_prompt = kwargs.get("system_prompt",None)
+-            print("use mcts not entropy")
++            _treerl_debug_print("use mcts not entropy")
+             if "glm" in self.current_model.lower():
+                 args = {
+                     "temperature": kwargs.get("temperature", 1.2), 
+@@ -3264,7 +3281,7 @@
+                     "b": -b_mean,
+                     "use_all_terminals":kwargs.get("use_all_terminals", False)
+                 }
+-            print("mcts args:",args)
++            _treerl_debug_print("mcts args:", args)
+             
+             def decode_fn(ids):
+                 return self.tokenizer.decode(ids,skip_special_tokens=False)
+@@ -3286,7 +3303,7 @@
+             max_output_len = max(max_output_len, output_token_ids)
+         max_output_len = min(max_output_len, self.strategy.args.generate_max_len)
+ 
+-        print(f"************ found max_output_tokens: {max_output_len}, max_input_len: {max_input_len} *********")
++        _treerl_debug_print(f"************ found max_output_tokens: {max_output_len}, max_input_len: {max_input_len} *********")
+         pad_token_id = self.tokenizer.pad_token_id
+         sequences = []
+         overlong = []
+@@ -3304,7 +3321,7 @@
+                 # print("pass_ratio",path[i]["pass_ratio"])
+                 rewards += [reward] * len(path[i]["token_answer"])
+             if len(output_token_ids) > max_output_len:
+-                print("cut output_token_ids",len(output_token_ids),max_output_len)
++                _treerl_debug_print("cut output_token_ids", len(output_token_ids), max_output_len)
+                 output_token_ids = output_token_ids[:max_output_len]
+                 rewards = rewards[:max_output_len]
+             output_len = len(output_token_ids)
+@@ -3326,7 +3343,7 @@
+             seq_rewards.append(rewards)
+         # 如果correct_terminal_count/total_terminals <0.1，那么所有正确的 terminal 都乘一个 coeff
+         bonus_threshold = self.strategy.args.correct_bonus_threshold
+-        print("bonus_threshold",bonus_threshold,"pass_at_1",correct_terminal_count/total_terminals)
++        _treerl_debug_print("bonus_threshold", bonus_threshold, "pass_at_1", correct_terminal_count / total_terminals)
+         if correct_terminal_count/total_terminals < bonus_threshold:
+             for i in range(len(paths)):
+                 if paths[i][-1]["pass_ratio"] == 1:
+@@ -3338,14 +3355,14 @@
+             sequences, max_input_len, eos_token_id, pad_token_id
+         )
+         overlong_mask = torch.tensor(overlong).to("cuda") # 1 for long, 0 for short
+-        print("seq_rewards",seq_rewards.shape,sequences.shape,attention_mask.shape,action_mask.shape,overlong_mask.shape,correct_terminal,correct_terminal_count/total_terminals)
++        _treerl_debug_print("seq_rewards", seq_rewards.shape, sequences.shape, attention_mask.shape, action_mask.shape, overlong_mask.shape, correct_terminal, correct_terminal_count / total_terminals)
+         
+         torch.cuda.empty_cache()
+         if self.strategy.args.training_type == "general":
+             avg_pass = raw_avg_reward
+         else:
+             avg_pass = correct_terminal_count/total_terminals
+-        print("avg_pass",avg_pass)
++        _treerl_debug_print("avg_pass", avg_pass)
+                     
+         return sequences.to("cuda"), seq_rewards.to("cuda"), attention_mask.to("cuda"), action_mask.to("cuda"), overlong_mask,correct_terminal,avg_pass
+ 
+diff --git a/openrlhf/trainer/ppo_utils/experience_maker_reinforce.py b/openrlhf/trainer/ppo_utils/experience_maker_reinforce.py
+--- a/openrlhf/trainer/ppo_utils/experience_maker_reinforce.py
++++ b/openrlhf/trainer/ppo_utils/experience_maker_reinforce.py
+@@ -14,7 +14,13 @@
+ # from openrlhf.models.actor import Actor
+ from openrlhf.models.utils import compute_reward, compute_reward_naive, masked_mean
+ from openrlhf.utils.logging import init_logger
+-from .experience_maker import RemoteExperienceMaker, Experience, NaiveExperienceMaker
++from .experience_maker import (
++    RemoteExperienceMaker,
++    Experience,
++    NaiveExperienceMaker,
++    _treerl_debug_enabled,
++    _treerl_debug_print,
++)
+ 
+ 
+ logger = init_logger(__name__)
+@@ -28,17 +34,19 @@
+     @torch.no_grad()
+     def _make_experience(self, prompts: Union[str, List[str]],**generate_kwargs) -> Experience:
+         self.actor.eval()
+-        use_mcts = getattr(generate_kwargs, "use_mcts", 0)
++        # ``generate_kwargs`` is a dict created by **kwargs; using getattr here
++        # silently disabled tree search for every configured TreeRL rollout.
++        use_mcts = generate_kwargs.get("use_mcts", 0)
+ 
+         if use_mcts:
+-            print("using mcts!!")
++            _treerl_debug_print("using mcts!!")
+             experiences = self.sample_responses_bymcts(
+             prompts,
+             getattr(self.strategy.args, "num_trace_per_sample", 1), 
+             **generate_kwargs
+         )
+         else:
+-            print("not using mcts!!")
++            _treerl_debug_print("not using mcts!!")
+             experiences = self.sample_responses(
+                 prompts,
+                 getattr(self.strategy.args, "num_trace_per_sample", 1), 
+@@ -51,7 +59,8 @@
+         overlong_mask = experiences["overlong_mask"]
+         # with open("/workspace/lurui/openrlhf-glm/logs/outputs/overlong_mask.jsonl","a") as f:
+         #     f.write(json.dumps(overlong_mask.tolist()) + "\n")
+-        print("logging overlong mask",experiences["overlong_mask"], overlong_mask.sum() / overlong_mask.numel())
++        if _treerl_debug_enabled():
++            _treerl_debug_print("logging overlong mask", experiences["overlong_mask"], overlong_mask.sum() / overlong_mask.numel())
+         # experience_reward[experience_reward < 0] *= 0.5
+         reward, kl = compute_reward_naive(
+             experience_reward,
+@@ -70,7 +79,8 @@
+ 
+         # * debuging
+         if self.strategy.get_rank() == 0:
+-            print(f"----------- normalized_rewards: {experience_reward}, reward_with_kl: {reward}")
++            if _treerl_debug_enabled():
++                _treerl_debug_print(f"----------- normalized_rewards: {experience_reward}, reward_with_kl: {reward}")
+         
+         def reformat_reward_for_info(piece):
+             if len(piece.shape) == 1:
+@@ -83,7 +93,7 @@
+             return piece
+ 
+         response_entropy = -(experiences["action_log_probs"] * action_mask).sum(dim=-1) / action_mask.sum(dim=-1)
+-        print("action_mask_lastdigit",action_mask[:,-1])
++        _treerl_debug_print("action_mask_lastdigit", action_mask[:, -1])
+         info = {
+             "kl": masked_mean(kl, action_mask, dim=-1),
+             "reward": reformat_reward_for_info(experiences["raw_reward"]),
+@@ -113,11 +123,6 @@
+             info=info,
+             kl=kl
+         )
+-
+-        # send experience to critic
+-        experience_cpu = deepcopy(experience)
+-        experience_cpu.to_device("cpu")
+-        # self._ref = self.critic.append.remote(experience_cpu)
+ 
+         self.actor.train()  # reset model state
+         return experience
+diff --git a/openrlhf/trainer/ppo_utils/parallel_mcts.py b/openrlhf/trainer/ppo_utils/parallel_mcts.py
+--- a/openrlhf/trainer/ppo_utils/parallel_mcts.py
++++ b/openrlhf/trainer/ppo_utils/parallel_mcts.py
+@@ -17,6 +17,7 @@
+ from typing import Optional,Callable, Dict, Any, List
+ import random
+ import math
++import os
+ from collections import deque
+ from enum import Enum
+ from pydantic import BaseModel,PrivateAttr
+@@ -29,6 +30,12 @@
+ import torch
+ from typing import List
+ import re
++
++
++def _treerl_debug_print(*args, **kwargs):
++    """Print verbose MCTS internals only when explicitly requested."""
++    if os.environ.get("VDRA_TREERL_VERBOSE") == "1":
++        print(*args, **kwargs)
+ try:
+     from openrlhf.trainer.ppo_utils.evaluation import (
+         check_result,
+@@ -416,7 +423,7 @@
+                     checker_urls=EVALUATOR_URLS)
+                 reward = result
+             if self.use_pure_binary:
+-                print("use pure binary")
++                _treerl_debug_print("use pure binary")
+                 node.accumulated_value = reward
+             else:
+                 value = get_qwen_remote_reward_model_value(
+@@ -426,7 +433,7 @@
+                     b = self.b
+                     x = a*(value-b)
+                     result = 1/(1+math.exp(-x))
+-                    print("rm_score",value, result)
++                    _treerl_debug_print("rm_score", value, result)
+                     node.accumulated_value = result
+                 else:
+                     sigmoid_value = 1 / (1 + math.exp(-value))
+@@ -442,7 +449,7 @@
+         return reward
+                         
+     def backpropagate(self, node: MCTSNode,gamma=0.9,main_chain=False):
+-        print("backpropagate")
++        _treerl_debug_print("backpropagate")
+         parent = node.parent
+         node.visits += 1
+         if main_chain:
+@@ -727,11 +734,11 @@
+         for leaf in self.leaves:
+             self.leaf_backpropagate(leaf)
+         if self.average_one_generation:
+-            print("average one generation")
++            _treerl_debug_print("average one generation")
+             self.update_accumulated_values()
+         self.select_terminal()
+         if self.use_weighted_value:
+-            print("weighted value")
++            _treerl_debug_print("weighted value")
+             for leaf in self.selected_terminals:
+                 self.selected_backpropagate(leaf)
+             self.weighted_update()
+@@ -778,7 +785,7 @@
+             next_tokens = []
+             next_strs = []
+             if self.first_token_temperature and random.random() < 0.5:
+-                print("using first token tempeature")
++                _treerl_debug_print("using first token tempeature")
+                 first_tokens = top_k_sampling(
+                     llm = self.llms[0],
+                     prompts = prompts,
+@@ -858,10 +865,11 @@
+                 new_aggregate_answer_token = node.aggregate_answer_token + new_action_token
+                 all_children_token_num += token_num_list[0]  # 假设我们使用列表中的第一个标记数
+ 
+-                if (len(new_aggregate_answer_token) > self.max_token_num) or (find_repeated_patterns(new_aggregate_answer)):
+-                    repeat = True
+-                else:
+-                    repeat = False
++                exceeds_max_tokens = len(new_aggregate_answer_token) > self.max_token_num
++                has_repeated_pattern = (
++                    False if exceeds_max_tokens else bool(find_repeated_patterns(new_aggregate_answer))
++                )
++                repeat = exceeds_max_tokens or has_repeated_pattern
+ 
+                 if (stop_token is None) or (stop_token in self.eos_tokens_set) or repeat:
+                     if_finish = True
+@@ -871,14 +879,14 @@
+                 finished = self.judge_finished(
+                     if_finish, node.depth + 1
+                 )
+-                if len(new_aggregate_answer_token) > self.max_token_num:
+-                    print("terminal because exceed max token num")
+-                elif find_repeated_patterns(new_aggregate_answer):
+-                    print("terminal because find repeated patterns")
++                if exceeds_max_tokens:
++                    _treerl_debug_print("terminal because exceed max token num")
++                elif has_repeated_pattern:
++                    _treerl_debug_print("terminal because find repeated patterns")
+                 elif finished:
+-                    print("terminal because finished")
++                    _treerl_debug_print("terminal because finished")
+                 if self.shallow_enwide:
+-                    print("shallow enwide")
++                    _treerl_debug_print("shallow enwide")
+                     max_children = max(node.max_children/2, self.min_children)
+                 else:
+                     max_children = node.max_children
+@@ -972,7 +980,7 @@
+                 all_steps.append(current_node)
+             to_consider.extend(current_node.children)
+ 
+-        print("all_step value",[node.accumulated_value for node in all_steps],len(all_steps))
++        _treerl_debug_print("all_step value", [node.accumulated_value for node in all_steps], len(all_steps))
+         if self.step_level_norm:
+             step_sum = 0
+             step_num = 0
+@@ -983,11 +991,11 @@
+                 mean = 0
+             else:
+                 mean = step_sum/step_num
+-            print("mean:", mean,step_sum,step_num)
++            _treerl_debug_print("mean:", mean, step_sum, step_num)
+             for node in all_steps:
+                 node.accumulated_value = node.accumulated_value - mean
+         else:
+-            print("token level normalization")
++            _treerl_debug_print("token level normalization")
+             step_sum = 0
+             step_num = 0
+             for node in all_steps:
+@@ -997,14 +1005,14 @@
+                 mean = 0
+             else:
+                 mean = step_sum/step_num
+-            print("mean:", mean)
++            _treerl_debug_print("mean:", mean)
+             for node in all_steps:
+                 node.accumulated_value = node.accumulated_value - mean
+                 
+ 
+     def leaf_normalize(self,nodes):
+         leaf_correctness = [leaf.accumulated_value for leaf in nodes]
+-        print("leaf_correctness",leaf_correctness)
++        _treerl_debug_print("leaf_correctness", leaf_correctness)
+         _sum = sum(leaf_correctness)
+         num = len(leaf_correctness) - 1
+         if num == 0:
+@@ -1122,7 +1130,7 @@
+             if child.terminal_in_subtree > 0:
+                 terminal_children += 1
+                 total_value += self.compute_accumulated_value(child)
+-        print("children value",total_value,terminal_children)
++        _treerl_debug_print("children value", total_value, terminal_children)
+ 
+         # Calculate the average accumulated value for the current node
+         node.accumulated_value = total_value / terminal_children if terminal_children > 0 else 0
+@@ -1163,10 +1171,10 @@
+         total_sum = len(parent_to_children.keys())
+         if correct_leaf_parent is not None:
+             assert correct_leaf is not None, "correct leaf is None"
+-            print("got correct leaf!")
++            _treerl_debug_print("got correct leaf!")
+         
+         if not self.select_correct_leaf:
+-            print("do not manually select correct leaf")
++            _treerl_debug_print("do not manually select correct leaf")
+             correct_leaf = None
+             correct_leaf_parent = None
+ 
+@@ -1361,7 +1369,7 @@
+         next_tokens = []
+         next_strs = []
+         if first_token_temperature:
+-            print("using first token tempeature")
++            _treerl_debug_print("using first token tempeature")
+             first_tokens = top_k_sampling(
+                 llm = llm,
+                 prompts = prompts,
+@@ -1372,7 +1380,7 @@
+             full_strs = [detokenize_fn(first_token) for first_token in first_tokens]
+             next_tokens = [random.choice(used_logprobs) for used_logprobs in first_tokens]
+             next_strs = [detokenize_fn([next_token]) for next_token in next_tokens]
+-            print("full_strs", full_strs)
++            _treerl_debug_print("full_strs", full_strs)
+             # with open("/workspace/lurui/openrlhf-mcts/data/first_tokens.jsonl", "a") as f:
+             #     f.write(json.dumps({"prompts": prompts, "next_strs": full_strs}))
+             #     f.write("\n")
+@@ -1604,7 +1612,7 @@
+     path = []
+     while node.parent is not None:
+         if average_one_generation:
+-            print("average_one_generation when gather")
++            _treerl_debug_print("average_one_generation when gather")
+             parent_value = node.parent.accumulated_value
+             child_value = node.accumulated_value
+         else:
+@@ -1631,7 +1639,7 @@
+     else:
+         root_value = root.accumulated_value / root.terminal_in_subtree
+     if advantage_mix_allancestor:
+-        print("use advantage mix all ancestor")
++        _treerl_debug_print("use advantage mix all ancestor")
+         for path in paths:
+             # 每个节点的 value 都用其 state_value - 祖先.state_value，对所有祖先求平均
+             for i in range(len(path)):
+@@ -1649,33 +1657,33 @@
+         return paths
+     paths = fill_in_paths(paths)
+     if use_chain_reward:
+-        print("use chain reward in mcts!!")
++        _treerl_debug_print("use chain reward in mcts!!")
+         terminal_values = normalize_selected_terminals(selected_terminals)
+         for path in paths:
+             for node in path:
+                 node["value"] = terminal_values[paths.index(path)]
+     elif use_orm_reward:
+-        print("use orm reward in mcts!!")
++        _treerl_debug_print("use orm reward in mcts!!")
+         terminal_values = normalize_selected_terminals(selected_terminals)
+         for path in paths:
+             for node in path:
+                 # node["value"] = (node["value"] + terminal_values[paths.index(path)])/2
+                 node["value"] = (node["value"] + terminal_values[paths.index(path)])
+     elif use_state_value_reward:
+-        print("use state value reward in mcts!!")
++        _treerl_debug_print("use state value reward in mcts!!")
+         # paths = normalize_all_paths(paths,step_level_norm)
+         for path in paths:
+             for node in path:
+                 # node["value"] = (node["value"] + node["state_value"])/2
+                 node["value"] = (node["value"] + node["state_value"])
+     elif use_value_only:
+-        print("use value only in mcts!!")
++        _treerl_debug_print("use value only in mcts!!")
+         for path in paths:
+             for node in path:
+                 node["value"] = node["state_value"]
+     else:
+-        print("use pure advantage in mcts!!")
+-    print("path num",len(paths))
++        _treerl_debug_print("use pure advantage in mcts!!")
++    _treerl_debug_print("path num", len(paths))
+     return paths
+ 
+ 
+diff --git a/openrlhf/trainer/ppo_trainer.py b/openrlhf/trainer/ppo_trainer.py
+index 4a390ba..613f574 100644
+--- a/openrlhf/trainer/ppo_trainer.py
++++ b/openrlhf/trainer/ppo_trainer.py
+@@ -268,7 +268,30 @@ class PPOTrainer(ABC):
+                 # for DP
+                 # weighted mean for kl
+                 status["kl"] *= status["response_length"]
+-                status = self.strategy.all_reduce(status)
++                status_keys = list(status)
++                cpu_values = []
++                device_positions = []
++                device_values = []
++                for index, key in enumerate(status_keys):
++                    value = status[key]
++                    if isinstance(value, torch.Tensor) and value.is_cuda:
++                        cpu_values.append(0.0)
++                        device_positions.append(index)
++                        device_values.append(value.detach().float().reshape(()))
++                    else:
++                        if isinstance(value, torch.Tensor):
++                            value = value.item()
++                        cpu_values.append(float(value))
++
++                status_vector = torch.tensor(cpu_values, dtype=torch.float32, device=device)
++                if device_values:
++                    status_vector.index_copy_(
++                        0,
++                        torch.tensor(device_positions, dtype=torch.long, device=device),
++                        torch.stack(device_values),
++                    )
++                status_vector = self.strategy.all_reduce(status_vector)
++                status = dict(zip(status_keys, status_vector.cpu().tolist()))
+                 status["kl"] /= status["response_length"]
+ 
+                 status_list.append(status)
+@@ -302,12 +325,12 @@ class PPOTrainer(ABC):
+                 status_mean[k] /= len(status_list)
+         return status_mean
+ 
+-    def training_step(self, experience: Experience, frozen_step=False) -> Dict[str, float]:
++    def training_step(self, experience: Experience, frozen_step=False) -> Dict[str, Union[int, float, Tensor]]:
+         status = self.training_step_actor(experience, frozen_step=frozen_step)
+         status.update(self.training_step_critic(experience))
+         return status
+ 
+-    def training_step_actor(self, experience: Experience, frozen_step=False) -> Dict[str, float]:
++    def training_step_actor(self, experience: Experience, frozen_step=False) -> Dict[str, Union[int, float, Tensor]]:
+         if frozen_step:
+             status = {"policy_loss": 0}
+             for k, v in experience.info.items():
+@@ -380,10 +403,10 @@ class PPOTrainer(ABC):
+ 
+         # status
+         status = {
+-            "policy_loss": actor_loss.item(),
++            "policy_loss": actor_loss.detach(),
+         }
+         if self.pretrain_dataloader is not None:
+-            status["ptx_loss"] = ptx_loss.item()
++            status["ptx_loss"] = ptx_loss.detach()
+ 
+         for k, v in experience.info.items():
+             if k == "kl":
+@@ -396,7 +419,7 @@ class PPOTrainer(ABC):
+                 status[k] = v.mean().item()
+         return status
+ 
+-    def training_step_critic(self, experience: Experience) -> Dict[str, float]:
++    def training_step_critic(self, experience: Experience) -> Dict[str, Union[int, float, Tensor]]:
+         self.critic.train()
+ 
+         # critic loss
+@@ -425,8 +448,8 @@ class PPOTrainer(ABC):
+ 
+         # status
+         status = {
+-            "critic_loss": critic_loss.item(),
+-            "values": masked_mean(values, experience.action_mask).item(),
++            "critic_loss": critic_loss.detach(),
++            "values": masked_mean(values, experience.action_mask).detach(),
+         }
+         return status
+ 

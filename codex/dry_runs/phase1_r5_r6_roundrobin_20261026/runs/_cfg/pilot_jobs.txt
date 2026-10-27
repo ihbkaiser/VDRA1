@@ -1,0 +1,2 @@
+bash /d/vdra_experiments/vdra_experiments/scripts/20_train.sh R5 42 20 pilot_R5
+bash /d/vdra_experiments/vdra_experiments/scripts/20_train.sh R6 42 20 pilot_R6

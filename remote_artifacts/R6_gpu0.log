@@ -1,0 +1,29 @@
+[2026-10-26 21:40:37] experiment R6 (openrlhf) on GPU 0; seeds: 42; stop 2; eval every 0
+[2026-10-26 21:40:37] warning: GPU 0 already has 1 process(es); memory may not fit
+[2026-10-26 21:40:37] === R6 seed 42: training ===
+[2026-10-26 21:40:42] R6_s42: attempt 1, resuming from update 0, training to 2 (final 2)
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/usr/local/lib/python3.10/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "/usr/local/lib/python3.10/json/decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 1 column 3 (char 2)
+[2026-10-26 21:40:50] + python3 train_reinforce_ray.py --ref_num_nodes 1 --ref_num_gpus_per_node 1 --reward_num_nodes 0 --reward_num_gpus_per_node 1 --actor_num_nodes 1 --actor_num_gpus_per_node 1 --vllm_num_engines 1 --vllm_tensor_parallel_size 1 --pretrain /work/hf_cache/models--deepseek-ai--DeepSeek-R1-Distill-Qwen-1.5B/snapshots/ad9f0ae0864d7fbcd1cd905e3c6c5b069cc8b562 --reward_pretrain /work/hf_cache/models--deepseek-ai--DeepSeek-R1-Distill-Qwen-1.5B/snapshots/ad9f0ae0864d7fbcd1cd905e3c6c5b069cc8b562 --save_path /work/mock/phase_f_null_1629e2315f/null_R6_tv/runs/R6_s42/final --ckpt_path /work/mock/phase_f_null_1629e2315f/null_R6_tv/runs/R6_s42/ckpt --save_steps 1 --save_ckpt --load_checkpoint --max_ckpt_num 2 --micro_train_batch_size 1 --train_batch_size 32 --micro_rollout_batch_size 1 --rollout_batch_size 32 --num_episodes 2 --max_samples 100000000 --seed 42 --prompt_max_len 512 --generate_max_len 1536 --zero_stage 2 --bf16 --gradient_checkpointing --actor_learning_rate 1e-6 --lr_scheduler_type constant_with_warmup --init_kl_coef 0.0 --prompt_data /work/data_vdra/train_treerl.jsonl --input_key text --label_key label --source_key data_type --normalize_reward --normalize_reward_from_multi_traces_with_rloo --top_p 1.0 --temperature 0.6 --num_trace_per_sample 4 --task_type qwen-math-reinforce --remote_rm_url /work/mock/phase_f_null_1629e2315f/null_R6_tv/runs/R6_s42/remote_rm_urls.json --use_mcts --process_supervision --mask_repeated_samples --max_nodes 256 --max_node_per_depth 18 --max_time_use 480 --random_pick --use_state_value_reward --use_pure_binary --select_correct_leaf --first_token_temperature 1 --use_entropy_tree --m 2 --n 1 --l 1 --t 1 --binary_judge_url http://unused --extractor_url http://unused --reward_model_url http://unused --correct_bonus_ratio 1
+[2026-10-26 21:40:51,203] [INFO] [real_accelerator.py:239:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+df: /root/.triton/autotune: No such file or directory
+Traceback (most recent call last):
+  File "/opt/work/TreeRL/train_reinforce_ray.py", line 12, in <module>
+    from openrlhf.trainer.ray import (
+  File "/opt/work/TreeRL/openrlhf/trainer/__init__.py", line 1, in <module>
+    from .dpo_trainer import DPOTrainer
+  File "/opt/work/TreeRL/openrlhf/trainer/dpo_trainer.py", line 12, in <module>
+    from openrlhf.models import DPOLoss, SwitchBalancingLoss
+  File "/opt/work/TreeRL/openrlhf/models/__init__.py", line 1, in <module>
+    from .actor import Actor
+  File "/opt/work/TreeRL/openrlhf/models/actor.py", line 11, in <module>
+    from transformers.deepspeed import HfDeepSpeedConfig
+ModuleNotFoundError: No module named 'transformers.deepspeed'
+[2026-10-26 21:40:58] R6_s42 stopped at update 0 after 1 attempts (rc=1); rerun this command or scripts/22_resume_all.sh
+[2026-10-26 21:40:58] R6 seed 42 did not finish; continuing with the next seed (re-run this script to resume it)
+[2026-10-26 21:40:58] R6 finished with unfinished parts: train:42

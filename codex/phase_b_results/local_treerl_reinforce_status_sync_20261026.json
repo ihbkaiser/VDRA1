@@ -1,0 +1,22 @@
+{
+  "benchmark": "treerl_reinforce_status_sync",
+  "device": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
+  "torch": "2.2.0+cu121",
+  "cuda": "12.1",
+  "date_utc": "2026-10-26T13:17:20.478548+00:00",
+  "shape": {
+    "updates": 48,
+    "metrics_per_update": 10,
+    "cuda_scalar_metrics": 2,
+    "cpu_tensor_metrics": 8,
+    "warmups": 3,
+    "repeats": 9
+  },
+  "median_ms": {
+    "per_metric": 54.84910000814125,
+    "packed_vector": 15.660099990782328
+  },
+  "speedup_ratio_old_over_packed": 3.502474443996265,
+  "max_abs_metric_delta": 0.0,
+  "measurement": "Synthetic single-GPU TreeRL ReinforceTrainer status path with two CUDA loss metrics and eight CPU replay-info metrics. The legacy path materializes tensors then copies/reduces ten fields independently. The packed path reduces one FP32 vector and copies it to CPU once. World-size-one all_reduce is an identity; model work and multi-rank collective latency are excluded."
+}

@@ -1,0 +1,18 @@
+{
+  "skill": "experiment-audit",
+  "date": "2026-10-27",
+  "reviewer_model": "gpt-6.1-sol",
+  "reviewer_reasoning": "ultra",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "agent_path": "/root/phase_f_integrity_postfix_audit",
+  "review_result": "WARN; Phase F certification FAIL",
+  "reviewer_response": "reviewer_response.md",
+  "scope": "fresh read-only review of evaluation integrity, saved Phase F artifacts, current Phase D/Phase F gates, and documented experiment scope",
+  "follow_up_response": "followup_phase_d_signature_check.md",
+  "follow_up_result": "Phase D stale-signature gap closed; Phase F certification remains FAIL due missing live GPU and raw artifact evidence.",
+  "phase_f_follow_up": "followup_phase_f_reuse_gate.md",
+  "phase_f_follow_up_result": "Archived cancelled R2-TV training attempt is now rejected by the reuse gate; Phase F remains uncertified without fresh GPU evidence.",
+  "phase_f_launcher_cli_follow_up": "followup_phase_f_launcher_cli.md",
+  "phase_f_launcher_cli_follow_up_result": "Both Phase F launcher --help paths exit before billing and deployment; full suite passes 183 tests with 1 skipped."
+}

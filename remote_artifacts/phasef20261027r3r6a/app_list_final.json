@@ -1,0 +1,42 @@
+﻿[
+  {
+    "app_id": "ap-grnjMhfMqpjowvFaDXx9cQ",
+    "description": "vdra-experiments",
+    "state": "stopped",
+    "tasks": "0",
+    "created_at": "2026-10-27 15:45:35+07:00",
+    "stopped_at": "2026-10-27 17:05:50+07:00"
+  },
+  {
+    "app_id": "ap-tYGyZfud1GutAAkQlXtAJL",
+    "description": "vdra-phase-c-setup-20261027-084215",
+    "state": "stopped",
+    "tasks": "0",
+    "created_at": "2026-10-27 15:42:16+07:00",
+    "stopped_at": "2026-10-27 15:44:33+07:00"
+  },
+  {
+    "app_id": "ap-doyhBAf267BRPwpAiud4BD",
+    "description": "vdra-phase-c-setup-20261027-083756",
+    "state": "stopped",
+    "tasks": "0",
+    "created_at": "2026-10-27 15:37:57+07:00",
+    "stopped_at": "2026-10-27 15:40:58+07:00"
+  },
+  {
+    "app_id": "ap-9L90yewFDHBPNMGEFx5vnl",
+    "description": "vdra-phase-c-setup-20261027-082728",
+    "state": "stopped",
+    "tasks": "0",
+    "created_at": "2026-10-27 15:27:29+07:00",
+    "stopped_at": "2026-10-27 15:37:16+07:00"
+  },
+  {
+    "app_id": "ap-k7q3ebbVdVUI6blIZbUFpQ",
+    "description": "vdra-phase-c-setup-20261027-082657",
+    "state": "stopped",
+    "tasks": "0",
+    "created_at": "2026-10-27 15:26:59+07:00",
+    "stopped_at": "2026-10-27 15:27:01+07:00"
+  }
+]

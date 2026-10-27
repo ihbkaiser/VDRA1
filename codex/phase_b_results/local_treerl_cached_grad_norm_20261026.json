@@ -1,0 +1,28 @@
+{
+  "benchmark": "treerl_cached_grad_norm",
+  "device": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
+  "torch": "2.2.0+cu121",
+  "cuda": "12.1",
+  "date_utc": "2026-10-26T13:43:10.583775+00:00",
+  "shape": {
+    "parameter_tensors": 160,
+    "elements_per_tensor": 8192,
+    "minibatches_per_update": 48,
+    "optimizer_accumulation_steps": 12,
+    "optimizer_updates": 4,
+    "warmups": 2,
+    "repeats": 7
+  },
+  "median_ms": {
+    "per_minibatch_full_scan": 422.1636000002036,
+    "cached_at_update_boundary": 0.09370000043418258
+  },
+  "speedup_ratio_full_scan_over_cached": 4505.481302497354,
+  "full_norm_scans_per_update": {
+    "per_minibatch_full_scan": 48,
+    "cached_at_update_boundary": 0
+  },
+  "reported_update_norms": 4,
+  "cached_norm_reference": "The same synthetic gradient norm was computed once before timing to model the value published by the optimizer; this is not a DeepSpeed parity test.",
+  "measurement": "Local single-GPU microbenchmark of the redundant Trainer-side norm scan. The cached path reads the norm already computed inside DeepSpeed's optimizer step; that optimizer work, distributed safe_get_full_grad all-gathers, model training, and end-to-end B200 time are excluded. Only optimizer-boundary norms are reported."
+}

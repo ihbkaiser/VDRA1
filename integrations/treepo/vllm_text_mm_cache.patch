@@ -1,0 +1,24 @@
+diff --git a/verl/workers/rollout/vllm_rollout/vllm_rollout_spmd.py b/verl/workers/rollout/vllm_rollout/vllm_rollout_spmd.py
+--- a/verl/workers/rollout/vllm_rollout/vllm_rollout_spmd.py
++++ b/verl/workers/rollout/vllm_rollout/vllm_rollout_spmd.py
+@@ -189,7 +189,7 @@ class vLLMRollout(BaseRollout):
+             enforce_eager=config.enforce_eager,
+             gpu_memory_utilization=config.gpu_memory_utilization,
+             disable_custom_all_reduce=True,
+-            disable_mm_preprocessor_cache=True,
++            disable_mm_preprocessor_cache=False,
+             limit_mm_per_prompt=limit_mm_per_prompt,
+             skip_tokenizer_init=False,
+             max_model_len=max_model_len,
+diff --git a/verl/workers/rollout/vllm_rollout/vllm_async_server.py b/verl/workers/rollout/vllm_rollout/vllm_async_server.py
+--- a/verl/workers/rollout/vllm_rollout/vllm_async_server.py
++++ b/verl/workers/rollout/vllm_rollout/vllm_async_server.py
+@@ -171,7 +171,7 @@ class AsyncvLLMServer(AsyncServerBase):
+             enforce_eager=config.enforce_eager,
+             gpu_memory_utilization=config.gpu_memory_utilization,
+             disable_custom_all_reduce=True,
+-            disable_mm_preprocessor_cache=True,
++            disable_mm_preprocessor_cache=False,
+             skip_tokenizer_init=False,
+             max_model_len=max_model_len,
+             load_format="auto",

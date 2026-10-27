@@ -1,0 +1,9 @@
+﻿bash.exe : [2026-10-25 20:32:25] + python3 /d/vdra_experiments/vdra_experiments/diagnostics/exp2_advantage_error.py 
+--banks /d/vdra_experiments/vdra_experiments/work/banks/*.jsonl.gz --out 
+/d/vdra_experiments/vdra_experiments/work/results/exp2 --draws 500
+At line:2 char:748
++ ...  R2 R3 R4 R5 R6' bash '$script'"; $out = & $bash -c $cmd 2>&1; $rc =  ...
++                                              ~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([2026-10-25 20:...xp2 --draws 500:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 

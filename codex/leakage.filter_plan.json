@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "status": "declined_by_user_keep_corpus_unchanged",
+  "source_audit": "codex/leakage.audit.json",
+  "source_manifest": "codex/split_manifest.remote.json",
+  "source_training_split": "math/train",
+  "split_seed": 2026,
+  "current_counts": {
+    "source_train_rows": 11500,
+    "diagnostic_rows": 256,
+    "exported_training_rows": 11244
+  },
+  "proposed_action_if_approved": {
+    "exclude_original_train_indices": [458, 3562, 3895, 6292, 6812, 9285, 9888, 10914],
+    "expected_exported_training_rows": 11236,
+    "apply_to_training_exports": [
+      "data_vdra/math-nodiag",
+      "data_vdra/train.parquet",
+      "data_vdra/train_treerl.jsonl"
+    ],
+    "preserve_without_changes": [
+      "data_vdra/diag256.jsonl",
+      "evaluation_sets",
+      "prompt_order",
+      "training_hyperparameters"
+    ],
+    "regenerate_and_verify": [
+      "split manifest and hashes",
+      "train/evaluation leakage audit",
+      "all six launchers use the same filtered training corpus",
+      "baseline and VDRA budget audits"
+    ]
+  },
+  "confirmed_matches": [
+    {
+      "eval_set": "olympiadbench",
+      "eval_id": "2644",
+      "original_train_index": 3895,
+      "match": "normalized exact"
+    },
+    {
+      "eval_set": "olympiadbench",
+      "eval_id": "2713",
+      "original_train_index": 9285,
+      "match": "normalized exact"
+    },
+    {
+      "eval_set": "olympiadbench",
+      "eval_id": "2890",
+      "original_train_index": 6292,
+      "match": "normalized exact"
+    },
+    {
+      "eval_set": "olympiadbench",
+      "eval_id": "2918",
+      "original_train_index": 9888,
+      "match": "normalized exact"
+    },
+    {
+      "eval_set": "diag",
+      "eval_id": "math-train-6442",
+      "original_train_index": 6812,
+      "match": "normalized exact"
+    },
+    {
+      "eval_set": "diag",
+      "eval_id": "math-train-585",
+      "original_train_index": 10914,
+      "match": "normalized exact"
+    },
+    {
+      "eval_set": "diag",
+      "eval_id": "math-train-6997",
+      "original_train_index": 3562,
+      "match": "normalized exact"
+    },
+    {
+      "eval_set": "diag",
+      "eval_id": "math-train-5154",
+      "original_train_index": 458,
+      "match": "manual notation equivalence: PQ and \\overline{PQ} denote the same segment"
+    }
+  ],
+  "local_end_to_end_verification": "codex/leakage.filter_check.json",
+  "unchanged_data": true,
+  "user_decision": "Keep corpus unchanged and pause training",
+  "note": "The filter was declined and not applied. Its local end-to-end check is retained for reference only; no remote volume data or training exports were modified. Unconfirmed 13-gram candidates are excluded from this plan."
+}

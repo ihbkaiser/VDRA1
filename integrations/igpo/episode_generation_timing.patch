@@ -1,0 +1,206 @@
+diff --git a/treetune/episode_generators/hybrid_episode_generator.py b/treetune/episode_generators/hybrid_episode_generator.py
+index 3d5d15e..8547306 100644
+--- a/treetune/episode_generators/hybrid_episode_generator.py
++++ b/treetune/episode_generators/hybrid_episode_generator.py
+@@ -148,6 +148,10 @@ class HybridEpisodeGenerator(MathEpisodeGenerator):
+             return None
+ 
+         metrics = {}
++        timing_prefix = (
++            f"Timing [iteration={iteration}, "
++            f"rank={self.distributed_state.process_index}]"
++        )
+ 
+         #####################################################################################
+         # Sample Trajectories from the current policy
+@@ -155,7 +159,12 @@ class HybridEpisodeGenerator(MathEpisodeGenerator):
+         traj_result_path = results_root_dir / "traj_results_ds"
+         traj_infer_results = try_loading_inference_results(traj_result_path)
+         if traj_infer_results is None:
++            stage_started = time.perf_counter()
+             _, guidance_llm_kwargs = get_vllm_server()
++            logger.info(
++                f"{timing_prefix}: vLLM startup "
++                f"{time.perf_counter() - stage_started:.3f}s"
++            )
+ 
+             t0 = time.time()
+             traj_infer_results = self._obtain_inference_results(
+@@ -164,6 +173,7 @@ class HybridEpisodeGenerator(MathEpisodeGenerator):
+                 guidance_llm_kwargs=guidance_llm_kwargs,
+                 results_path=traj_result_path,
+                 seed=seed,
++                timing_label=timing_prefix,
+             )
+             metrics["timing/episode_generation/traj_inference"] = time.time() - t0
+             release_memory()
+@@ -182,6 +192,7 @@ class HybridEpisodeGenerator(MathEpisodeGenerator):
+             }
+             trajectories = []
+ 
++            stage_started = time.perf_counter()
+             all_edges = []
+             tree_construction_seconds = []
+ 
+@@ -198,6 +209,11 @@ class HybridEpisodeGenerator(MathEpisodeGenerator):
+ 
+                 all_edges.extend(edges)
+ 
++            logger.info(
++                f"{timing_prefix}: tree decoding and edge extraction "
++                f"{time.perf_counter() - stage_started:.3f}s"
++            )
++
+             new_all_edges = []
+ 
+             for edge in all_edges:
+@@ -223,21 +239,36 @@ class HybridEpisodeGenerator(MathEpisodeGenerator):
+ 
+                 new_all_edges.append(edge)
+ 
++            logger.info(
++                f"{timing_prefix}: trajectory tokenization "
++                f"{time.perf_counter() - stage_started:.3f}s"
++            )
++
+             # if len(all_edges) == 0:
+             #     raise NoTrainingDataException()
+ 
+             # Now we got all the edges from the data_shard in this process, we add logprob to these edges
+ 
+             
++            stage_started = time.perf_counter()
+             kill_vllm_server()
+             release_memory()
+             vllm_cleanup_fn()
+             release_memory()
++            logger.info(
++                f"{timing_prefix}: vLLM shutdown and cleanup "
++                f"{time.perf_counter() - stage_started:.3f}s"
++            )
+ 
+             
+ 
+ 
++            stage_started = time.perf_counter()
+             new_all_edges = self._add_logprobs_to_edges(new_all_edges, results_root_dir)
++            logger.info(
++                f"{timing_prefix}: edge logprob scoring "
++                f"{time.perf_counter() - stage_started:.3f}s"
++            )
+ 
+             self.replay_buffer.add_edges(new_all_edges, iteration)
+ 
+@@ -1108,6 +1139,7 @@ class HybridEpisodeGenerator(MathEpisodeGenerator):
+         guidance_llm_kwargs: Dict,
+         results_path: Path,
+         seed: int,
++        timing_label: str = "Timing [trajectory inference]",
+     ) -> Dataset:
+         # Sanity check
+         request_ids = requests_ds["_treetune__idx"]
+@@ -1134,14 +1166,35 @@ class HybridEpisodeGenerator(MathEpisodeGenerator):
+                     self._rollout_eval_callback
+                 )
+ 
++        stage_started = time.perf_counter()
+         results = infer_strategy.generate(requests_ds)
++        logger.info(
++            f"{timing_label}: tree inference generation "
++            f"{time.perf_counter() - stage_started:.3f}s"
++        )
++        stage_started = time.perf_counter()
+         results.save_to_disk(str(results_path))
++        logger.info(
++            f"{timing_label}: save generated dataset "
++            f"{time.perf_counter() - stage_started:.3f}s"
++        )
++        stage_started = time.perf_counter()
+         del results
+         del infer_strategy
+         del inference_strategy_lazy
+         release_memory()
++        logger.info(
++            f"{timing_label}: release inference objects "
++            f"{time.perf_counter() - stage_started:.3f}s"
++        )
+ 
+-        return Dataset.load_from_disk(str(results_path))
++        stage_started = time.perf_counter()
++        results = Dataset.load_from_disk(str(results_path))
++        logger.info(
++            f"{timing_label}: reload generated dataset "
++            f"{time.perf_counter() - stage_started:.3f}s"
++        )
++        return results
+ 
+     def _generate_episodes(
+         self, inference_results: Dataset, iteration: int
+diff --git a/treetune/episode_generators/on_policy_episode_generator.py b/treetune/episode_generators/on_policy_episode_generator.py
+index fcd49a8..9cd8cc0 100644
+--- a/treetune/episode_generators/on_policy_episode_generator.py
++++ b/treetune/episode_generators/on_policy_episode_generator.py
+@@ -133,9 +133,10 @@ class OnPolicyEpisodeGenerator(EpisodeGenerator):
+         else:
+             ports = [0] * self.distributed_state.num_processes
+ 
+-        from accelerate.utils import broadcast_object_list
++        if self.distributed_state.num_processes > 1:
++            from accelerate.utils import broadcast_object_list
+ 
+-        ports = broadcast_object_list(ports, from_process=0)
++            ports = broadcast_object_list(ports, from_process=0)
+         release_memory()
+ 
+         self._vllm_port = ports[self.distributed_state.process_index]
+@@ -491,7 +492,12 @@ class OnPolicyEpisodeGenerator(EpisodeGenerator):
+                 The seed for this process to use for inference.
+         """
+         infer_result_path = results_root_dir / "results_ds"
++        stage_started = time.perf_counter()
+         vllm_server, guidance_llm_kwargs = vllm_init_fn()
++        logger.info(
++            f"Timing [{results_root_dir.name}]: vLLM startup "
++            f"{time.perf_counter() - stage_started:.3f}s"
++        )
+ 
+         # Initialize the inference strategy with the vLLM server URL
+         inference_strategy_lazy = copy.deepcopy(self.inference_strategy_lazy)
+@@ -507,8 +513,19 @@ class OnPolicyEpisodeGenerator(EpisodeGenerator):
+             ),
+         )
+ 
++        stage_started = time.perf_counter()
+         results = inference_strategy.generate(dataset_shard)
++        logger.info(
++            f"Timing [{results_root_dir.name}]: inference generation "
++            f"{time.perf_counter() - stage_started:.3f}s"
++        )
++        stage_started = time.perf_counter()
+         results.save_to_disk(str(infer_result_path))
++        logger.info(
++            f"Timing [{results_root_dir.name}]: save generated dataset "
++            f"{time.perf_counter() - stage_started:.3f}s"
++        )
++        stage_started = time.perf_counter()
+         vllm_server.stop_server()
+         del results
+         del vllm_server
+@@ -516,8 +533,17 @@ class OnPolicyEpisodeGenerator(EpisodeGenerator):
+ 
+         vllm_cleanup_fn()
+         release_memory()
++        logger.info(
++            f"Timing [{results_root_dir.name}]: vLLM shutdown and cleanup "
++            f"{time.perf_counter() - stage_started:.3f}s"
++        )
+ 
++        stage_started = time.perf_counter()
+         results = Dataset.load_from_disk(str(results_root_dir / "results_ds"))
++        logger.info(
++            f"Timing [{results_root_dir.name}]: reload generated dataset "
++            f"{time.perf_counter() - stage_started:.3f}s"
++        )
+         return results
+ 
+     def _generate_episodes(

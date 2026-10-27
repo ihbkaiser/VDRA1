@@ -1,0 +1,14 @@
+work/
+scripts/env.local.sh
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Local Python environments and transient process markers
+.venv/
+.venv-*/
+venv/
+*.pid
+
+# Do not publish downloaded model weights/cache
+remote_artifacts/**/hf_cache/

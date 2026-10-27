@@ -1,0 +1,56 @@
+﻿bash.exe : [2026-10-25 20:32:23] [queue] GPUS=0 :: bash /d/vdra_experiments/vdra_experiments/scripts/20_train.sh R1 42 
+20 pilot_R1
+At line:2 char:748
++ ...  R2 R3 R4 R5 R6' bash '$script'"; $out = & $bash -c $cmd 2>&1; $rc =  ...
++                                              ~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([2026-10-25 20:... 42 20 pilot_R1:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[2026-10-25 20:32:23] [queue] dry run; job not executed
+[2026-10-25 20:32:23] [queue] GPUS=0 :: bash /d/vdra_experiments/vdra_experiments/scripts/20_train.sh R2 42 20 pilot_R2
+[2026-10-25 20:32:23] [queue] dry run; job not executed
+[2026-10-25 20:32:23] [queue] GPUS=0 :: bash /d/vdra_experiments/vdra_experiments/scripts/20_train.sh R3 42 20 pilot_R3
+[2026-10-25 20:32:23] [queue] dry run; job not executed
+[2026-10-25 20:32:23] [queue] GPUS=0 :: bash /d/vdra_experiments/vdra_experiments/scripts/20_train.sh R4 42 20 pilot_R4
+[2026-10-25 20:32:23] [queue] dry run; job not executed
+[2026-10-25 20:32:23] [queue] GPUS=0 :: bash /d/vdra_experiments/vdra_experiments/scripts/20_train.sh R5 42 20 pilot_R5
+[2026-10-25 20:32:23] [queue] dry run; job not executed
+[2026-10-25 20:32:23] [queue] GPUS=0 :: bash /d/vdra_experiments/vdra_experiments/scripts/20_train.sh R6 42 20 pilot_R6
+[2026-10-25 20:32:23] [queue] dry run; job not executed
+[2026-10-25 20:32:23] + python3 /d/vdra_experiments/vdra_experiments/analysis/gpu_hours.py --run_dir 
+/d/vdra_experiments/vdra_experiments/work/runs/pilot_R1 --framework treetune --gpus 2 --out 
+/d/vdra_experiments/vdra_experiments/work/results/pilot/gpu_hours_R1.json
+[2026-10-25 20:32:23] + python3 /d/vdra_experiments/vdra_experiments/analysis/budget_audit.py --logs 
+/d/vdra_experiments/vdra_experiments/work/runs/pilot_R1 --out 
+/d/vdra_experiments/vdra_experiments/work/results/pilot/audit_R1.json
+[2026-10-25 20:32:23] + python3 /d/vdra_experiments/vdra_experiments/analysis/gpu_hours.py --run_dir 
+/d/vdra_experiments/vdra_experiments/work/runs/pilot_R2 --framework treetune --gpus 2 --out 
+/d/vdra_experiments/vdra_experiments/work/results/pilot/gpu_hours_R2.json
+[2026-10-25 20:32:23] + python3 /d/vdra_experiments/vdra_experiments/analysis/budget_audit.py --logs 
+/d/vdra_experiments/vdra_experiments/work/runs/pilot_R2 --out 
+/d/vdra_experiments/vdra_experiments/work/results/pilot/audit_R2.json
+[2026-10-25 20:32:23] + python3 /d/vdra_experiments/vdra_experiments/analysis/gpu_hours.py --run_dir 
+/d/vdra_experiments/vdra_experiments/work/runs/pilot_R3 --framework verl --gpus 2 --out 
+/d/vdra_experiments/vdra_experiments/work/results/pilot/gpu_hours_R3.json
+[2026-10-25 20:32:23] + python3 /d/vdra_experiments/vdra_experiments/analysis/budget_audit.py --logs 
+/d/vdra_experiments/vdra_experiments/work/runs/pilot_R3 --out 
+/d/vdra_experiments/vdra_experiments/work/results/pilot/audit_R3.json
+[2026-10-25 20:32:23] + python3 /d/vdra_experiments/vdra_experiments/analysis/gpu_hours.py --run_dir 
+/d/vdra_experiments/vdra_experiments/work/runs/pilot_R4 --framework verl --gpus 2 --out 
+/d/vdra_experiments/vdra_experiments/work/results/pilot/gpu_hours_R4.json
+[2026-10-25 20:32:23] + python3 /d/vdra_experiments/vdra_experiments/analysis/budget_audit.py --logs 
+/d/vdra_experiments/vdra_experiments/work/runs/pilot_R4 --out 
+/d/vdra_experiments/vdra_experiments/work/results/pilot/audit_R4.json
+[2026-10-25 20:32:23] + python3 /d/vdra_experiments/vdra_experiments/analysis/gpu_hours.py --run_dir 
+/d/vdra_experiments/vdra_experiments/work/runs/pilot_R5 --framework openrlhf --gpus 3 --out 
+/d/vdra_experiments/vdra_experiments/work/results/pilot/gpu_hours_R5.json
+[2026-10-25 20:32:23] + python3 /d/vdra_experiments/vdra_experiments/analysis/budget_audit.py --logs 
+/d/vdra_experiments/vdra_experiments/work/runs/pilot_R5 --out 
+/d/vdra_experiments/vdra_experiments/work/results/pilot/audit_R5.json
+[2026-10-25 20:32:23] + python3 /d/vdra_experiments/vdra_experiments/analysis/gpu_hours.py --run_dir 
+/d/vdra_experiments/vdra_experiments/work/runs/pilot_R6 --framework openrlhf --gpus 3 --out 
+/d/vdra_experiments/vdra_experiments/work/results/pilot/gpu_hours_R6.json
+[2026-10-25 20:32:24] + python3 /d/vdra_experiments/vdra_experiments/analysis/budget_audit.py --logs 
+/d/vdra_experiments/vdra_experiments/work/runs/pilot_R6 --out 
+/d/vdra_experiments/vdra_experiments/work/results/pilot/audit_R6.json
+[2026-10-25 20:32:24] gate G1: cv_n_v >= 0.3 for R2/R4/R6, budget_violations == 0; update R3-R6 cost estimates

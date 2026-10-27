@@ -1,0 +1,42 @@
+{
+  "device": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
+  "torch": "2.3.1+cu121",
+  "cuda": "12.1",
+  "date_utc": "2026-10-26T11:35:44.566993+00:00",
+  "shape": {
+    "batch_size": 32,
+    "max_prompt_tokens": 512,
+    "max_response_tokens": 1536,
+    "updates_per_sample": 48,
+    "repeats": 9,
+    "warmups": 3
+  },
+  "metric_count": 24,
+  "old_per_scalar_median_ms": 113.81080000137445,
+  "packed_copy_median_ms": 76.00559999991674,
+  "speedup_ratio_old_over_packed": 1.4974001915845558,
+  "max_abs_metric_delta": 0.0,
+  "old_samples_ms": [
+    116.8694000079995,
+    115.9953000023961,
+    120.8788999938406,
+    113.17419999977574,
+    114.88480000116397,
+    111.60879999806639,
+    112.57129999285098,
+    112.62189999979455,
+    113.81080000137445
+  ],
+  "packed_samples_ms": [
+    76.37959999556188,
+    77.84900000842754,
+    74.28459999209736,
+    74.43580000835937,
+    75.3299999923911,
+    76.21470000594854,
+    76.00559999991674,
+    75.9505000023637,
+    78.17130000330508
+  ],
+  "measurement": "TreePO compute_data_metrics formulas only; excludes transformer/model compute and Ray communication."
+}

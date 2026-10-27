@@ -1,0 +1,193 @@
+diff --git a/openrlhf/trainer/reinforce_trainer.py b/openrlhf/trainer/reinforce_trainer.py
+index 3331257..4c2f5a7 100644
+--- a/openrlhf/trainer/reinforce_trainer.py
++++ b/openrlhf/trainer/reinforce_trainer.py
+@@ -285,6 +285,7 @@ class ReinforceTrainer(ABC):
+         )
+         device = torch.cuda.current_device()
+         micro_steps = len(dataloader)
++        status_sync_interval = min(8, max(1, micro_steps))
+         
+         status_list = []
+         status_mean = {}
+@@ -294,6 +295,10 @@ class ReinforceTrainer(ABC):
+                 desc=f"Train epoch [{epoch + 1}/{self.max_epochs}]",
+                 disable=not self.strategy.is_rank_0(),
+             )
++            epoch_status_rows = []
++            epoch_status_steps = []
++            epoch_status_missing_keys = []
++            epoch_status_keys = None
+             for i, experience in enumerate(pbar):
+                 experience.to_device(device)
+                 status = self.training_step(experience)
+@@ -323,11 +328,24 @@ class ReinforceTrainer(ABC):
+                     status["kl"] = float(kl_value) * float(response_length_value)
+ 
+                 status_keys = list(status)
++                if epoch_status_keys is None:
++                    epoch_status_keys = status_keys
++                elif status_keys != epoch_status_keys:
++                    raise RuntimeError(
++                        "TreeRL status fields changed within a replay epoch: "
++                        f"{epoch_status_keys} != {status_keys}"
++                    )
++
+                 cpu_values = []
+                 device_positions = []
+                 device_values = []
++                missing_keys = []
+                 for index, key in enumerate(status_keys):
+                     value = status[key]
++                    if value is None:
++                        cpu_values.append(0.0)
++                        missing_keys.append(key)
++                        continue
+                     if isinstance(value, torch.Tensor) and value.is_cuda:
+                         cpu_values.append(0.0)
+                         device_positions.append(index)
+@@ -344,33 +362,54 @@ class ReinforceTrainer(ABC):
+                         torch.tensor(device_positions, dtype=torch.long, device=device),
+                         torch.stack(device_values),
+                     )
+-                status_vector = self.strategy.all_reduce(status_vector)
+-                status = dict(zip(status_keys, status_vector.cpu().tolist()))
+-                status["kl"] /= status["response_length"]
+-
+-                status_list.append(status)
+-                self.save_logs_only(status, step=int(global_step * micro_steps + i))
+-
+-                short_status = {
+-                    "pg": status["policy_loss"],
+-                    "rm": status["reward"],
+-                    # "ret": status["return"],
+-                    "glen": status["response_length"],
+-                    "tlen": status["total_length"],
+-                    "kl": status["kl"],
+-                }
++                epoch_status_rows.append(status_vector)
++                epoch_status_steps.append(int(global_step * micro_steps + i))
++                epoch_status_missing_keys.append(missing_keys)
++
++                # Status is only for reporting. Reduce short groups together and
++                # synchronize once per group, keeping log delay bounded while
++                # avoiding a host stall after every replay minibatch.
++                if len(epoch_status_rows) >= status_sync_interval or i + 1 == micro_steps:
++                    status_matrix = torch.stack(epoch_status_rows)
++                    status_matrix = self.strategy.all_reduce(status_matrix)
++                    host_status_rows = status_matrix.cpu().tolist()
++
++                    for step, values, missing_keys in zip(
++                        epoch_status_steps, host_status_rows, epoch_status_missing_keys
++                    ):
++                        status = dict(zip(epoch_status_keys, values))
++                        for key in missing_keys:
++                            status.pop(key, None)
++                        status["kl"] /= status["response_length"]
++
++                        status_list.append(status)
++                        self.save_logs_only(status, step=step)
++
++                        short_status = {
++                            "pg": status["policy_loss"],
++                            "rm": status["reward"],
++                            # "ret": status["return"],
++                            "glen": status["response_length"],
++                            "tlen": status["total_length"],
++                            "kl": status["kl"],
++                        }
++
++                        if "ptx_loss" in status:
++                            short_status["ptx"] = status["ptx_loss"]
++                        pbar.set_postfix(short_status)
+ 
+-                if "ptx_loss" in status:
+-                    short_status["ptx"] = status["ptx_loss"]
+-                pbar.set_postfix(short_status)
++                    epoch_status_rows.clear()
++                    epoch_status_steps.clear()
++                    epoch_status_missing_keys.clear()
+ 
+         if status_list:
+-            status_mean = status_list[0]
+-            for m in status_list[1:]:
+-                for k, v in m.items():
+-                    status_mean[k] += v
+-            for k in status_mean.keys():
+-                status_mean[k] /= len(status_list)
++            status_counts = {}
++            for status in status_list:
++                for key, value in status.items():
++                    status_mean[key] = status_mean.get(key, 0.0) + value
++                    status_counts[key] = status_counts.get(key, 0) + 1
++            for key in status_mean:
++                status_mean[key] /= status_counts[key]
+         return status_mean
+ 
+     def training_step(self, experience: Experience) -> Dict[str, Union[int, float, Tensor]]:
+@@ -425,20 +464,39 @@ class ReinforceTrainer(ABC):
+         
+         self.strategy.backward(loss, self.actor, self.actor_optim)
+ 
+-        # grad norm calculation of deepspeed - by lurui
+-        # reference https://github.com/deepspeedai/DeepSpeed/issues/5883
+-        import deepspeed.utils
+-        grad_norm_parts = []
+-        for param in self.actor.model.module.parameters():
+-            grad_data = deepspeed.utils.safe_get_full_grad(param)
+-            if grad_data is not None:
+-                # Keep each per-parameter norm on device and synchronize once
+-                # after the complete model norm has been reduced.
+-                grad_norm_parts.append(grad_data.norm(2).to(dtype=torch.float64))
+-        if grad_norm_parts:
+-            grad_norm = torch.linalg.vector_norm(torch.stack(grad_norm_parts)).detach()
++        # DeepSpeed computes the exact global norm during a BF16 ZeRO optimizer
++        # step. Reuse that cached result at accumulation boundaries instead of
++        # gathering every full parameter gradient for a logging-only metric.
++        engine = getattr(self.actor, "model", None)
++        zero_stage_fn = getattr(engine, "zero_optimization_stage", None)
++        bf16_fn = getattr(engine, "bfloat16_enabled", None)
++        boundary_fn = getattr(engine, "is_gradient_accumulation_boundary", None)
++        reuse_deepspeed_grad_norm = (
++            self.pretrain_dataloader is None
++            and callable(getattr(engine, "get_global_grad_norm", None))
++            and callable(zero_stage_fn)
++            and zero_stage_fn() in (1, 2, 3)
++            and callable(bf16_fn)
++            and bf16_fn()
++            and callable(boundary_fn)
++        )
++        use_cached_grad_norm = reuse_deepspeed_grad_norm and boundary_fn()
++        if reuse_deepspeed_grad_norm:
++            grad_norm = None
+         else:
+-            grad_norm = 0.0
++            # Preserve the legacy per-minibatch metric for non-ZeRO, FP16, and
++            # PTX configurations, where the cached norm is not interchangeable.
++            import deepspeed.utils
++
++            grad_norm_parts = []
++            for param in self.actor.model.module.parameters():
++                grad_data = deepspeed.utils.safe_get_full_grad(param)
++                if grad_data is not None:
++                    grad_norm_parts.append(grad_data.norm(2).to(dtype=torch.float64))
++            if grad_norm_parts:
++                grad_norm = torch.linalg.vector_norm(torch.stack(grad_norm_parts)).detach()
++            else:
++                grad_norm = 0.0
+         
+         # Print some debug information
+         if self.strategy.is_rank_0() and os.environ.get("VDRA_TREERL_VERBOSE") == "1":
+@@ -469,6 +527,12 @@ class ReinforceTrainer(ABC):
+             self.strategy.backward(self.ptx_coef * loss, self.actor, self.actor_optim)
+ 
+         self.strategy.optimizer_step(self.actor_optim, self.actor, self.actor_scheduler, name="actor")
++        if use_cached_grad_norm:
++            grad_norm = engine.get_global_grad_norm()
++            if grad_norm is None:
++                raise RuntimeError("DeepSpeed did not publish a global gradient norm after its optimizer step")
++            if isinstance(grad_norm, torch.Tensor):
++                grad_norm = grad_norm.detach()
+         if self.ema_model:
+             self.strategy.moving_average(self.actor, self.ema_model, self.ema_beta, "cpu")
+ 

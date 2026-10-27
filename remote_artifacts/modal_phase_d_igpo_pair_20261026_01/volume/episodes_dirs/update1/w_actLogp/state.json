@@ -1,0 +1,28 @@
+{
+  "_data_files": [
+    {
+      "filename": "data-00000-of-00001.arrow"
+    }
+  ],
+  "_fingerprint": "760bad7794413c75",
+  "_format_columns": [
+    "actor_shifted_log_probs",
+    "advantage",
+    "instance",
+    "leaf",
+    "offsets",
+    "process_idx",
+    "prover_advantage",
+    "query_text",
+    "query_token_ids",
+    "question_id",
+    "response_text",
+    "response_token_ids",
+    "reward",
+    "value"
+  ],
+  "_format_kwargs": {},
+  "_format_type": null,
+  "_output_all_columns": false,
+  "_split": null
+}

@@ -1,0 +1,79 @@
+{
+  "audits": {
+    "null_R2_tv": {
+      "aux_pilot_tokens_per_tree": 3821.625,
+      "aux_support_tokens_per_tree": 7237.0,
+      "budget_evidence_complete": true,
+      "budget_violations": 0,
+      "cv_n_v": 0.17687681195739818,
+      "edges_per_tree": 132.125,
+      "gate_G1_budget_ok": true,
+      "gate_G1_headroom_ok": false,
+      "main_rollout_tokens_per_tree": 75647.25,
+      "mean_n_v_by_depth": {
+        "0": 6.0,
+        "1": 5.760869565217392
+      },
+      "mean_queue_size": 1.08,
+      "mean_queue_wait_s": 1.0172705030441285,
+      "mean_terminal_pilots_reused": 0.14814814814814814,
+      "n_nodes": 54,
+      "n_queues": 50,
+      "n_v_hist": {
+        "1": 1,
+        "3": 2,
+        "4": 1,
+        "5": 2,
+        "6": 46,
+        "7": 1,
+        "9": 1
+      },
+      "score_requests_per_tree": 1374.0,
+      "share_capped": 0.1111111111111111,
+      "share_n_v_above_nominal": 0.037037037037037035,
+      "share_n_v_eq_1": 0.018518518518518517,
+      "violation_examples": []
+    },
+    "null_R4_tv": {
+      "error": "CalledProcessError: Command '['/usr/local/bin/python', '/opt/vdra/analysis/budget_audit.py', '--require-budget-evidence', '--logs', '/work/mock/phase_f_null_1629e2315f/null_R4_tv/runs/R4_s42', '--out', '/work/mock/phase_f_null_1629e2315f/results/audit/null_R4_tv.json']' returned non-zero exit status 1.",
+      "status": "failed"
+    },
+    "null_R6_tv": {
+      "error": "CalledProcessError: Command '['/usr/local/bin/python', '/opt/vdra/analysis/budget_audit.py', '--require-budget-evidence', '--logs', '/work/mock/phase_f_null_1629e2315f/null_R6_tv/runs/R6_s42', '--out', '/work/mock/phase_f_null_1629e2315f/results/audit/null_R6_tv.json']' returned non-zero exit status 1.",
+      "status": "failed"
+    },
+    "null_igpo": {
+      "error": "CalledProcessError: Command '['/usr/local/bin/python', '/opt/vdra/analysis/budget_audit.py', '--null', '/work/mock/phase_f_null_1629e2315f/null_R2_constant/runs/R2_s42', '/work/mock/phase_f_null_1629e2315f/null_R1/runs/R1_s42', '--out', '/work/mock/phase_f_null_1629e2315f/results/audit/null_igpo.json']' returned non-zero exit status 1.",
+      "status": "failed"
+    }
+  },
+  "null_R2_tv": {
+    "call_id": "dac613bed27c4c199d20c20167c97c2f",
+    "error": null,
+    "experiment": "R2",
+    "reused_saved_run_path": true,
+    "seeds": [
+      "42"
+    ],
+    "status": "complete"
+  },
+  "null_R4_tv": {
+    "call_id": "088799afafb74a61bffbbca9c006b056",
+    "error": "launcher exited with code 1",
+    "experiment": "R4",
+    "seeds": [
+      "42"
+    ],
+    "status": "failed"
+  },
+  "null_R6_tv": {
+    "call_id": "fb240f92e7664f55a217f50dc88f1e26",
+    "error": "launcher exited with code 1",
+    "experiment": "R6",
+    "seeds": [
+      "42"
+    ],
+    "status": "failed"
+  },
+  "status": "failed"
+}

@@ -1,0 +1,120 @@
+{
+  "citation": "",
+  "description": "",
+  "features": {
+    "question_id": {
+      "dtype": "int64",
+      "_type": "Value"
+    },
+    "instance": {
+      "_treetune__idx": {
+        "dtype": "int64",
+        "_type": "Value"
+      },
+      "answer": {
+        "dtype": "string",
+        "_type": "Value"
+      },
+      "gold_solution_steps": {
+        "feature": {
+          "dtype": "string",
+          "_type": "Value"
+        },
+        "_type": "Sequence"
+      },
+      "gold_solution_steps_str": {
+        "dtype": "string",
+        "_type": "Value"
+      },
+      "level": {
+        "dtype": "int64",
+        "_type": "Value"
+      },
+      "problem": {
+        "dtype": "string",
+        "_type": "Value"
+      },
+      "query": {
+        "dtype": "string",
+        "_type": "Value"
+      },
+      "solution": {
+        "dtype": "string",
+        "_type": "Value"
+      },
+      "subject": {
+        "dtype": "string",
+        "_type": "Value"
+      },
+      "unique_id": {
+        "dtype": "string",
+        "_type": "Value"
+      }
+    },
+    "query_text": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "response_text": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "prover_advantage": {
+      "dtype": "float64",
+      "_type": "Value"
+    },
+    "advantage": {
+      "dtype": "float64",
+      "_type": "Value"
+    },
+    "value": {
+      "dtype": "float64",
+      "_type": "Value"
+    },
+    "leaf": {
+      "dtype": "bool",
+      "_type": "Value"
+    },
+    "reward": {
+      "dtype": "float64",
+      "_type": "Value"
+    },
+    "query_token_ids": {
+      "feature": {
+        "dtype": "int64",
+        "_type": "Value"
+      },
+      "_type": "Sequence"
+    },
+    "response_token_ids": {
+      "feature": {
+        "dtype": "int64",
+        "_type": "Value"
+      },
+      "_type": "Sequence"
+    },
+    "offsets": {
+      "feature": {
+        "feature": {
+          "dtype": "int64",
+          "_type": "Value"
+        },
+        "_type": "Sequence"
+      },
+      "_type": "Sequence"
+    },
+    "process_idx": {
+      "dtype": "int64",
+      "_type": "Value"
+    },
+    "actor_shifted_log_probs": {
+      "feature": {
+        "dtype": "float64",
+        "_type": "Value"
+      },
+      "_type": "Sequence"
+    }
+  },
+  "homepage": "",
+  "license": ""
+}

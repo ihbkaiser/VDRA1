@@ -1,0 +1,218 @@
+diff --git a/verl/trainer/ppo/ray_trainer.py b/verl/trainer/ppo/ray_trainer.py
+index 0b7f2a5..7f5c711 100644
+--- a/verl/trainer/ppo/ray_trainer.py
++++ b/verl/trainer/ppo/ray_trainer.py
+@@ -1348,6 +1348,18 @@ class RayPPOTrainer:
+                     
+ 
+                 # TODO: make a canonical logger that supports various backend
++                if os.environ.get("VDRA_METRICS_JSONL"):
++                    from modal_app.metric_capture import write_training_metrics
++
++                    write_training_metrics(
++                        "verl",
++                        int(self.global_steps),
++                        rollout_count=int(batch.batch["responses"].shape[0]),
++                        generated_tokens=int(batch.batch["response_mask"].sum().item()),
++                        mean_reward=metrics["critic/rewards/mean"],
++                        loss=metrics["actor/pg_loss"],
++                        grad_norm=metrics["actor/grad_norm"],
++                    )
+                 logger.log(data=metrics, step=self.global_steps)
+ 
+                 progress_bar.update(1)
+diff --git a/verl/workers/actor/dp_actor.py b/verl/workers/actor/dp_actor.py
+index 0f1c7c5..b46f867 100644
+--- a/verl/workers/actor/dp_actor.py
++++ b/verl/workers/actor/dp_actor.py
+@@ -404,7 +404,7 @@ class DataParallelPPOActor(BasePPOActor):
+                         kl_loss = agg_loss(loss_mat=kld, loss_mask=response_mask, loss_agg_mode=loss_agg_mode)
+ 
+                         policy_loss = policy_loss + kl_loss * self.config.kl_loss_coef
+-                        metrics["actor/kl_loss"] = kl_loss.detach().item()
++                        metrics["actor/kl_loss"] = kl_loss.detach()
+                         metrics["actor/kl_coef"] = self.config.kl_loss_coef
+ 
+                     if self.config.use_dynamic_bsz:
+@@ -415,15 +415,38 @@ class DataParallelPPOActor(BasePPOActor):
+                     loss.backward()
+ 
+                     data = {
+-                        "actor/pg_loss": pg_loss.detach().item(),
+-                        "actor/pg_clipfrac": pg_clipfrac.detach().item(),
+-                        "actor/ppo_kl": ppo_kl.detach().item(),
+-                        "actor/pg_clipfrac_lower": pg_clipfrac_lower.detach().item(),
++                        "actor/pg_loss": pg_loss.detach(),
++                        "actor/pg_clipfrac": pg_clipfrac.detach(),
++                        "actor/ppo_kl": ppo_kl.detach(),
++                        "actor/pg_clipfrac_lower": pg_clipfrac_lower.detach(),
+                     }
+                     append_to_dict(metrics, data)
+ 
+                 grad_norm = self._optimizer_step()
+-                data = {"actor/grad_norm": grad_norm.detach().item()}
++                data = {"actor/grad_norm": grad_norm.detach()}
+                 append_to_dict(metrics, data)
+         self.actor_optimizer.zero_grad()
++
++        # These values are consumed only after update_policy returns. Stack native
++        # dtypes before the single CPU copy to avoid per-scalar syncs and casts.
++        tensor_metric_values = []
++        tensor_metric_slots = []
++        for key, values in metrics.items():
++            if isinstance(values, list):
++                for index, value in enumerate(values):
++                    if torch.is_tensor(value):
++                        tensor_metric_slots.append((key, index))
++                        tensor_metric_values.append(value.detach().reshape(()))
++            elif torch.is_tensor(values):
++                tensor_metric_slots.append((key, None))
++                tensor_metric_values.append(values.detach().reshape(()))
++
++        if tensor_metric_values:
++            materialized_values = torch.stack(tensor_metric_values).cpu().tolist()
++            for (key, index), value in zip(tensor_metric_slots, materialized_values):
++                if index is None:
++                    metrics[key] = value
++                else:
++                    metrics[key][index] = value
++
+         return metrics
+diff --git a/verl/workers/rollout/vllm_rollout/vllm_rollout_spmd.py b/verl/workers/rollout/vllm_rollout/vllm_rollout_spmd.py
+index 20a3962..94bbb74 100644
+--- a/verl/workers/rollout/vllm_rollout/vllm_rollout_spmd.py
++++ b/verl/workers/rollout/vllm_rollout/vllm_rollout_spmd.py
+@@ -157,6 +157,7 @@ class vLLMRollout(BaseRollout):
+             assert max_position_embeddings >= config.prompt_length + config.response_length, "model context length should be greater than total sequence length"
+ 
+         max_model_len = int(config.max_model_len or config.prompt_length + config.response_length)
++        self._vdra_max_model_len = max_model_len  # VDRA: context limit for pilots / scoring
+ 
+         if max_num_batched_tokens < max_model_len and self.config.enable_chunked_prefill:
+             raise ValueError(
+@@ -249,6 +250,76 @@ class vLLMRollout(BaseRollout):
+         for key, value in old_sampling_params_args.items():
+             setattr(self.sampling_params, key, value)
+ 
++    # ------------------------------------------------------------------ VDRA
++    def _vdra_cfg(self):
++        if getattr(self, "_vdra_config_obj", None) is None:
++            from vdra_core import VDRAConfig
++            raw = self.config.get("vdra", None)
++            try:
++                from omegaconf import OmegaConf
++                raw = OmegaConf.to_container(raw, resolve=True) if raw is not None else {}
++            except Exception:
++                raw = dict(raw or {})
++            raw = {k: v for k, v in (raw or {}).items() if k in VDRAConfig.__dataclass_fields__}
++            # Terminal pilots are not reused inside TreePO (they would bypass its
++            # finished-sample bookkeeping); they are charged as auxiliary cost.
++            raw["reuse_terminal_pilots"] = False
++            self._vdra_config_obj = VDRAConfig.from_dict(raw)
++        return self._vdra_config_obj
++
++    def _vdra_backend(self, eos_token_id):
++        if getattr(self, "_vdra_backend_obj", None) is None:
++            from vdra_core.backend import TokenBackend, from_vllm_llm
++            stop = eos_token_id if isinstance(eos_token_id, list) else [eos_token_id]
++            self._vdra_backend_obj = TokenBackend(
++                generate_fn=from_vllm_llm(self.inference_engine),
++                temperature=float(getattr(self.sampling_params, "temperature", 1.0)),
++                top_p=float(getattr(self.sampling_params, "top_p", 1.0)),
++                stop_token_ids=[t for t in stop if t is not None],
++                max_model_len=int(self._vdra_max_model_len),
++            )
++        return self._vdra_backend_obj
++
++    def _vdra_estimate(self, samples_to_go_deeper, eos_token_id, step):
++        """Batched proxy for every active path of every root at this step."""
++        import time as _time
++        from vdra_core.backend import estimate_batch
++        cfg = self._vdra_cfg()
++        keys, prefixes = [], []
++        for root_node, group in samples_to_go_deeper.items():
++            for path_idx, sample in enumerate(group):
++                keys.append((root_node, path_idx))
++                prefixes.append(list(sample.init_input_ids) + list(sample.full_response_token_ids))
++        t0 = _time.time()
++        backend = self._vdra_backend(eos_token_id)
++        results, _ = estimate_batch(prefixes, backend, cfg)
++        self._vdra_write("vdra_steps", {
++            "step": int(step), "n_nodes": len(prefixes), "seconds": _time.time() - t0,
++            "counters": dict(backend.counters),
++        })
++        out = {}
++        for k, r in zip(keys, results):
++            out[k] = r
++            self._vdra_write("vdra_nodes", {"root": int(k[0]), "path": int(k[1]), "step": int(step), **r.to_row()})
++        return out
++
++    def _vdra_log_queue(self, root_node, step, items, alloc, budget):
++        self._vdra_write("vdra_queues", {
++            "root": int(root_node), "step": int(step), "budget": int(budget),
++            "coefs": [it.coef for it in items], "k_v": [it.k_v for it in items],
++            "capped": [bool(it.capped) for it in items],
++            "n_v": [int(x) for x in alloc],
++        })
++
++    def _vdra_write(self, stream, row):
++        import os
++        log_dir = os.environ.get("VDRA_LOG_DIR", "")
++        if not log_dir:
++            return
++        from vdra_core import JsonlLogger
++        rank = os.environ.get("RANK", "0")
++        JsonlLogger(os.path.join(log_dir, f"{stream}.rank{rank}.jsonl")).write(row)
++
+     @GPUMemoryLogger(role="vllm rollout spmd", logger=logger)
+     @torch.no_grad()
+     def generate_sequences(self, prompts: DataProto, **kwargs) -> DataProto:
+@@ -798,6 +869,9 @@ class vLLMRollout(BaseRollout):
+             
+                 
+             root_to_infer_count = defaultdict(int) # 在加入到 samples_to_infer 时计数，方便用于后续 fallback，key 是 root_node: int
++            _vdra_proxy = {}
++            if divergence_policy == "vdra" and samples_to_go_deeper and self._vdra_cfg().proxy != "constant":
++                _vdra_proxy = self._vdra_estimate(samples_to_go_deeper, eos_token_id, next_infer_step)
+             if samples_to_go_deeper:
+                 logger.debug(f"[divergence] {len(samples_to_go_deeper)} roots to go deeper after step {next_infer_step}")
+                 for root_node in samples_to_go_deeper.keys():
+@@ -937,6 +1011,38 @@ class vLLMRollout(BaseRollout):
+                                 new_sample.input_ids = new_sample.init_input_ids + new_sample.full_response_token_ids
+                                 samples_to_infer.append(new_sample)
+                                 root_to_infer_count[root_node] += 1
++                    elif divergence_policy == "vdra":
++                        # VDRA: split TreePO's per-root divergence budget across the
++                        # active paths by estimated value dispersion (exact bounded
++                        # solver, n_min = 1).  Budget transfer, fallback, early stop,
++                        # advantage and loss are TreePO's own and unchanged.
++                        from vdra_core import QueueItem, allocate_queue
++                        group = samples_to_go_deeper[root_node]
++                        items = []
++                        for path_idx, sample in enumerate(group):
++                            est = _vdra_proxy.get((root_node, path_idx))
++                            items.append(QueueItem(
++                                node_id=f"{root_node}/{next_infer_step}/{path_idx}",
++                                coef=(est.coef if est is not None else 1.0),
++                                k_v=(est.k_v if est is not None else self._vdra_cfg().k0),
++                                nominal=fixed_step_width,
++                                capped=(est.capped if est is not None else False),
++                            ))
++                        if self._vdra_cfg().proxy == "constant":
++                            # Null test: reproduce TreePO's native fixed_avg split exactly.
++                            _avg = total_divergence // len(group)
++                            _rem = total_divergence % len(group)
++                            divergence_budgets = [max(1, _avg + (_rem if i + 1 == len(group) else 0))
++                                                  for i in range(len(group))]
++                        else:
++                            divergence_budgets = allocate_queue(items, n_min=1, budget=total_divergence)
++                        self._vdra_log_queue(root_node, next_infer_step, items, divergence_budgets, total_divergence)
++                        for path_idx, (sample, div_budget) in enumerate(zip(group, divergence_budgets)):
++                            for _ in range(div_budget):
++                                new_sample = copy.deepcopy(sample)
++                                new_sample.input_ids = new_sample.init_input_ids + new_sample.full_response_token_ids
++                                samples_to_infer.append(new_sample)
++                                root_to_infer_count[root_node] += 1
+                     else:
+                         raise NotImplementedError(f"divergence_policy {divergence_policy} not implemented")
+             

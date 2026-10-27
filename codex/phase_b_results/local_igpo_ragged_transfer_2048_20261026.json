@@ -1,0 +1,37 @@
+{
+  "device": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
+  "torch": "2.3.1+cu121",
+  "cuda": "12.1",
+  "date_utc": "2026-10-26T08:30:24.268113+00:00",
+  "shape": {
+    "batches": 48,
+    "batch_size": 8,
+    "padded_widths_cycle": [
+      512,
+      1024,
+      1536,
+      2048
+    ]
+  },
+  "median_ms": {
+    "cuda_boolean_index": 16.774400006397627,
+    "pad_and_concat_gpu": 18.29280001402367,
+    "pinned_host_staging": 10.339500004192814
+  },
+  "peak_extra_gpu_bytes": {
+    "cuda_boolean_index": 1952256,
+    "pad_and_concat_gpu": 6291456,
+    "pinned_host_staging": 0
+  },
+  "max_abs_value_delta_vs_boolean_index": {
+    "cuda_boolean_index": 0.0,
+    "pad_and_concat_gpu": 0.0,
+    "pinned_host_staging": 0.0
+  },
+  "measurement": "synthetic ragged [batch, sequence] CUDA log-probs; includes collection, one final synchronization/transfer, and Python-list reconstruction",
+  "speedup_vs_boolean_index": {
+    "cuda_boolean_index": 1.0,
+    "pad_and_concat_gpu": 0.9169946642142263,
+    "pinned_host_staging": 1.6223608491315218
+  }
+}

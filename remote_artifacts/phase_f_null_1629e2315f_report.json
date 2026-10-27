@@ -1,0 +1,25 @@
+{
+  "null_R1": {
+    "call_id": "3e0644cb589b45279c4b895bf077ce63",
+    "error": null,
+    "experiment": "R1",
+    "seeds": [
+      "42"
+    ],
+    "status": "complete"
+  },
+  "null_R2_constant": {
+    "call_id": "1367aaeb587843fab8b75e45bedfb353",
+    "error": null,
+    "experiment": "R2",
+    "seeds": [
+      "42"
+    ],
+    "status": "complete"
+  },
+  "null_R2_tv": {
+    "error": "FunctionTimeoutError: Task's current input in-01M5X1G0EVD8TF116P6K7TZQZB:1793049756146-0 hit its timeout of 480s",
+    "status": "failed"
+  },
+  "status": "failed"
+}

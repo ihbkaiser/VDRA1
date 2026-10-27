@@ -1,0 +1,1282 @@
+﻿[
+  {
+    "object_id": "ap-1mLCYjUwSrYr6ysfN4G9UH",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00171466"
+  },
+  {
+    "object_id": "ap-1mLCYjUwSrYr6ysfN4G9UH",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00108125"
+  },
+  {
+    "object_id": "ap-1mLCYjUwSrYr6ysfN4G9UH",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Network Egress",
+    "cost": "5.5E-7"
+  },
+  {
+    "object_id": "ap-1mLCYjUwSrYr6ysfN4G9UH",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "B200",
+    "cost": "0.27430585"
+  },
+  {
+    "object_id": "ap-23IKPZsW4tfovP9GhshrO1",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00769596"
+  },
+  {
+    "object_id": "ap-23IKPZsW4tfovP9GhshrO1",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00932317"
+  },
+  {
+    "object_id": "ap-23IKPZsW4tfovP9GhshrO1",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "Network Egress",
+    "cost": "0.00000516"
+  },
+  {
+    "object_id": "ap-23IKPZsW4tfovP9GhshrO1",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "B200",
+    "cost": "0.75351194"
+  },
+  {
+    "object_id": "ap-2pYNlYgA1OPe0LHihteli2",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00218473"
+  },
+  {
+    "object_id": "ap-2pYNlYgA1OPe0LHihteli2",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00105831"
+  },
+  {
+    "object_id": "ap-2pYNlYgA1OPe0LHihteli2",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Network Egress",
+    "cost": "0.00000131"
+  },
+  {
+    "object_id": "ap-2pYNlYgA1OPe0LHihteli2",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "B200",
+    "cost": "0.24305595"
+  },
+  {
+    "object_id": "ap-4JeQbbvfTz2mciiwupbIMN",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00201040"
+  },
+  {
+    "object_id": "ap-4JeQbbvfTz2mciiwupbIMN",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00021739"
+  },
+  {
+    "object_id": "ap-4JeQbbvfTz2mciiwupbIMN",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "Network Egress",
+    "cost": "0.00000143"
+  },
+  {
+    "object_id": "ap-4JeQbbvfTz2mciiwupbIMN",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "B200",
+    "cost": "0.18055679"
+  },
+  {
+    "object_id": "ap-4Lg4pPNoCXGV8BRvUeOjrR",
+    "description": "vdra-logprob-compare",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00153223"
+  },
+  {
+    "object_id": "ap-4Lg4pPNoCXGV8BRvUeOjrR",
+    "description": "vdra-logprob-compare",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00040727"
+  },
+  {
+    "object_id": "ap-4Lg4pPNoCXGV8BRvUeOjrR",
+    "description": "vdra-logprob-compare",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Network Egress",
+    "cost": "2.7E-7"
+  },
+  {
+    "object_id": "ap-4Lg4pPNoCXGV8BRvUeOjrR",
+    "description": "vdra-logprob-compare",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "H100",
+    "cost": "0.12727782"
+  },
+  {
+    "object_id": "ap-7sPdrYukDZBCGlWdPWeqMv",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00260744"
+  },
+  {
+    "object_id": "ap-7sPdrYukDZBCGlWdPWeqMv",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00021289"
+  },
+  {
+    "object_id": "ap-7sPdrYukDZBCGlWdPWeqMv",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Network Egress",
+    "cost": "0.00007763"
+  },
+  {
+    "object_id": "ap-7wX4GZm4DxNfc1qpTbwNlt",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00999066"
+  },
+  {
+    "object_id": "ap-7wX4GZm4DxNfc1qpTbwNlt",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00049719"
+  },
+  {
+    "object_id": "ap-7wX4GZm4DxNfc1qpTbwNlt",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Network Egress",
+    "cost": "0.00090175"
+  },
+  {
+    "object_id": "ap-7wX4GZm4DxNfc1qpTbwNlt",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "B200",
+    "cost": "0.03418388"
+  },
+  {
+    "object_id": "ap-8BER0BMEeMiflFHragTu5o",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00139108"
+  },
+  {
+    "object_id": "ap-8BER0BMEeMiflFHragTu5o",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00006081"
+  },
+  {
+    "object_id": "ap-8BER0BMEeMiflFHragTu5o",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "Network Egress",
+    "cost": "0.00000485"
+  },
+  {
+    "object_id": "ap-9CBv6nKR1dSSeAqZosUH4l",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00301426"
+  },
+  {
+    "object_id": "ap-9CBv6nKR1dSSeAqZosUH4l",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00029183"
+  },
+  {
+    "object_id": "ap-9CBv6nKR1dSSeAqZosUH4l",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "Network Egress",
+    "cost": "0.00000545"
+  },
+  {
+    "object_id": "ap-9CBv6nKR1dSSeAqZosUH4l",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "B200",
+    "cost": "0.21249477"
+  },
+  {
+    "object_id": "ap-BSDPpE7vaAO5XHpt2rOyoJ",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00797363"
+  },
+  {
+    "object_id": "ap-BSDPpE7vaAO5XHpt2rOyoJ",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00017839"
+  },
+  {
+    "object_id": "ap-BSDPpE7vaAO5XHpt2rOyoJ",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Network Egress",
+    "cost": "0.00028557"
+  },
+  {
+    "object_id": "ap-CGZYekRCByIvw0ESj860Ql",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00189002"
+  },
+  {
+    "object_id": "ap-CGZYekRCByIvw0ESj860Ql",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00008488"
+  },
+  {
+    "object_id": "ap-CGZYekRCByIvw0ESj860Ql",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "Network Egress",
+    "cost": "0.00000562"
+  },
+  {
+    "object_id": "ap-DG6fwsFQ6KtTo5HaSdSCbx",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00583807"
+  },
+  {
+    "object_id": "ap-DG6fwsFQ6KtTo5HaSdSCbx",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00174999"
+  },
+  {
+    "object_id": "ap-DG6fwsFQ6KtTo5HaSdSCbx",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Network Egress",
+    "cost": "0.00029640"
+  },
+  {
+    "object_id": "ap-DG6fwsFQ6KtTo5HaSdSCbx",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "B200",
+    "cost": "0.66319511"
+  },
+  {
+    "object_id": "ap-DJ2lH2wfUIZRhHN868tB8C",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00894288"
+  },
+  {
+    "object_id": "ap-DJ2lH2wfUIZRhHN868tB8C",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00067110"
+  },
+  {
+    "object_id": "ap-DJ2lH2wfUIZRhHN868tB8C",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Network Egress",
+    "cost": "0.00015144"
+  },
+  {
+    "object_id": "ap-E18zNSW9VfVSvFY2v5FQxe",
+    "description": "vdra-logprob-compare",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00117564"
+  },
+  {
+    "object_id": "ap-E18zNSW9VfVSvFY2v5FQxe",
+    "description": "vdra-logprob-compare",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00034748"
+  },
+  {
+    "object_id": "ap-E18zNSW9VfVSvFY2v5FQxe",
+    "description": "vdra-logprob-compare",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Network Egress",
+    "cost": "2.6E-7"
+  },
+  {
+    "object_id": "ap-E18zNSW9VfVSvFY2v5FQxe",
+    "description": "vdra-logprob-compare",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "H100",
+    "cost": "0.10094476"
+  },
+  {
+    "object_id": "ap-EoImpd3FoFI8fRRpDpmpW9",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00728573"
+  },
+  {
+    "object_id": "ap-EoImpd3FoFI8fRRpDpmpW9",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00230742"
+  },
+  {
+    "object_id": "ap-EoImpd3FoFI8fRRpDpmpW9",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "Network Egress",
+    "cost": "0.00000517"
+  },
+  {
+    "object_id": "ap-EoImpd3FoFI8fRRpDpmpW9",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "B200",
+    "cost": "0.71552272"
+  },
+  {
+    "object_id": "ap-GAWqLw1DNtx2pGi4TtuUA1",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00164816"
+  },
+  {
+    "object_id": "ap-GAWqLw1DNtx2pGi4TtuUA1",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00008004"
+  },
+  {
+    "object_id": "ap-GAWqLw1DNtx2pGi4TtuUA1",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "Network Egress",
+    "cost": "0.00000500"
+  },
+  {
+    "object_id": "ap-HF2Q6w4O6iRZXImurx7Ww9",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00174995"
+  },
+  {
+    "object_id": "ap-HF2Q6w4O6iRZXImurx7Ww9",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00010349"
+  },
+  {
+    "object_id": "ap-HF2Q6w4O6iRZXImurx7Ww9",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "Network Egress",
+    "cost": "0.00000484"
+  },
+  {
+    "object_id": "ap-IReT6pw7TllX07ZH5HcYVs",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00496761"
+  },
+  {
+    "object_id": "ap-IReT6pw7TllX07ZH5HcYVs",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00080869"
+  },
+  {
+    "object_id": "ap-IReT6pw7TllX07ZH5HcYVs",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Network Egress",
+    "cost": "7.6E-7"
+  },
+  {
+    "object_id": "ap-IReT6pw7TllX07ZH5HcYVs",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "B200",
+    "cost": "0.55904521"
+  },
+  {
+    "object_id": "ap-K25H1YY5HKJuNnLx3OHwHT",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00151756"
+  },
+  {
+    "object_id": "ap-K25H1YY5HKJuNnLx3OHwHT",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00007205"
+  },
+  {
+    "object_id": "ap-K25H1YY5HKJuNnLx3OHwHT",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "Network Egress",
+    "cost": "0.00000500"
+  },
+  {
+    "object_id": "ap-KJ2v65IPxBvPS1XdrSW0T6",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00083962"
+  },
+  {
+    "object_id": "ap-KJ2v65IPxBvPS1XdrSW0T6",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00008399"
+  },
+  {
+    "object_id": "ap-KJ2v65IPxBvPS1XdrSW0T6",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "B200",
+    "cost": "0.11458286"
+  },
+  {
+    "object_id": "ap-LD96raukevgemQICdcH2Yw",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00021025"
+  },
+  {
+    "object_id": "ap-LD96raukevgemQICdcH2Yw",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00014224"
+  },
+  {
+    "object_id": "ap-LD96raukevgemQICdcH2Yw",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Network Egress",
+    "cost": "1E-8"
+  },
+  {
+    "object_id": "ap-MNRe1ikA6t2HAUPfRnQSGM",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00153009"
+  },
+  {
+    "object_id": "ap-MNRe1ikA6t2HAUPfRnQSGM",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00012250"
+  },
+  {
+    "object_id": "ap-MNRe1ikA6t2HAUPfRnQSGM",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "Network Egress",
+    "cost": "0.00000151"
+  },
+  {
+    "object_id": "ap-MNRe1ikA6t2HAUPfRnQSGM",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "B200",
+    "cost": "0.12152845"
+  },
+  {
+    "object_id": "ap-MhfXvS4bCg1yElP0bY2pa6",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00200847"
+  },
+  {
+    "object_id": "ap-MhfXvS4bCg1yElP0bY2pa6",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00021678"
+  },
+  {
+    "object_id": "ap-MhfXvS4bCg1yElP0bY2pa6",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "Network Egress",
+    "cost": "0.00000174"
+  },
+  {
+    "object_id": "ap-MhfXvS4bCg1yElP0bY2pa6",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "B200",
+    "cost": "0.19444449"
+  },
+  {
+    "object_id": "ap-OhXyY9unTkggJFJcfZD4gX",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "CPU",
+    "cost": "0.01453426"
+  },
+  {
+    "object_id": "ap-OhXyY9unTkggJFJcfZD4gX",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00474023"
+  },
+  {
+    "object_id": "ap-OhXyY9unTkggJFJcfZD4gX",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Network Egress",
+    "cost": "0.00016452"
+  },
+  {
+    "object_id": "ap-OhXyY9unTkggJFJcfZD4gX",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "B200",
+    "cost": "1.18758630"
+  },
+  {
+    "object_id": "ap-PifBDE3hYUoWha2cnZgj0E",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00361510"
+  },
+  {
+    "object_id": "ap-PifBDE3hYUoWha2cnZgj0E",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00203778"
+  },
+  {
+    "object_id": "ap-PifBDE3hYUoWha2cnZgj0E",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Network Egress",
+    "cost": "0.00035092"
+  },
+  {
+    "object_id": "ap-QLwIdM0IX9fUvLN38qRJSt",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00857387"
+  },
+  {
+    "object_id": "ap-QLwIdM0IX9fUvLN38qRJSt",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00287429"
+  },
+  {
+    "object_id": "ap-QLwIdM0IX9fUvLN38qRJSt",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "Network Egress",
+    "cost": "0.00000501"
+  },
+  {
+    "object_id": "ap-QLwIdM0IX9fUvLN38qRJSt",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "B200",
+    "cost": "0.90972444"
+  },
+  {
+    "object_id": "ap-TGCaSJ0aMhw52JxOAqBZ6j",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00736812"
+  },
+  {
+    "object_id": "ap-TGCaSJ0aMhw52JxOAqBZ6j",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "Memory",
+    "cost": "0.01062656"
+  },
+  {
+    "object_id": "ap-TGCaSJ0aMhw52JxOAqBZ6j",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "Network Egress",
+    "cost": "0.00000567"
+  },
+  {
+    "object_id": "ap-TGCaSJ0aMhw52JxOAqBZ6j",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "B200",
+    "cost": "0.90624403"
+  },
+  {
+    "object_id": "ap-V3atMKT0f78sKB3jTN9sIX",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00141921"
+  },
+  {
+    "object_id": "ap-V3atMKT0f78sKB3jTN9sIX",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00061069"
+  },
+  {
+    "object_id": "ap-V3atMKT0f78sKB3jTN9sIX",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "Network Egress",
+    "cost": "0.00000133"
+  },
+  {
+    "object_id": "ap-VTyRIiEj3VnCPJGvYjWCb7",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00428720"
+  },
+  {
+    "object_id": "ap-VTyRIiEj3VnCPJGvYjWCb7",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00324681"
+  },
+  {
+    "object_id": "ap-VTyRIiEj3VnCPJGvYjWCb7",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "Network Egress",
+    "cost": "0.00000176"
+  },
+  {
+    "object_id": "ap-VTyRIiEj3VnCPJGvYjWCb7",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "B200",
+    "cost": "0.45138936"
+  },
+  {
+    "object_id": "ap-YhNk0CIRoP7dE20bxXws95",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "CPU",
+    "cost": "0.01096114"
+  },
+  {
+    "object_id": "ap-YhNk0CIRoP7dE20bxXws95",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00461554"
+  },
+  {
+    "object_id": "ap-YhNk0CIRoP7dE20bxXws95",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Network Egress",
+    "cost": "0.00000256"
+  },
+  {
+    "object_id": "ap-YhNk0CIRoP7dE20bxXws95",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "B200",
+    "cost": "1.40991517"
+  },
+  {
+    "object_id": "ap-cFD0Dn6urq5knQHqwFVIAF",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00822477"
+  },
+  {
+    "object_id": "ap-cFD0Dn6urq5knQHqwFVIAF",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00027771"
+  },
+  {
+    "object_id": "ap-cFD0Dn6urq5knQHqwFVIAF",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Network Egress",
+    "cost": "0.00080058"
+  },
+  {
+    "object_id": "ap-d0FnzD1ASE18abWQJ6Ow1F",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00164578"
+  },
+  {
+    "object_id": "ap-d0FnzD1ASE18abWQJ6Ow1F",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00065437"
+  },
+  {
+    "object_id": "ap-d0FnzD1ASE18abWQJ6Ow1F",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Network Egress",
+    "cost": "0.00000152"
+  },
+  {
+    "object_id": "ap-d0FnzD1ASE18abWQJ6Ow1F",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "B200",
+    "cost": "0.19097249"
+  },
+  {
+    "object_id": "ap-eTepRhuHQqPALonjjT1aGt",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00197102"
+  },
+  {
+    "object_id": "ap-eTepRhuHQqPALonjjT1aGt",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00017300"
+  },
+  {
+    "object_id": "ap-eTepRhuHQqPALonjjT1aGt",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "Network Egress",
+    "cost": "0.00000136"
+  },
+  {
+    "object_id": "ap-eTepRhuHQqPALonjjT1aGt",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "B200",
+    "cost": "0.16357391"
+  },
+  {
+    "object_id": "ap-fEhUGJEkSZAedlgMBzhutd",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00125977"
+  },
+  {
+    "object_id": "ap-fEhUGJEkSZAedlgMBzhutd",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00008031"
+  },
+  {
+    "object_id": "ap-fEhUGJEkSZAedlgMBzhutd",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "Network Egress",
+    "cost": "0.00000487"
+  },
+  {
+    "object_id": "ap-iEmgnBEOpAvKemkCbd8lVP",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00412907"
+  },
+  {
+    "object_id": "ap-iEmgnBEOpAvKemkCbd8lVP",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00065879"
+  },
+  {
+    "object_id": "ap-iEmgnBEOpAvKemkCbd8lVP",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Network Egress",
+    "cost": "7.3E-7"
+  },
+  {
+    "object_id": "ap-iEmgnBEOpAvKemkCbd8lVP",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "B200",
+    "cost": "0.46540927"
+  },
+  {
+    "object_id": "ap-lxwyhdCIJzXz8OpLgsKbhr",
+    "description": "vdra-phase-d-igpo-mem25-03",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "CPU",
+    "cost": "0.01555630"
+  },
+  {
+    "object_id": "ap-lxwyhdCIJzXz8OpLgsKbhr",
+    "description": "vdra-phase-d-igpo-mem25-03",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "Memory",
+    "cost": "0.02458826"
+  },
+  {
+    "object_id": "ap-lxwyhdCIJzXz8OpLgsKbhr",
+    "description": "vdra-phase-d-igpo-mem25-03",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "Network Egress",
+    "cost": "0.00000547"
+  },
+  {
+    "object_id": "ap-lxwyhdCIJzXz8OpLgsKbhr",
+    "description": "vdra-phase-d-igpo-mem25-03",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "B200",
+    "cost": "1.63194576"
+  },
+  {
+    "object_id": "ap-m4SvuQgzJoQrMXbBgA0Csg",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00250255"
+  },
+  {
+    "object_id": "ap-m4SvuQgzJoQrMXbBgA0Csg",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00144720"
+  },
+  {
+    "object_id": "ap-m4SvuQgzJoQrMXbBgA0Csg",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Network Egress",
+    "cost": "0.00000484"
+  },
+  {
+    "object_id": "ap-qftHDjb5FwmxZ8Qh7a9r45",
+    "description": "vdra-logprob-compare",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00546933"
+  },
+  {
+    "object_id": "ap-qftHDjb5FwmxZ8Qh7a9r45",
+    "description": "vdra-logprob-compare",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00086089"
+  },
+  {
+    "object_id": "ap-qftHDjb5FwmxZ8Qh7a9r45",
+    "description": "vdra-logprob-compare",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Network Egress",
+    "cost": "0.00006707"
+  },
+  {
+    "object_id": "ap-qftHDjb5FwmxZ8Qh7a9r45",
+    "description": "vdra-logprob-compare",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "B200",
+    "cost": "0.15277724"
+  },
+  {
+    "object_id": "ap-qftHDjb5FwmxZ8Qh7a9r45",
+    "description": "vdra-logprob-compare",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "H100",
+    "cost": "0.11092636"
+  },
+  {
+    "object_id": "ap-roBN7nJRBEgDl4hmhnmfQK",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00524879"
+  },
+  {
+    "object_id": "ap-roBN7nJRBEgDl4hmhnmfQK",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00176653"
+  },
+  {
+    "object_id": "ap-roBN7nJRBEgDl4hmhnmfQK",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Network Egress",
+    "cost": "0.00000119"
+  },
+  {
+    "object_id": "ap-roBN7nJRBEgDl4hmhnmfQK",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "B200",
+    "cost": "0.65625096"
+  },
+  {
+    "object_id": "ap-u0DaKYPkxWwrzfNj2J9AjZ",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00231130"
+  },
+  {
+    "object_id": "ap-u0DaKYPkxWwrzfNj2J9AjZ",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00130992"
+  },
+  {
+    "object_id": "ap-u0DaKYPkxWwrzfNj2J9AjZ",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Network Egress",
+    "cost": "0.00000157"
+  },
+  {
+    "object_id": "ap-u0DaKYPkxWwrzfNj2J9AjZ",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "B200",
+    "cost": "0.25706586"
+  },
+  {
+    "object_id": "ap-w2mkxkOA0vta19tie2jduN",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00066680"
+  },
+  {
+    "object_id": "ap-w2mkxkOA0vta19tie2jduN",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00004671"
+  },
+  {
+    "object_id": "ap-w2mkxkOA0vta19tie2jduN",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Network Egress",
+    "cost": "0.00000138"
+  },
+  {
+    "object_id": "ap-w2mkxkOA0vta19tie2jduN",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "B200",
+    "cost": "0.01742823"
+  },
+  {
+    "object_id": "ap-xYysgMYnExz3KEwQvhho32",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00489309"
+  },
+  {
+    "object_id": "ap-xYysgMYnExz3KEwQvhho32",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00079667"
+  },
+  {
+    "object_id": "ap-xYysgMYnExz3KEwQvhho32",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "Network Egress",
+    "cost": "6.7E-7"
+  },
+  {
+    "object_id": "ap-xYysgMYnExz3KEwQvhho32",
+    "description": "vdra-experiments",
+    "environment": "main",
+    "interval_start": "2026-10-25T00:00:00",
+    "resource": "B200",
+    "cost": "0.56250017"
+  },
+  {
+    "object_id": "ap-xyvMvqRWHyKD6aiVloXQ4v",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00331537"
+  },
+  {
+    "object_id": "ap-xyvMvqRWHyKD6aiVloXQ4v",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00026369"
+  },
+  {
+    "object_id": "ap-xyvMvqRWHyKD6aiVloXQ4v",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "Network Egress",
+    "cost": "0.00000574"
+  },
+  {
+    "object_id": "ap-xyvMvqRWHyKD6aiVloXQ4v",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "B200",
+    "cost": "0.17013857"
+  },
+  {
+    "object_id": "ap-ylyTgjBfr99VTG8RM1XEYc",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "CPU",
+    "cost": "0.00001971"
+  },
+  {
+    "object_id": "ap-ylyTgjBfr99VTG8RM1XEYc",
+    "description": "vdra-experiments-phase-d",
+    "environment": "main",
+    "interval_start": "2026-10-26T00:00:00",
+    "resource": "Memory",
+    "cost": "0.00000333"
+  }
+]

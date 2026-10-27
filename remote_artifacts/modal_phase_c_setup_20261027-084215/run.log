@@ -1,0 +1,530 @@
+✓ Initialized. View run at 
+https://modal.com/apps/kieusontung6/main/ap-tYGyZfud1GutAAkQlXtAJL
+2026-10-27 15:42:25+07:00 Building image im-DpC5yzVPWmqJGN91bvdAmT
+2026-10-27 15:42:25+07:00 
+2026-10-27 15:42:25+07:00 => Step 0: FROM base
+2026-10-27 15:42:25+07:00 
+2026-10-27 15:42:25+07:00 => Step 1: COPY . /
+2026-10-27 15:42:27+07:00 Saving image...
+2026-10-27 15:42:29+07:00 Image saved, took 1.69s
+2026-10-27 15:42:29+07:00 
+2026-10-27 15:42:29+07:00 Built image im-DpC5yzVPWmqJGN91bvdAmT in 4.23s
+2026-10-27 15:42:29+07:00 
+2026-10-27 15:42:29+07:00 
+2026-10-27 15:42:36+07:00 Building image im-TXhr5vhMBxuK1v0GjLbcVH
+2026-10-27 15:42:37+07:00 
+2026-10-27 15:42:37+07:00 => Step 0: FROM base
+2026-10-27 15:42:37+07:00 
+2026-10-27 15:42:37+07:00 => Step 1: COPY . /
+2026-10-27 15:42:41+07:00 Saving image...
+2026-10-27 15:42:42+07:00 Image saved, took 1.32s
+2026-10-27 15:42:42+07:00 
+2026-10-27 15:42:42+07:00 Built image im-TXhr5vhMBxuK1v0GjLbcVH in 6.11s
+2026-10-27 15:42:42+07:00 
+2026-10-27 15:42:42+07:00 
+2026-10-27 15:42:49+07:00 Building image im-guHLlbmBByer3isflrho0L
+2026-10-27 15:42:50+07:00 
+2026-10-27 15:42:50+07:00 => Step 0: FROM base
+2026-10-27 15:42:50+07:00 
+2026-10-27 15:42:50+07:00 => Step 1: COPY . /
+2026-10-27 15:42:52+07:00 Saving image...
+2026-10-27 15:42:53+07:00 Image saved, took 1.24s
+2026-10-27 15:42:53+07:00 
+2026-10-27 15:42:53+07:00 Built image im-guHLlbmBByer3isflrho0L in 3.86s
+2026-10-27 15:42:53+07:00 
+2026-10-27 15:42:53+07:00 
+2026-10-27 15:42:56+07:00 Building image im-V27ZQ0jV4hZ3wnUsxL9C2Y
+2026-10-27 15:42:57+07:00 
+2026-10-27 15:42:57+07:00 => Step 0: FROM base
+2026-10-27 15:42:57+07:00 
+2026-10-27 15:42:57+07:00 => Step 1: COPY . /
+2026-10-27 15:43:01+07:00 Saving image...
+2026-10-27 15:43:02+07:00 Image saved, took 1.21s
+2026-10-27 15:43:02+07:00 
+2026-10-27 15:43:02+07:00 Built image im-V27ZQ0jV4hZ3wnUsxL9C2Y in 5.97s
+2026-10-27 15:43:02+07:00 
+2026-10-27 15:43:02+07:00 
+2026-10-27 15:43:03+07:00 Building image im-VAjdoEC8iIyCOe8LCO8DbW
+2026-10-27 15:43:04+07:00 
+2026-10-27 15:43:04+07:00 => Step 0: FROM base
+2026-10-27 15:43:04+07:00 
+2026-10-27 15:43:04+07:00 => Step 1: RUN python -m pip install deepspeed==0.16.5
+2026-10-27 15:43:04+07:00 Building image im-G0dPjoFuHjM1mqHtISfZkq
+2026-10-27 15:43:05+07:00 
+2026-10-27 15:43:05+07:00 => Step 0: FROM base
+2026-10-27 15:43:05+07:00 
+2026-10-27 15:43:05+07:00 => Step 1: RUN python -m pip install --no-deps -e /opt/work/TreePO
+2026-10-27 15:43:06+07:00 Looking in indexes: http://pypi-mirror.modal.local:5555/simple
+2026-10-27 15:43:06+07:00 Obtaining file:///opt/work/TreePO
+2026-10-27 15:43:06+07:00   Installing build dependencies: started
+2026-10-27 15:43:08+07:00 Looking in indexes: http://pypi-mirror.modal.local:5555/simple
+2026-10-27 15:43:08+07:00 Collecting deepspeed==0.16.5
+2026-10-27 15:43:08+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/deepspeed/deepspeed-0.16.5.tar.gz (1.5 MB)
+2026-10-27 15:43:08+07:00      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.5/1.5 MB 142.8 MB/s eta 0:00:00
+2026-10-27 15:43:08+07:00   Installing build dependencies: started
+2026-10-27 15:43:09+07:00   Installing build dependencies: finished with status 'done'
+2026-10-27 15:43:09+07:00   Checking if build backend supports build_editable: started
+2026-10-27 15:43:09+07:00   Checking if build backend supports build_editable: finished with status 'done'
+2026-10-27 15:43:09+07:00   Getting requirements to build editable: started
+2026-10-27 15:43:09+07:00   Getting requirements to build editable: finished with status 'done'
+2026-10-27 15:43:09+07:00   Preparing editable metadata (pyproject.toml): started
+2026-10-27 15:43:09+07:00   Preparing editable metadata (pyproject.toml): finished with status 'done'
+2026-10-27 15:43:10+07:00 Building wheels for collected packages: verl
+2026-10-27 15:43:10+07:00   Building editable for verl (pyproject.toml): started
+2026-10-27 15:43:10+07:00   Building editable for verl (pyproject.toml): finished with status 'done'
+2026-10-27 15:43:10+07:00   Created wheel for verl: filename=verl-0.3.1.dev0-0.editable-py3-none-any.whl size=10999 sha256=a143f31d87032fae332d52bff9ffb68f7185213cd4bfd79de7e92f653e4ae688
+2026-10-27 15:43:10+07:00   Stored in directory: /tmp/pip-ephem-wheel-cache-art6k4pq/wheels/22/ce/4f/7491cf00d666ffc66fd328590b462e062060630839435a5739
+2026-10-27 15:43:10+07:00 Successfully built verl
+2026-10-27 15:43:10+07:00 Installing collected packages: verl
+2026-10-27 15:43:10+07:00 Successfully installed verl-0.3.1.dev0
+2026-10-27 15:43:10+07:00 
+2026-10-27 15:43:10+07:00 [notice] A new release of pip is available: 23.2.1 -> 26.2.2
+2026-10-27 15:43:10+07:00 [notice] To update, run: pip install --upgrade pip
+2026-10-27 15:43:11+07:00   Installing build dependencies: finished with status 'done'
+2026-10-27 15:43:11+07:00   Getting requirements to build wheel: started
+2026-10-27 15:43:11+07:00 Saving image...
+2026-10-27 15:43:12+07:00   Getting requirements to build wheel: finished with status 'done'
+2026-10-27 15:43:12+07:00   Preparing metadata (pyproject.toml): started
+2026-10-27 15:43:12+07:00   Preparing metadata (pyproject.toml): finished with status 'done'
+2026-10-27 15:43:12+07:00 Requirement already satisfied: einops in /usr/local/lib/python3.10/site-packages (from deepspeed==0.16.5) (0.8.1)
+2026-10-27 15:43:12+07:00 Collecting hjson (from deepspeed==0.16.5)
+2026-10-27 15:43:12+07:00   Obtaining dependency information for hjson from http://pypi-mirror.modal.local:5555/simple/hjson/hjson-3.1.0-py3-none-any.whl.metadata
+2026-10-27 15:43:12+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/hjson/hjson-3.1.0-py3-none-any.whl.metadata (2.6 kB)
+2026-10-27 15:43:12+07:00 Requirement already satisfied: msgpack in /usr/local/lib/python3.10/site-packages (from deepspeed==0.16.5) (1.2.4)
+2026-10-27 15:43:12+07:00 Requirement already satisfied: ninja in /usr/local/lib/python3.10/site-packages (from deepspeed==0.16.5) (1.13.2)
+2026-10-27 15:43:12+07:00 Requirement already satisfied: numpy in /usr/local/lib/python3.10/site-packages (from deepspeed==0.16.5) (1.26.4)
+2026-10-27 15:43:12+07:00 Requirement already satisfied: packaging>=20.0 in /usr/local/lib/python3.10/site-packages (from deepspeed==0.16.5) (26.3)
+2026-10-27 15:43:12+07:00 Requirement already satisfied: psutil in /usr/local/lib/python3.10/site-packages (from deepspeed==0.16.5) (7.2.2)
+2026-10-27 15:43:12+07:00 Requirement already satisfied: py-cpuinfo in /usr/local/lib/python3.10/site-packages (from deepspeed==0.16.5) (9.0.0)
+2026-10-27 15:43:12+07:00 Requirement already satisfied: pydantic>=2.0.0 in /usr/local/lib/python3.10/site-packages (from deepspeed==0.16.5) (2.14.1)
+2026-10-27 15:43:12+07:00 Requirement already satisfied: torch in /usr/local/lib/python3.10/site-packages (from deepspeed==0.16.5) (2.7.0+cu128)
+2026-10-27 15:43:12+07:00 Requirement already satisfied: tqdm in /usr/local/lib/python3.10/site-packages (from deepspeed==0.16.5) (4.70.1)
+2026-10-27 15:43:12+07:00 Requirement already satisfied: annotated-types>=0.6.0 in /usr/local/lib/python3.10/site-packages (from pydantic>=2.0.0->deepspeed==0.16.5) (0.8.0)
+2026-10-27 15:43:12+07:00 Requirement already satisfied: pydantic-core==2.50.1 in /usr/local/lib/python3.10/site-packages (from pydantic>=2.0.0->deepspeed==0.16.5) (2.50.1)
+2026-10-27 15:43:12+07:00 Requirement already satisfied: typing-extensions>=4.16.0 in /usr/local/lib/python3.10/site-packages (from pydantic>=2.0.0->deepspeed==0.16.5) (4.16.0)
+2026-10-27 15:43:12+07:00 Requirement already satisfied: typing-inspection>=0.4.4 in /usr/local/lib/python3.10/site-packages (from pydantic>=2.0.0->deepspeed==0.16.5) (0.4.4)
+2026-10-27 15:43:12+07:00 Requirement already satisfied: filelock in /usr/local/lib/python3.10/site-packages (from torch->deepspeed==0.16.5) (3.32.3)
+2026-10-27 15:43:12+07:00 Requirement already satisfied: sympy>=1.13.3 in /usr/local/lib/python3.10/site-packages (from torch->deepspeed==0.16.5) (1.14.0)
+2026-10-27 15:43:12+07:00 Requirement already satisfied: networkx in /usr/local/lib/python3.10/site-packages (from torch->deepspeed==0.16.5) (3.4.2)
+2026-10-27 15:43:12+07:00 Requirement already satisfied: jinja2 in /usr/local/lib/python3.10/site-packages (from torch->deepspeed==0.16.5) (3.1.6)
+2026-10-27 15:43:12+07:00 Requirement already satisfied: fsspec in /usr/local/lib/python3.10/site-packages (from torch->deepspeed==0.16.5) (2023.10.0)
+2026-10-27 15:43:12+07:00 Requirement already satisfied: nvidia-cuda-nvrtc-cu12==12.8.61 in /usr/local/lib/python3.10/site-packages (from torch->deepspeed==0.16.5) (12.8.61)
+2026-10-27 15:43:12+07:00 Requirement already satisfied: nvidia-cuda-runtime-cu12==12.8.57 in /usr/local/lib/python3.10/site-packages (from torch->deepspeed==0.16.5) (12.8.57)
+2026-10-27 15:43:12+07:00 Requirement already satisfied: nvidia-cuda-cupti-cu12==12.8.57 in /usr/local/lib/python3.10/site-packages (from torch->deepspeed==0.16.5) (12.8.57)
+2026-10-27 15:43:12+07:00 Requirement already satisfied: nvidia-cudnn-cu12==9.7.1.26 in /usr/local/lib/python3.10/site-packages (from torch->deepspeed==0.16.5) (9.7.1.26)
+2026-10-27 15:43:12+07:00 Requirement already satisfied: nvidia-cublas-cu12==12.8.3.14 in /usr/local/lib/python3.10/site-packages (from torch->deepspeed==0.16.5) (12.8.3.14)
+2026-10-27 15:43:12+07:00 Requirement already satisfied: nvidia-cufft-cu12==11.3.3.41 in /usr/local/lib/python3.10/site-packages (from torch->deepspeed==0.16.5) (11.3.3.41)
+2026-10-27 15:43:12+07:00 Requirement already satisfied: nvidia-curand-cu12==10.3.9.55 in /usr/local/lib/python3.10/site-packages (from torch->deepspeed==0.16.5) (10.3.9.55)
+2026-10-27 15:43:12+07:00 Requirement already satisfied: nvidia-cusolver-cu12==11.7.2.55 in /usr/local/lib/python3.10/site-packages (from torch->deepspeed==0.16.5) (11.7.2.55)
+2026-10-27 15:43:12+07:00 Requirement already satisfied: nvidia-cusparse-cu12==12.5.7.53 in /usr/local/lib/python3.10/site-packages (from torch->deepspeed==0.16.5) (12.5.7.53)
+2026-10-27 15:43:12+07:00 Requirement already satisfied: nvidia-cusparselt-cu12==0.6.3 in /usr/local/lib/python3.10/site-packages (from torch->deepspeed==0.16.5) (0.6.3)
+2026-10-27 15:43:12+07:00 Requirement already satisfied: nvidia-nccl-cu12==2.26.2 in /usr/local/lib/python3.10/site-packages (from torch->deepspeed==0.16.5) (2.26.2)
+2026-10-27 15:43:12+07:00 Requirement already satisfied: nvidia-nvtx-cu12==12.8.55 in /usr/local/lib/python3.10/site-packages (from torch->deepspeed==0.16.5) (12.8.55)
+2026-10-27 15:43:12+07:00 Requirement already satisfied: nvidia-nvjitlink-cu12==12.8.61 in /usr/local/lib/python3.10/site-packages (from torch->deepspeed==0.16.5) (12.8.61)
+2026-10-27 15:43:12+07:00 Requirement already satisfied: nvidia-cufile-cu12==1.13.0.11 in /usr/local/lib/python3.10/site-packages (from torch->deepspeed==0.16.5) (1.13.0.11)
+2026-10-27 15:43:12+07:00 Requirement already satisfied: triton==3.3.0 in /usr/local/lib/python3.10/site-packages (from torch->deepspeed==0.16.5) (3.3.0)
+2026-10-27 15:43:12+07:00 Requirement already satisfied: setuptools>=40.8.0 in /usr/local/lib/python3.10/site-packages (from triton==3.3.0->torch->deepspeed==0.16.5) (68.1.2)
+2026-10-27 15:43:12+07:00 Requirement already satisfied: mpmath<1.4,>=1.1.0 in /usr/local/lib/python3.10/site-packages (from sympy>=1.13.3->torch->deepspeed==0.16.5) (1.3.0)
+2026-10-27 15:43:12+07:00 Requirement already satisfied: MarkupSafe>=2.0 in /usr/local/lib/python3.10/site-packages (from jinja2->torch->deepspeed==0.16.5) (3.0.3)
+2026-10-27 15:43:12+07:00 Downloading http://pypi-mirror.modal.local:5555/simple/hjson/hjson-3.1.0-py3-none-any.whl (54 kB)
+2026-10-27 15:43:12+07:00    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 54.0/54.0 kB 331.2 MB/s eta 0:00:00
+2026-10-27 15:43:12+07:00 Building wheels for collected packages: deepspeed
+2026-10-27 15:43:12+07:00   Building wheel for deepspeed (pyproject.toml): started
+2026-10-27 15:43:13+07:00 Image saved, took 1.49s
+2026-10-27 15:43:13+07:00 
+2026-10-27 15:43:13+07:00 Built image im-G0dPjoFuHjM1mqHtISfZkq in 8.77s
+2026-10-27 15:43:13+07:00 
+2026-10-27 15:43:13+07:00 
+2026-10-27 15:43:14+07:00   Building wheel for deepspeed (pyproject.toml): finished with status 'done'
+2026-10-27 15:43:14+07:00   Created wheel for deepspeed: filename=deepspeed-0.16.5-py3-none-any.whl size=1580591 sha256=5695a81f5b3b3ce6aece676fe570d4f9cbfa005681656de62d1656f6fbcb600b
+2026-10-27 15:43:14+07:00   Stored in directory: /tmp/pip-ephem-wheel-cache-92052_ev/wheels/ce/1b/6e/be6fb4140e44e0d9d66e26f65505e30674c9aa8148ae22ee4b
+2026-10-27 15:43:14+07:00 Successfully built deepspeed
+2026-10-27 15:43:15+07:00 Installing collected packages: hjson, deepspeed
+2026-10-27 15:43:16+07:00 Successfully installed deepspeed-0.16.5 hjson-3.1.0
+2026-10-27 15:43:16+07:00 
+2026-10-27 15:43:16+07:00 [notice] A new release of pip is available: 23.2.1 -> 26.2.2
+2026-10-27 15:43:16+07:00 [notice] To update, run: pip install --upgrade pip
+2026-10-27 15:43:18+07:00 Saving image...
+2026-10-27 15:43:19+07:00 Image saved, took 1.50s
+2026-10-27 15:43:19+07:00 
+2026-10-27 15:43:19+07:00 Built image im-VAjdoEC8iIyCOe8LCO8DbW in 16.21s
+2026-10-27 15:43:19+07:00 
+2026-10-27 15:43:19+07:00 
+2026-10-27 15:43:21+07:00 Building image im-Te4ddNhgChLJmVge5ksYWP
+2026-10-27 15:43:21+07:00 Building image im-ohEkZ1UFupF7uPA1977C5I
+2026-10-27 15:43:21+07:00 
+2026-10-27 15:43:21+07:00 => Step 0: FROM base
+2026-10-27 15:43:21+07:00 
+2026-10-27 15:43:21+07:00 => Step 1: RUN python -m pip install Levenshtein==0.27.4
+2026-10-27 15:43:21+07:00 
+2026-10-27 15:43:21+07:00 => Step 0: FROM base
+2026-10-27 15:43:21+07:00 
+2026-10-27 15:43:21+07:00 => Step 1: RUN python -m pip install base58==2.1.1 evaluate==0.4.1 fire==0.5.0 graphviz==0.20.1 nltk==3.9.1 overrides==7.7.0 peft==0.8.2 plotnine==0.13.0 pygtrie==2.5.0 pylatexenc==2.10
+2026-10-27 15:43:22+07:00 Looking in indexes: http://pypi-mirror.modal.local:5555/simple
+2026-10-27 15:43:23+07:00 Collecting Levenshtein==0.27.4
+2026-10-27 15:43:23+07:00   Obtaining dependency information for Levenshtein==0.27.4 from http://pypi-mirror.modal.local:5555/simple/levenshtein/levenshtein-0.27.4-cp310-cp310-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl.metadata
+2026-10-27 15:43:23+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/levenshtein/levenshtein-0.27.4-cp310-cp310-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl.metadata (3.7 kB)
+2026-10-27 15:43:23+07:00 Looking in indexes: http://pypi-mirror.modal.local:5555/simple
+2026-10-27 15:43:23+07:00 Collecting base58==2.1.1
+2026-10-27 15:43:23+07:00   Obtaining dependency information for base58==2.1.1 from http://pypi-mirror.modal.local:5555/simple/base58/base58-2.1.1-py3-none-any.whl.metadata
+2026-10-27 15:43:23+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/base58/base58-2.1.1-py3-none-any.whl.metadata (3.1 kB)
+2026-10-27 15:43:23+07:00 Collecting evaluate==0.4.1
+2026-10-27 15:43:23+07:00   Obtaining dependency information for evaluate==0.4.1 from http://pypi-mirror.modal.local:5555/simple/evaluate/evaluate-0.4.1-py3-none-any.whl.metadata
+2026-10-27 15:43:23+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/evaluate/evaluate-0.4.1-py3-none-any.whl.metadata (9.4 kB)
+2026-10-27 15:43:23+07:00 Collecting fire==0.5.0
+2026-10-27 15:43:23+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/fire/fire-0.5.0.tar.gz (88 kB)
+2026-10-27 15:43:23+07:00      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 88.3/88.3 kB 38.6 MB/s eta 0:00:00
+2026-10-27 15:43:23+07:00   Installing build dependencies: started
+2026-10-27 15:43:23+07:00 Collecting rapidfuzz<4.0.0,>=3.9.0 (from Levenshtein==0.27.4)
+2026-10-27 15:43:23+07:00   Obtaining dependency information for rapidfuzz<4.0.0,>=3.9.0 from http://pypi-mirror.modal.local:5555/simple/rapidfuzz/rapidfuzz-3.14.5-cp310-cp310-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata
+2026-10-27 15:43:23+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/rapidfuzz/rapidfuzz-3.14.5-cp310-cp310-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (12 kB)
+2026-10-27 15:43:23+07:00 Downloading http://pypi-mirror.modal.local:5555/simple/levenshtein/levenshtein-0.27.4-cp310-cp310-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl (157 kB)
+2026-10-27 15:43:23+07:00    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 157.7/157.7 kB 384.7 MB/s eta 0:00:00
+2026-10-27 15:43:23+07:00 Downloading http://pypi-mirror.modal.local:5555/simple/rapidfuzz/rapidfuzz-3.14.5-cp310-cp310-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (3.2 MB)
+2026-10-27 15:43:23+07:00    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.2/3.2 MB 409.2 MB/s eta 0:00:00
+2026-10-27 15:43:25+07:00 Installing collected packages: rapidfuzz, Levenshtein
+2026-10-27 15:43:25+07:00 Successfully installed Levenshtein-0.27.4 rapidfuzz-3.14.5
+2026-10-27 15:43:25+07:00 
+2026-10-27 15:43:25+07:00 [notice] A new release of pip is available: 23.2.1 -> 26.2.2
+2026-10-27 15:43:25+07:00 [notice] To update, run: pip install --upgrade pip
+2026-10-27 15:43:25+07:00   Installing build dependencies: finished with status 'done'
+2026-10-27 15:43:25+07:00   Getting requirements to build wheel: started
+2026-10-27 15:43:26+07:00   Getting requirements to build wheel: finished with status 'done'
+2026-10-27 15:43:26+07:00   Preparing metadata (pyproject.toml): started
+2026-10-27 15:43:26+07:00   Preparing metadata (pyproject.toml): finished with status 'done'
+2026-10-27 15:43:26+07:00 Collecting graphviz==0.20.1
+2026-10-27 15:43:26+07:00   Obtaining dependency information for graphviz==0.20.1 from http://pypi-mirror.modal.local:5555/simple/graphviz/graphviz-0.20.1-py3-none-any.whl.metadata
+2026-10-27 15:43:26+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/graphviz/graphviz-0.20.1-py3-none-any.whl.metadata (12 kB)
+2026-10-27 15:43:26+07:00 Collecting nltk==3.9.1
+2026-10-27 15:43:26+07:00   Obtaining dependency information for nltk==3.9.1 from http://pypi-mirror.modal.local:5555/simple/nltk/nltk-3.9.1-py3-none-any.whl.metadata
+2026-10-27 15:43:26+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/nltk/nltk-3.9.1-py3-none-any.whl.metadata (2.9 kB)
+2026-10-27 15:43:26+07:00 Collecting overrides==7.7.0
+2026-10-27 15:43:26+07:00   Obtaining dependency information for overrides==7.7.0 from http://pypi-mirror.modal.local:5555/simple/overrides/overrides-7.7.0-py3-none-any.whl.metadata
+2026-10-27 15:43:26+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/overrides/overrides-7.7.0-py3-none-any.whl.metadata (5.8 kB)
+2026-10-27 15:43:26+07:00 Collecting peft==0.8.2
+2026-10-27 15:43:26+07:00   Obtaining dependency information for peft==0.8.2 from http://pypi-mirror.modal.local:5555/simple/peft/peft-0.8.2-py3-none-any.whl.metadata
+2026-10-27 15:43:26+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/peft/peft-0.8.2-py3-none-any.whl.metadata (25 kB)
+2026-10-27 15:43:26+07:00 Collecting plotnine==0.13.0
+2026-10-27 15:43:26+07:00   Obtaining dependency information for plotnine==0.13.0 from http://pypi-mirror.modal.local:5555/simple/plotnine/plotnine-0.13.0-py3-none-any.whl.metadata
+2026-10-27 15:43:26+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/plotnine/plotnine-0.13.0-py3-none-any.whl.metadata (9.0 kB)
+2026-10-27 15:43:26+07:00 Collecting pygtrie==2.5.0
+2026-10-27 15:43:26+07:00   Obtaining dependency information for pygtrie==2.5.0 from http://pypi-mirror.modal.local:5555/simple/pygtrie/pygtrie-2.5.0-py3-none-any.whl.metadata
+2026-10-27 15:43:26+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/pygtrie/pygtrie-2.5.0-py3-none-any.whl.metadata (7.5 kB)
+2026-10-27 15:43:26+07:00 Collecting pylatexenc==2.10
+2026-10-27 15:43:26+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/pylatexenc/pylatexenc-2.10.tar.gz (162 kB)
+2026-10-27 15:43:26+07:00      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 162.6/162.6 kB 501.6 MB/s eta 0:00:00
+2026-10-27 15:43:26+07:00   Installing build dependencies: started
+2026-10-27 15:43:27+07:00 Saving image...
+2026-10-27 15:43:28+07:00   Installing build dependencies: finished with status 'done'
+2026-10-27 15:43:28+07:00   Getting requirements to build wheel: started
+2026-10-27 15:43:28+07:00   Getting requirements to build wheel: finished with status 'done'
+2026-10-27 15:43:28+07:00   Preparing metadata (pyproject.toml): started
+2026-10-27 15:43:28+07:00   Preparing metadata (pyproject.toml): finished with status 'done'
+2026-10-27 15:43:28+07:00 Requirement already satisfied: datasets>=2.0.0 in /usr/local/lib/python3.10/site-packages (from evaluate==0.4.1) (2.17.1)
+2026-10-27 15:43:28+07:00 Requirement already satisfied: numpy>=1.17 in /usr/local/lib/python3.10/site-packages (from evaluate==0.4.1) (1.26.4)
+2026-10-27 15:43:28+07:00 Requirement already satisfied: dill in /usr/local/lib/python3.10/site-packages (from evaluate==0.4.1) (0.3.8)
+2026-10-27 15:43:28+07:00 Requirement already satisfied: pandas in /usr/local/lib/python3.10/site-packages (from evaluate==0.4.1) (2.2.3)
+2026-10-27 15:43:28+07:00 Requirement already satisfied: requests>=2.19.0 in /usr/local/lib/python3.10/site-packages (from evaluate==0.4.1) (2.34.2)
+2026-10-27 15:43:28+07:00 Requirement already satisfied: tqdm>=4.62.1 in /usr/local/lib/python3.10/site-packages (from evaluate==0.4.1) (4.70.1)
+2026-10-27 15:43:28+07:00 Requirement already satisfied: xxhash in /usr/local/lib/python3.10/site-packages (from evaluate==0.4.1) (4.0.2)
+2026-10-27 15:43:28+07:00 Requirement already satisfied: multiprocess in /usr/local/lib/python3.10/site-packages (from evaluate==0.4.1) (0.70.16)
+2026-10-27 15:43:28+07:00 Requirement already satisfied: fsspec[http]>=2021.05.0 in /usr/local/lib/python3.10/site-packages (from evaluate==0.4.1) (2023.10.0)
+2026-10-27 15:43:28+07:00 Requirement already satisfied: huggingface-hub>=0.7.0 in /usr/local/lib/python3.10/site-packages (from evaluate==0.4.1) (0.36.2)
+2026-10-27 15:43:28+07:00 Requirement already satisfied: packaging in /usr/local/lib/python3.10/site-packages (from evaluate==0.4.1) (26.3)
+2026-10-27 15:43:29+07:00 Collecting responses<0.19 (from evaluate==0.4.1)
+2026-10-27 15:43:29+07:00   Obtaining dependency information for responses<0.19 from http://pypi-mirror.modal.local:5555/simple/responses/responses-0.18.0-py3-none-any.whl.metadata
+2026-10-27 15:43:29+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/responses/responses-0.18.0-py3-none-any.whl.metadata (29 kB)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: six in /usr/local/lib/python3.10/site-packages (from fire==0.5.0) (1.17.0)
+2026-10-27 15:43:29+07:00 Collecting termcolor (from fire==0.5.0)
+2026-10-27 15:43:29+07:00   Obtaining dependency information for termcolor from http://pypi-mirror.modal.local:5555/simple/termcolor/termcolor-3.3.0-py3-none-any.whl.metadata
+2026-10-27 15:43:29+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/termcolor/termcolor-3.3.0-py3-none-any.whl.metadata (6.5 kB)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: click in /usr/local/lib/python3.10/site-packages (from nltk==3.9.1) (8.5.0)
+2026-10-27 15:43:29+07:00 Collecting joblib (from nltk==3.9.1)
+2026-10-27 15:43:29+07:00   Obtaining dependency information for joblib from http://pypi-mirror.modal.local:5555/simple/joblib/joblib-1.6.0-py3-none-any.whl.metadata
+2026-10-27 15:43:29+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/joblib/joblib-1.6.0-py3-none-any.whl.metadata (6.5 kB)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: regex>=2021.8.3 in /usr/local/lib/python3.10/site-packages (from nltk==3.9.1) (2026.9.29)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: psutil in /usr/local/lib/python3.10/site-packages (from peft==0.8.2) (7.2.2)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: pyyaml in /usr/local/lib/python3.10/site-packages (from peft==0.8.2) (6.0.3)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: torch>=1.13.0 in /usr/local/lib/python3.10/site-packages (from peft==0.8.2) (2.7.0+cu128)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: transformers in /usr/local/lib/python3.10/site-packages (from peft==0.8.2) (4.51.3)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: accelerate>=0.21.0 in /usr/local/lib/python3.10/site-packages (from peft==0.8.2) (0.33.0)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: safetensors in /usr/local/lib/python3.10/site-packages (from peft==0.8.2) (0.8.0)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: matplotlib>=3.6.0 in /usr/local/lib/python3.10/site-packages (from plotnine==0.13.0) (3.8.3)
+2026-10-27 15:43:29+07:00 Collecting mizani==0.11.0 (from plotnine==0.13.0)
+2026-10-27 15:43:29+07:00   Obtaining dependency information for mizani==0.11.0 from http://pypi-mirror.modal.local:5555/simple/mizani/mizani-0.11.0-py3-none-any.whl.metadata
+2026-10-27 15:43:29+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/mizani/mizani-0.11.0-py3-none-any.whl.metadata (4.8 kB)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: scipy>=1.7.0 in /usr/local/lib/python3.10/site-packages (from plotnine==0.13.0) (1.15.2)
+2026-10-27 15:43:29+07:00 Collecting statsmodels>=0.14.0 (from plotnine==0.13.0)
+2026-10-27 15:43:29+07:00   Obtaining dependency information for statsmodels>=0.14.0 from http://pypi-mirror.modal.local:5555/simple/statsmodels/statsmodels-0.15.0-cp310-cp310-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata
+2026-10-27 15:43:29+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/statsmodels/statsmodels-0.15.0-cp310-cp310-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (9.6 kB)
+2026-10-27 15:43:29+07:00 Image saved, took 1.74s
+2026-10-27 15:43:29+07:00 
+2026-10-27 15:43:29+07:00 Built image im-Te4ddNhgChLJmVge5ksYWP in 8.15s
+2026-10-27 15:43:29+07:00 
+2026-10-27 15:43:29+07:00 
+2026-10-27 15:43:29+07:00 Requirement already satisfied: filelock in /usr/local/lib/python3.10/site-packages (from datasets>=2.0.0->evaluate==0.4.1) (3.32.3)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: pyarrow>=12.0.0 in /usr/local/lib/python3.10/site-packages (from datasets>=2.0.0->evaluate==0.4.1) (19.0.1)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: pyarrow-hotfix in /usr/local/lib/python3.10/site-packages (from datasets>=2.0.0->evaluate==0.4.1) (0.7)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: aiohttp in /usr/local/lib/python3.10/site-packages (from datasets>=2.0.0->evaluate==0.4.1) (3.14.5)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: hf-xet<2.0.0,>=1.1.3 in /usr/local/lib/python3.10/site-packages (from huggingface-hub>=0.7.0->evaluate==0.4.1) (1.7.0)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: typing-extensions>=3.7.4.3 in /usr/local/lib/python3.10/site-packages (from huggingface-hub>=0.7.0->evaluate==0.4.1) (4.16.0)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: contourpy>=1.0.1 in /usr/local/lib/python3.10/site-packages (from matplotlib>=3.6.0->plotnine==0.13.0) (1.3.2)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: cycler>=0.10 in /usr/local/lib/python3.10/site-packages (from matplotlib>=3.6.0->plotnine==0.13.0) (0.12.1)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: fonttools>=4.22.0 in /usr/local/lib/python3.10/site-packages (from matplotlib>=3.6.0->plotnine==0.13.0) (4.65.0)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: kiwisolver>=1.3.1 in /usr/local/lib/python3.10/site-packages (from matplotlib>=3.6.0->plotnine==0.13.0) (1.5.1)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: pillow>=8 in /usr/local/lib/python3.10/site-packages (from matplotlib>=3.6.0->plotnine==0.13.0) (12.3.0)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: pyparsing>=2.3.1 in /usr/local/lib/python3.10/site-packages (from matplotlib>=3.6.0->plotnine==0.13.0) (3.3.3)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: python-dateutil>=2.7 in /usr/local/lib/python3.10/site-packages (from matplotlib>=3.6.0->plotnine==0.13.0) (3.0.0)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: pytz>=2020.1 in /usr/local/lib/python3.10/site-packages (from pandas->evaluate==0.4.1) (2026.5)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: tzdata>=2022.7 in /usr/local/lib/python3.10/site-packages (from pandas->evaluate==0.4.1) (2026.5)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: charset_normalizer<4,>=2 in /usr/local/lib/python3.10/site-packages (from requests>=2.19.0->evaluate==0.4.1) (3.5.2)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: idna<4,>=2.5 in /usr/local/lib/python3.10/site-packages (from requests>=2.19.0->evaluate==0.4.1) (3.20)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: urllib3<3,>=1.26 in /usr/local/lib/python3.10/site-packages (from requests>=2.19.0->evaluate==0.4.1) (2.8.0)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: certifi>=2023.5.7 in /usr/local/lib/python3.10/site-packages (from requests>=2.19.0->evaluate==0.4.1) (2026.10.23)
+2026-10-27 15:43:29+07:00 Collecting patsy>=0.5.6 (from statsmodels>=0.14.0->plotnine==0.13.0)
+2026-10-27 15:43:29+07:00   Obtaining dependency information for patsy>=0.5.6 from http://pypi-mirror.modal.local:5555/simple/patsy/patsy-1.0.3-py2.py3-none-any.whl.metadata
+2026-10-27 15:43:29+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/patsy/patsy-1.0.3-py2.py3-none-any.whl.metadata (3.7 kB)
+2026-10-27 15:43:29+07:00 Collecting formulaic>=1.1.0 (from statsmodels>=0.14.0->plotnine==0.13.0)
+2026-10-27 15:43:29+07:00   Obtaining dependency information for formulaic>=1.1.0 from http://pypi-mirror.modal.local:5555/simple/formulaic/formulaic-1.2.2-py3-none-any.whl.metadata
+2026-10-27 15:43:29+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/formulaic/formulaic-1.2.2-py3-none-any.whl.metadata (7.0 kB)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: sympy>=1.13.3 in /usr/local/lib/python3.10/site-packages (from torch>=1.13.0->peft==0.8.2) (1.14.0)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: networkx in /usr/local/lib/python3.10/site-packages (from torch>=1.13.0->peft==0.8.2) (3.4.2)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: jinja2 in /usr/local/lib/python3.10/site-packages (from torch>=1.13.0->peft==0.8.2) (3.1.6)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: nvidia-cuda-nvrtc-cu12==12.8.61 in /usr/local/lib/python3.10/site-packages (from torch>=1.13.0->peft==0.8.2) (12.8.61)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: nvidia-cuda-runtime-cu12==12.8.57 in /usr/local/lib/python3.10/site-packages (from torch>=1.13.0->peft==0.8.2) (12.8.57)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: nvidia-cuda-cupti-cu12==12.8.57 in /usr/local/lib/python3.10/site-packages (from torch>=1.13.0->peft==0.8.2) (12.8.57)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: nvidia-cudnn-cu12==9.7.1.26 in /usr/local/lib/python3.10/site-packages (from torch>=1.13.0->peft==0.8.2) (9.7.1.26)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: nvidia-cublas-cu12==12.8.3.14 in /usr/local/lib/python3.10/site-packages (from torch>=1.13.0->peft==0.8.2) (12.8.3.14)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: nvidia-cufft-cu12==11.3.3.41 in /usr/local/lib/python3.10/site-packages (from torch>=1.13.0->peft==0.8.2) (11.3.3.41)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: nvidia-curand-cu12==10.3.9.55 in /usr/local/lib/python3.10/site-packages (from torch>=1.13.0->peft==0.8.2) (10.3.9.55)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: nvidia-cusolver-cu12==11.7.2.55 in /usr/local/lib/python3.10/site-packages (from torch>=1.13.0->peft==0.8.2) (11.7.2.55)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: nvidia-cusparse-cu12==12.5.7.53 in /usr/local/lib/python3.10/site-packages (from torch>=1.13.0->peft==0.8.2) (12.5.7.53)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: nvidia-cusparselt-cu12==0.6.3 in /usr/local/lib/python3.10/site-packages (from torch>=1.13.0->peft==0.8.2) (0.6.3)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: nvidia-nccl-cu12==2.26.2 in /usr/local/lib/python3.10/site-packages (from torch>=1.13.0->peft==0.8.2) (2.26.2)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: nvidia-nvtx-cu12==12.8.55 in /usr/local/lib/python3.10/site-packages (from torch>=1.13.0->peft==0.8.2) (12.8.55)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: nvidia-nvjitlink-cu12==12.8.61 in /usr/local/lib/python3.10/site-packages (from torch>=1.13.0->peft==0.8.2) (12.8.61)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: nvidia-cufile-cu12==1.13.0.11 in /usr/local/lib/python3.10/site-packages (from torch>=1.13.0->peft==0.8.2) (1.13.0.11)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: triton==3.3.0 in /usr/local/lib/python3.10/site-packages (from torch>=1.13.0->peft==0.8.2) (3.3.0)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: setuptools>=40.8.0 in /usr/local/lib/python3.10/site-packages (from triton==3.3.0->torch>=1.13.0->peft==0.8.2) (68.1.2)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: cloudpickle>=3.0 in /usr/local/lib/python3.10/site-packages (from joblib->nltk==3.9.1) (3.1.2)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: tokenizers<0.22,>=0.21 in /usr/local/lib/python3.10/site-packages (from transformers->peft==0.8.2) (0.21.1)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: aiohappyeyeballs>=2.5.0 in /usr/local/lib/python3.10/site-packages (from aiohttp->datasets>=2.0.0->evaluate==0.4.1) (2.7.1)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: aiosignal>=1.4.0 in /usr/local/lib/python3.10/site-packages (from aiohttp->datasets>=2.0.0->evaluate==0.4.1) (1.4.0)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: async-timeout<6.0,>=4.0 in /usr/local/lib/python3.10/site-packages (from aiohttp->datasets>=2.0.0->evaluate==0.4.1) (5.0.1)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: attrs>=17.3.0 in /usr/local/lib/python3.10/site-packages (from aiohttp->datasets>=2.0.0->evaluate==0.4.1) (26.1.0)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: frozenlist>=1.1.1 in /usr/local/lib/python3.10/site-packages (from aiohttp->datasets>=2.0.0->evaluate==0.4.1) (1.8.0)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: multidict<8.0,>=4.5 in /usr/local/lib/python3.10/site-packages (from aiohttp->datasets>=2.0.0->evaluate==0.4.1) (7.1.0)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: propcache>=0.2.0 in /usr/local/lib/python3.10/site-packages (from aiohttp->datasets>=2.0.0->evaluate==0.4.1) (0.5.4)
+2026-10-27 15:43:29+07:00 Requirement already satisfied: yarl<2.0,>=1.25.1 in /usr/local/lib/python3.10/site-packages (from aiohttp->datasets>=2.0.0->evaluate==0.4.1) (1.25.1)
+2026-10-27 15:43:29+07:00 Collecting interface-meta>=1.2.0 (from formulaic>=1.1.0->statsmodels>=0.14.0->plotnine==0.13.0)
+2026-10-27 15:43:29+07:00   Obtaining dependency information for interface-meta>=1.2.0 from http://pypi-mirror.modal.local:5555/simple/interface-meta/interface_meta-2.0.1-py3-none-any.whl.metadata
+2026-10-27 15:43:29+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/interface-meta/interface_meta-2.0.1-py3-none-any.whl.metadata (6.4 kB)
+2026-10-27 15:43:30+07:00 Collecting narwhals>=1.17 (from formulaic>=1.1.0->statsmodels>=0.14.0->plotnine==0.13.0)
+2026-10-27 15:43:30+07:00   Obtaining dependency information for narwhals>=1.17 from http://pypi-mirror.modal.local:5555/simple/narwhals/narwhals-2.27.1-py3-none-any.whl.metadata
+2026-10-27 15:43:30+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/narwhals/narwhals-2.27.1-py3-none-any.whl.metadata (15 kB)
+2026-10-27 15:43:30+07:00 Requirement already satisfied: wrapt>=1.0 in /usr/local/lib/python3.10/site-packages (from formulaic>=1.1.0->statsmodels>=0.14.0->plotnine==0.13.0) (2.5.1)
+2026-10-27 15:43:30+07:00 Requirement already satisfied: mpmath<1.4,>=1.1.0 in /usr/local/lib/python3.10/site-packages (from sympy>=1.13.3->torch>=1.13.0->peft==0.8.2) (1.3.0)
+2026-10-27 15:43:30+07:00 Requirement already satisfied: MarkupSafe>=2.0 in /usr/local/lib/python3.10/site-packages (from jinja2->torch>=1.13.0->peft==0.8.2) (3.0.3)
+2026-10-27 15:43:30+07:00 Downloading http://pypi-mirror.modal.local:5555/simple/base58/base58-2.1.1-py3-none-any.whl (5.6 kB)
+2026-10-27 15:43:30+07:00 Downloading http://pypi-mirror.modal.local:5555/simple/evaluate/evaluate-0.4.1-py3-none-any.whl (84 kB)
+2026-10-27 15:43:30+07:00    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 84.1/84.1 kB 340.7 MB/s eta 0:00:00
+2026-10-27 15:43:30+07:00 Downloading http://pypi-mirror.modal.local:5555/simple/graphviz/graphviz-0.20.1-py3-none-any.whl (47 kB)
+2026-10-27 15:43:30+07:00    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 47.0/47.0 kB 225.7 MB/s eta 0:00:00
+2026-10-27 15:43:30+07:00 Downloading http://pypi-mirror.modal.local:5555/simple/nltk/nltk-3.9.1-py3-none-any.whl (1.5 MB)
+2026-10-27 15:43:30+07:00    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.5/1.5 MB 239.7 MB/s eta 0:00:00
+2026-10-27 15:43:30+07:00 Downloading http://pypi-mirror.modal.local:5555/simple/overrides/overrides-7.7.0-py3-none-any.whl (17 kB)
+2026-10-27 15:43:30+07:00 Downloading http://pypi-mirror.modal.local:5555/simple/peft/peft-0.8.2-py3-none-any.whl (183 kB)
+2026-10-27 15:43:30+07:00    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 183.4/183.4 kB 524.9 MB/s eta 0:00:00
+2026-10-27 15:43:30+07:00 Downloading http://pypi-mirror.modal.local:5555/simple/plotnine/plotnine-0.13.0-py3-none-any.whl (1.3 MB)
+2026-10-27 15:43:30+07:00    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 299.0 MB/s eta 0:00:00
+2026-10-27 15:43:30+07:00 Downloading http://pypi-mirror.modal.local:5555/simple/pygtrie/pygtrie-2.5.0-py3-none-any.whl (25 kB)
+2026-10-27 15:43:30+07:00 Downloading http://pypi-mirror.modal.local:5555/simple/mizani/mizani-0.11.0-py3-none-any.whl (114 kB)
+2026-10-27 15:43:30+07:00    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 114.4/114.4 kB 497.6 MB/s eta 0:00:00
+2026-10-27 15:43:30+07:00 Downloading http://pypi-mirror.modal.local:5555/simple/responses/responses-0.18.0-py3-none-any.whl (38 kB)
+2026-10-27 15:43:30+07:00 Downloading http://pypi-mirror.modal.local:5555/simple/statsmodels/statsmodels-0.15.0-cp310-cp310-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (12.1 MB)
+2026-10-27 15:43:30+07:00    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 12.1/12.1 MB 535.7 MB/s eta 0:00:00
+2026-10-27 15:43:30+07:00 Downloading http://pypi-mirror.modal.local:5555/simple/joblib/joblib-1.6.0-py3-none-any.whl (306 kB)
+2026-10-27 15:43:30+07:00    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 306.1/306.1 kB 555.5 MB/s eta 0:00:00
+2026-10-27 15:43:30+07:00 Downloading http://pypi-mirror.modal.local:5555/simple/termcolor/termcolor-3.3.0-py3-none-any.whl (7.7 kB)
+2026-10-27 15:43:30+07:00 Downloading http://pypi-mirror.modal.local:5555/simple/formulaic/formulaic-1.2.2-py3-none-any.whl (118 kB)
+2026-10-27 15:43:30+07:00    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 118.9/118.9 kB 444.4 MB/s eta 0:00:00
+2026-10-27 15:43:30+07:00 Downloading http://pypi-mirror.modal.local:5555/simple/patsy/patsy-1.0.3-py2.py3-none-any.whl (233 kB)
+2026-10-27 15:43:30+07:00    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 233.3/233.3 kB 588.4 MB/s eta 0:00:00
+2026-10-27 15:43:30+07:00 Downloading http://pypi-mirror.modal.local:5555/simple/interface-meta/interface_meta-2.0.1-py3-none-any.whl (15 kB)
+2026-10-27 15:43:30+07:00 Downloading http://pypi-mirror.modal.local:5555/simple/narwhals/narwhals-2.27.1-py3-none-any.whl (483 kB)
+2026-10-27 15:43:30+07:00    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 483.2/483.2 kB 562.3 MB/s eta 0:00:00
+2026-10-27 15:43:30+07:00 Building image im-U5qgaepgiGVwhJFutalkO4
+2026-10-27 15:43:30+07:00 Building wheels for collected packages: fire, pylatexenc
+2026-10-27 15:43:30+07:00   Building wheel for fire (pyproject.toml): started
+2026-10-27 15:43:30+07:00   Building wheel for fire (pyproject.toml): finished with status 'done'
+2026-10-27 15:43:30+07:00   Created wheel for fire: filename=fire-0.5.0-py2.py3-none-any.whl size=117018 sha256=c3ba6b1fb5d55fbbfcb5a4d32f62af5ca3e8731ff906b68cb7d0c07c3487487c
+2026-10-27 15:43:30+07:00   Stored in directory: /tmp/pip-ephem-wheel-cache-o7i9osru/wheels/22/e7/30/2763ea0c15201158eca0a9b682e660766c82be4fb2fd023b4d
+2026-10-27 15:43:30+07:00   Building wheel for pylatexenc (pyproject.toml): started
+2026-10-27 15:43:30+07:00   Building wheel for pylatexenc (pyproject.toml): finished with status 'done'
+2026-10-27 15:43:30+07:00   Created wheel for pylatexenc: filename=pylatexenc-2.10-py3-none-any.whl size=136896 sha256=bc94d57c3a6404f4e37f0104a3dfb070e6b55c3c94bd55f4cff1b6579e39acc6
+2026-10-27 15:43:30+07:00   Stored in directory: /tmp/pip-ephem-wheel-cache-o7i9osru/wheels/8c/ca/da/e590e6687332daa8edaa04df87b31bb240c7e406bc8202fc53
+2026-10-27 15:43:30+07:00 Successfully built fire pylatexenc
+2026-10-27 15:43:31+07:00 
+2026-10-27 15:43:31+07:00 => Step 0: FROM base
+2026-10-27 15:43:31+07:00 
+2026-10-27 15:43:31+07:00 => Step 1: RUN python -m pip install --no-deps -e /opt/work/TreeRL && python -c 'from transformers.integrations import HfDeepSpeedConfig; import openrlhf.models.actor, openrlhf.models.model; import openrlhf.trainer.ppo_utils.parallel_mcts; print("TreeRL Transformers DeepSpeed imports OK")'
+2026-10-27 15:43:31+07:00 Installing collected packages: pylatexenc, pygtrie, termcolor, patsy, overrides, narwhals, joblib, interface-meta, graphviz, base58, responses, nltk, fire, mizani, formulaic, statsmodels, plotnine, peft, evaluate
+2026-10-27 15:43:33+07:00 Looking in indexes: http://pypi-mirror.modal.local:5555/simple
+2026-10-27 15:43:33+07:00 Obtaining file:///opt/work/TreeRL
+2026-10-27 15:43:33+07:00   Installing build dependencies: started
+2026-10-27 15:43:35+07:00   Attempting uninstall: peft
+2026-10-27 15:43:35+07:00     Found existing installation: peft 0.15.2
+2026-10-27 15:43:35+07:00     Uninstalling peft-0.15.2:
+2026-10-27 15:43:35+07:00       Successfully uninstalled peft-0.15.2
+2026-10-27 15:43:35+07:00 Successfully installed base58-2.1.1 evaluate-0.4.1 fire-0.5.0 formulaic-1.2.2 graphviz-0.20.1 interface-meta-2.0.1 joblib-1.6.0 mizani-0.11.0 narwhals-2.27.1 nltk-3.9.1 overrides-7.7.0 patsy-1.0.3 peft-0.8.2 plotnine-0.13.0 pygtrie-2.5.0 pylatexenc-2.10 responses-0.18.0 statsmodels-0.15.0 termcolor-3.3.0
+2026-10-27 15:43:35+07:00   Installing build dependencies: finished with status 'done'
+2026-10-27 15:43:35+07:00 
+2026-10-27 15:43:35+07:00 [notice] A new release of pip is available: 23.2.1 -> 26.2.2
+2026-10-27 15:43:35+07:00 [notice] To update, run: pip install --upgrade pip
+2026-10-27 15:43:35+07:00   Checking if build backend supports build_editable: started
+2026-10-27 15:43:35+07:00   Checking if build backend supports build_editable: finished with status 'done'
+2026-10-27 15:43:35+07:00   Getting requirements to build editable: started
+2026-10-27 15:43:36+07:00   Getting requirements to build editable: finished with status 'done'
+2026-10-27 15:43:36+07:00   Preparing editable metadata (pyproject.toml): started
+2026-10-27 15:43:36+07:00   Preparing editable metadata (pyproject.toml): finished with status 'done'
+2026-10-27 15:43:36+07:00 Building wheels for collected packages: openrlhf
+2026-10-27 15:43:36+07:00   Building editable for openrlhf (pyproject.toml): started
+2026-10-27 15:43:36+07:00   Building editable for openrlhf (pyproject.toml): finished with status 'done'
+2026-10-27 15:43:36+07:00   Created wheel for openrlhf: filename=openrlhf-0.2.0-0.editable-py3-none-any.whl size=8781 sha256=1581c01f02f56405c13ff504c7d241201f5154db1e56512a9e033f23837caf79
+2026-10-27 15:43:36+07:00   Stored in directory: /tmp/pip-ephem-wheel-cache-ir8y4yy2/wheels/74/1a/4a/4d6a1ebd01e21ffcd55b4dc444c98de91ff2777db9d7833c2a
+2026-10-27 15:43:36+07:00 Successfully built openrlhf
+2026-10-27 15:43:36+07:00 Installing collected packages: openrlhf
+2026-10-27 15:43:36+07:00 Successfully installed openrlhf-0.2.0
+2026-10-27 15:43:36+07:00 
+2026-10-27 15:43:36+07:00 [notice] A new release of pip is available: 23.2.1 -> 26.2.2
+2026-10-27 15:43:36+07:00 [notice] To update, run: pip install --upgrade pip
+2026-10-27 15:43:37+07:00 Saving image...
+2026-10-27 15:43:40+07:00 [2026-10-27 08:43:40,057] [WARNING] [real_accelerator.py:194:get_accelerator] Setting accelerator to CPU. If you have GPU or other accelerator, we were unable to detect it.
+2026-10-27 15:43:40+07:00 [2026-10-27 08:43:40,078] [INFO] [real_accelerator.py:239:get_accelerator] Setting ds_accelerator to cpu (auto detect)
+2026-10-27 15:43:40+07:00 Image saved, took 2.86s
+2026-10-27 15:43:40+07:00 
+2026-10-27 15:43:40+07:00 Built image im-ohEkZ1UFupF7uPA1977C5I in 18.92s
+2026-10-27 15:43:40+07:00 
+2026-10-27 15:43:40+07:00 
+2026-10-27 15:43:42+07:00 Building image im-ypSIGe78HIm8il4fSSgeOY
+2026-10-27 15:43:43+07:00 
+2026-10-27 15:43:43+07:00 => Step 0: FROM base
+2026-10-27 15:43:43+07:00 
+2026-10-27 15:43:43+07:00 => Step 1: RUN cp /opt/vdra/integrations/igpo/configs/vdra/*.jsonnet /opt/work/igpo/configs/vdra/ && python -c "from pathlib import Path; from modal_app.script_utils import normalize_shell_script; normalize_shell_script(Path('/opt/work/igpo/scripts/_common.sh')); normalize_shell_script(Path('/opt/work/igpo/scripts/start_vllm_server_named_params.sh'))" && bash -n /opt/work/igpo/scripts/_common.sh && bash -n /opt/work/igpo/scripts/start_vllm_server_named_params.sh && python -c "from pathlib import Path; g=Path('/opt/work/igpo/treetune/episode_generators/on_policy_episode_generator.py').read_text(); h=Path('/opt/work/igpo/treetune/episode_generators/hybrid_episode_generator.py').read_text(); v=Path('/opt/work/igpo/treetune/common/vllm_server.py').read_text(); assert 'Timing [' in g and 'Timing [iteration=' in h and '_stop_owned_processes' in v; print('IGPO timing and vLLM cleanup markers OK')" && python -c "import fire, overrides, base58, evaluate, graphviz, nltk, plotnine, peft, accelerate, pylatexenc, pygtrie; import treetune.main, treetune.common, treetune.tasks.math_grader; print('IGPO runtime imports OK')" && python -c "import _jsonnet; p='/opt/work/igpo/configs/vdra/'; e={'APP_VDRA_TRAIN_DATASET_DICT':'/work/data_vdra/math-nodiag', 'APP_VDRA_MODEL_PATH':'/work/hf_cache/model','APP_VDRA_STOP_STEP':'4', 'APP_VDRA_VARIANT_JSON':'{}'}; [_jsonnet.evaluate_file(p+n, ext_vars=e) for n in ['data_nodiag.jsonnet','stop.jsonnet','variant.jsonnet']]; print('IGPO VDRA Jsonnet configs OK')" && python /opt/vdra/modal_app/igpo_config_preflight.py --configs-root /opt/work/igpo/configs --model-path /work/hf_cache/model
+2026-10-27 15:43:44+07:00 IGPO timing and vLLM cleanup markers OK
+2026-10-27 15:43:50+07:00 INFO 10-27 08:43:50 [__init__.py:248] No platform detected, vLLM is running on UnspecifiedPlatform
+2026-10-27 15:43:50+07:00 WARNING 10-27 08:43:50 [_custom_ops.py:20] Failed to import from vllm._C with ImportError('libcuda.so.1: cannot open shared object file: No such file or directory')
+2026-10-27 15:43:52+07:00 TreeRL Transformers DeepSpeed imports OK
+2026-10-27 15:43:56+07:00 Saving image...
+2026-10-27 15:43:56+07:00 [2026-10-27 08:43:56,948] [WARNING] [real_accelerator.py:194:get_accelerator] Setting accelerator to CPU. If you have GPU or other accelerator, we were unable to detect it.
+2026-10-27 15:43:56+07:00 [2026-10-27 08:43:56,965] [INFO] [real_accelerator.py:239:get_accelerator] Setting ds_accelerator to cpu (auto detect)
+2026-10-27 15:43:58+07:00 Image saved, took 1.40s
+2026-10-27 15:43:58+07:00 
+2026-10-27 15:43:58+07:00 Built image im-U5qgaepgiGVwhJFutalkO4 in 27.61s
+2026-10-27 15:43:58+07:00 
+2026-10-27 15:43:58+07:00 
+2026-10-27 15:44:00+07:00 IGPO runtime imports OK
+2026-10-27 15:44:02+07:00 IGPO VDRA Jsonnet configs OK
+2026-10-27 15:44:04+07:00 {"expected_model_path": "/work/hf_cache/model", "runs": {"R1": {"early_stop_iteration": 4, "model_paths": {"episode_generator.inference_strategy.guidance_llm.model": "/work/hf_cache/model", "episode_generator.inference_strategy.guidance_llm.tokenizer_name": "/work/hf_cache/model", "episode_generator.initial_model_name_or_path": "/work/hf_cache/model", "episode_generator.value_estimation_inference_strategy.guidance_llm.model": "/work/hf_cache/model", "episode_generator.value_estimation_inference_strategy.guidance_llm.tokenizer_name": "/work/hf_cache/model", "tokenizer.hf_model_name": "/work/hf_cache/model", "trainer.actor_model.hf_model_name": "/work/hf_cache/model", "trainer.reference_model.hf_model_name": "/work/hf_cache/model"}, "phase_d_internal_pipeline_count": 0, "pipeline_count": 6, "runtime_overlay_generated": true, "runtime_overlay_prefix_cache_field": false, "tokenizer_paths": {"aime24_test": "/work/hf_cache/model", "aime25_test": "/work/hf_cache/model", "amc23_test": "/work/hf_cache/model", "collegeMath_test": "/work/hf_cache/model", "math_test": "/work/hf_cache/model", "olympiadbench_test": "/work/hf_cache/model"}, "vdra_config": null}, "R2": {"early_stop_iteration": 4, "model_paths": {"episode_generator.inference_strategy.guidance_llm.model": "/work/hf_cache/model", "episode_generator.inference_strategy.guidance_llm.tokenizer_name": "/work/hf_cache/model", "episode_generator.initial_model_name_or_path": "/work/hf_cache/model", "episode_generator.value_estimation_inference_strategy.guidance_llm.model": "/work/hf_cache/model", "episode_generator.value_estimation_inference_strategy.guidance_llm.tokenizer_name": "/work/hf_cache/model", "tokenizer.hf_model_name": "/work/hf_cache/model", "trainer.actor_model.hf_model_name": "/work/hf_cache/model", "trainer.reference_model.hf_model_name": "/work/hf_cache/model"}, "phase_d_internal_pipeline_count": 0, "pipeline_count": 6, "runtime_overlay_generated": true, "runtime_overlay_prefix_cache_field": false, "tokenizer_paths": {"aime24_test": "/work/hf_cache/model", "aime25_test": "/work/hf_cache/model", "amc23_test": "/work/hf_cache/model", "collegeMath_test": "/work/hf_cache/model", "math_test": "/work/hf_cache/model", "olympiadbench_test": "/work/hf_cache/model"}, "vdra_config": {"eps_tail": 0.01, "eps_trunc": 0.02, "k0": 6, "log_dir": "", "m": 32, "n_min": 1, "n_queues": 32, "pilot_tokens": 96, "proxy": "tv", "queue_capacity": 16, "queue_timeout_s": 1, "r": 6, "reuse_terminal_pilots": true, "terminal_pair_mode": "answer", "use_redundancy_cap": true, "weighting": "equal"}}}, "status": "pass"}
+2026-10-27 15:44:06+07:00 Saving image...
+2026-10-27 15:44:08+07:00 Image saved, took 2.26s
+2026-10-27 15:44:08+07:00 
+2026-10-27 15:44:08+07:00 Built image im-ypSIGe78HIm8il4fSSgeOY in 26.56s
+2026-10-27 15:44:08+07:00 
+2026-10-27 15:44:08+07:00 
+✓ Created objects.
+├── ✓ Uploaded D:\vdra_experiments\vdra_experiments\modal_app\phase_c.py
+├── ✓ Created Function orchestrate.
+├── ✓ Uploaded D:\vdra_experiments\vdra_experiments
+├── ✓ Uploaded D:\vdra_experiments\vdra_experiments\work\igpo
+├── ✓ Uploaded D:\vdra_experiments\vdra_experiments\work\TreePO
+├── ✓ Uploaded D:\vdra_experiments\vdra_experiments\work\TreeRL
+├── ✓ Created Function setup_data.
+├── ✓ Created Function train_treepo.
+├── ✓ Created Function phase_f_treepo_smoke.
+├── ✓ Created Function phase_f_treepo_r4_smoke.
+├── ✓ Created Function phase_f_treepo_one_update.
+├── ✓ Created Function continue_treepo.
+├── ✓ Created Function evaluate_treepo.
+├── ✓ Created Function train_treerl.
+├── ✓ Created Function phase_f_treerl_smoke.
+├── ✓ Created Function phase_f_treerl_one_update.
+├── ✓ Created Function continue_treerl.
+├── ✓ Created Function evaluate_treerl.
+├── ✓ Created Function register_migrated_data.
+├── ✓ Created Function train_igpo.
+├── ✓ Created Function phase_f_igpo_smoke.
+├── ✓ Created Function phase_f_igpo_recover_smoke.
+├── ✓ Created Function phase_f_null_smoke.
+├── ✓ Created Function phase_f_remaining_smoke.
+├── ✓ Created Function phase_f_final_methods_smoke.
+├── ✓ Created Function phase_f_treerl_retry_smoke.
+├── ✓ Created Function continue_spo.
+└── ✓ Created Function evaluate_igpo.
+2026-10-27 15:44:15+07:00 
+2026-10-27 15:44:15+07:00 ==========
+2026-10-27 15:44:15+07:00 == CUDA ==
+2026-10-27 15:44:15+07:00 ==========
+2026-10-27 15:44:15+07:00 
+2026-10-27 15:44:15+07:00 CUDA Version 12.8.1
+2026-10-27 15:44:15+07:00 
+2026-10-27 15:44:15+07:00 Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+2026-10-27 15:44:15+07:00 
+2026-10-27 15:44:15+07:00 This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+2026-10-27 15:44:15+07:00 By pulling and using the container, you accept the terms and conditions of this license:
+2026-10-27 15:44:15+07:00 https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+2026-10-27 15:44:15+07:00 
+2026-10-27 15:44:15+07:00 A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+2026-10-27 15:44:15+07:00 
+2026-10-27 15:44:15+07:00 WARNING: The NVIDIA Driver was not detected.  GPU functionality will not be available.
+2026-10-27 15:44:15+07:00    Use the NVIDIA Container Toolkit to start this container with GPU support; see
+2026-10-27 15:44:15+07:00    https://docs.nvidia.com/datacenter/cloud-native/ .
+2026-10-27 15:44:15+07:00 
+{
+  "chat_template": "{% if not add_generation_prompt is defined %}{% set add_generation_prompt = false %}{% endif %}{% set ns = namespace(is_first=false, is_tool=false, is_output_first=true, system_prompt='') %}{%- for message in messages %}{%- if message['role'] == 'system' %}{% set ns.system_prompt = message['content'] %}{%- endif %}{%- endfor %}{{bos_token}}{{ns.system_prompt}}{%- for message in messages %}{%- if message['role'] == 'user' %}{%- set ns.is_tool = false -%}{{'<\uff5cUser\uff5c>' + message['content']}}{%- endif %}{%- if message['role'] == 'assistant' and message['content'] is none %}{%- set ns.is_tool = false -%}{%- for tool in message['tool_calls']%}{%- if not ns.is_first %}{{'<\uff5cAssistant\uff5c><\uff5ctool\u2581calls\u2581begin\uff5c><\uff5ctool\u2581call\u2581begin\uff5c>' + tool['type'] + '<\uff5ctool\u2581sep\uff5c>' + tool['function']['name'] + '\\n' + '```json' + '\\n' + tool['function']['arguments'] + '\\n' + '```' + '<\uff5ctool\u2581call\u2581end\uff5c>'}}{%- set ns.is_first = true -%}{%- else %}{{'\\n' + '<\uff5ctool\u2581call\u2581begin\uff5c>' + tool['type'] + '<\uff5ctool\u2581sep\uff5c>' + tool['function']['name'] + '\\n' + '```json' + '\\n' + tool['function']['arguments'] + '\\n' + '```' + '<\uff5ctool\u2581call\u2581end\uff5c>'}}{{'<\uff5ctool\u2581calls\u2581end\uff5c><\uff5cend\u2581of\u2581sentence\uff5c>'}}{%- endif %}{%- endfor %}{%- endif %}{%- if message['role'] == 'assistant' and message['content'] is not none %}{%- if ns.is_tool %}{{'<\uff5ctool\u2581outputs\u2581end\uff5c>' + message['content'] + '<\uff5cend\u2581of\u2581sentence\uff5c>'}}{%- set ns.is_tool = false -%}{%- else %}{% set content = message['content'] %}{% if '</think>' in content %}{% set content = content.split('</think>')[-1] %}{% endif %}{{'<\uff5cAssistant\uff5c>' + content + '<\uff5cend\u2581of\u2581sentence\uff5c>'}}{%- endif %}{%- endif %}{%- if message['role'] == 'tool' %}{%- set ns.is_tool = true -%}{%- if ns.is_output_first %}{{'<\uff5ctool\u2581outputs\u2581begin\uff5c><\uff5ctool\u2581output\u2581begin\uff5c>' + message['content'] + '<\uff5ctool\u2581output\u2581end\uff5c>'}}{%- set ns.is_output_first = false %}{%- else %}{{'\\n<\uff5ctool\u2581output\u2581begin\uff5c>' + message['content'] + '<\uff5ctool\u2581output\u2581end\uff5c>'}}{%- endif %}{%- endif %}{%- endfor -%}{% if ns.is_tool %}{{'<\uff5ctool\u2581outputs\u2581end\uff5c>'}}{% endif %}{% if add_generation_prompt and not ns.is_tool %}{{'<\uff5cAssistant\uff5c><think>\\n'}}{% endif %}",
+  "code_commits": {
+    "igpo": "8da9d7f9c66ffdf9d6485be55abff196ce720c9d",
+    "treepo": "f05552394e734ea2838cf9e3b8191f5093319dcf",
+    "treerl": "63ea99e0253cc320e53b2b47eb1bcfa8adafd666"
+  },
+  "created_at": 1793090669.6404722,
+  "evaluation_data_dir": "/work/source_data",
+  "evaluation_datasets_present": [
+    "math500",
+    "aime24",
+    "aime25",
+    "amc23",
+    "olympiadbench_hf"
+  ],
+  "leakage_decision": {
+    "action": "accepted_known_overlaps_without_filtering",
+    "audit_sha256": "c91ffe55075dc0e596e83cb94e6afc7bafc81f9853bf6174f088959436028a66",
+    "corpus": "unchanged",
+    "normalized_exact_overlaps": 7,
+    "notation_equivalent_overlaps": 1
+  },
+  "model_id": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
+  "model_path": "/work/hf_cache/models--deepseek-ai--DeepSeek-R1-Distill-Qwen-1.5B/snapshots/ad9f0ae0864d7fbcd1cd905e3c6c5b069cc8b562",
+  "model_revision": "ad9f0ae0864d7fbcd1cd905e3c6c5b069cc8b562",
+  "ready": true,
+  "setup_mode": "registered_existing_exports_without_rebuild",
+  "split_manifest": "/work/data_vdra/split_manifest.json",
+  "tokenizer_class": "LlamaTokenizerFast",
+  "tokenizer_file_sha256": {
+    "config.json": "37bd455e9679d2959536270fed49d25cc7c290a64f6e52abb97c71345a9cee41",
+    "tokenizer.json": "88145e3c3249adc2546ede277e9819d6e405e19072456e4b521cbc724bd60773",
+    "tokenizer_config.json": "8ac8c85fb242563c2260baec0909debd69d718af6a0b3d90e6cab62b4d341cd5"
+  },
+  "tokenizer_name_or_path": "/work/hf_cache/models--deepseek-ai--DeepSeek-R1-Distill-Qwen-1.5B/snapshots/ad9f0ae0864d7fbcd1cd905e3c6c5b069cc8b562",
+  "training_data": "/work/source_data/math",
+  "training_export_sha256": {
+    "diag256.jsonl": "b7491f0b7ced0921d547edf321accb6748b06233f73099cb1ab9cc54701482f3",
+    "split_manifest.json": "292bf8e62cc5cfec5a1ab2c9fada668bd9a1ceef4db66c212fe28f6882a49576",
+    "train.parquet": "74c6898ca10f82110468ffd6b1d6de0c161fee93a6ed5cfdb173b917bf7ca292",
+    "train_treerl.jsonl": "2b276d4d6608b1d1971124d2014c0a255063d516819759e64da4c72b1e685fdc"
+  },
+  "training_rows": 11244
+}
+2026-10-27 15:44:31+07:00 Stopping app - local entrypoint completed.
+✓ App completed. View run at 
+https://modal.com/apps/kieusontung6/main/ap-tYGyZfud1GutAAkQlXtAJL

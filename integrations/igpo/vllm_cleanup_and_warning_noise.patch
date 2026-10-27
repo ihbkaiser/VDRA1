@@ -1,0 +1,80 @@
+diff --git a/treetune/common/vllm_server.py b/treetune/common/vllm_server.py
+index 45e2660..e9e3ee7 100644
+--- a/treetune/common/vllm_server.py
++++ b/treetune/common/vllm_server.py
+@@ -298,12 +298,11 @@ class VLLMServer(FromParams):
+         # Without this, a substring match on "vllm" in cmdline can also match
+         # training ranks (e.g. argv contains --vllm_port, config paths) and
+         # killing one would tear down the distributed group.
++        owned_processes = []
+         owned_pids = {self.process.pid}
+         try:
+-            owned_pids.update(
+-                child.pid
+-                for child in psutil.Process(self.process.pid).children(recursive=True)
+-            )
++            owned_processes = psutil.Process(self.process.pid).children(recursive=True)
++            owned_pids.update(child.pid for child in owned_processes)
+         except psutil.NoSuchProcess:
+             pass
+         except Exception as e:
+@@ -344,11 +343,46 @@ class VLLMServer(FromParams):
+         self.process.kill()
+         self.process.wait()
+ 
++        # CUDA process accounting can report the container init PID rather
++        # than the individual worker PIDs. Stop the descendants we captured
++        # above directly so vLLM cannot retain GPU memory into the trainer.
++        self._stop_owned_processes(owned_processes)
++
+         # On B200/newer GPUs, vLLM worker processes can hold CUDA memory even
+         # after the main process is killed. Force-kill processes on this GPU.
+         if self._gpu_idx is not None:
+             self._force_free_gpu_memory(self._gpu_idx, owned_pids)
+ 
++    @staticmethod
++    def _stop_owned_processes(processes):
++        """Terminate captured vLLM descendants without touching other workers."""
++        live_processes = []
++        for process in reversed(processes):
++            try:
++                if process.is_running():
++                    process.terminate()
++                    live_processes.append(process)
++            except psutil.NoSuchProcess:
++                continue
++            except Exception as e:
++                logger.warning(f"Could not terminate owned vLLM PID {process.pid}: {e}")
++
++        _, alive = psutil.wait_procs(live_processes, timeout=3)
++        for process in alive:
++            try:
++                process.kill()
++            except psutil.NoSuchProcess:
++                pass
++            except Exception as e:
++                logger.warning(f"Could not force-kill owned vLLM PID {process.pid}: {e}")
++
++        _, still_alive = psutil.wait_procs(alive, timeout=3)
++        if still_alive:
++            logger.error(
++                "Owned vLLM processes remained after cleanup: "
++                f"{[process.pid for process in still_alive]}"
++            )
++
+     def _force_free_gpu_memory(self, gpu_idx: int, owned_pids: set):
+         """Kill remaining vLLM-owned processes holding CUDA memory on a GPU.
+ 
+diff --git a/treetune/inference_strategies/tree_inference/expansion.py b/treetune/inference_strategies/tree_inference/expansion.py
+index b3ebda3..8db4430 100644
+--- a/treetune/inference_strategies/tree_inference/expansion.py
++++ b/treetune/inference_strategies/tree_inference/expansion.py
+@@ -333,7 +333,7 @@ class EfficientIIDExpander(NodeExpander):
+                 prefix, program_kwargs.get("max_tokens")
+             )
+             if new_max_tokens != program_kwargs.get("max_tokens"):
+-                logger.warning(
++                logger.debug(
+                     f"Overriding max_tokens: {program_kwargs.get('max_tokens')} -> {new_max_tokens}"
+                 )
+             assert new_max_tokens > 0, f"new_max_tokens: {new_max_tokens}"

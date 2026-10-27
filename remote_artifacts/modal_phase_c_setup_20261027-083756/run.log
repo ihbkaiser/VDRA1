@@ -1,0 +1,873 @@
+✓ Initialized. View run at 
+https://modal.com/apps/kieusontung6/main/ap-doyhBAf267BRPwpAiud4BD
+2026-10-27 15:38:05+07:00 Building image im-TIOogtfSJUv2TE8xgphrQb
+2026-10-27 15:38:05+07:00 
+2026-10-27 15:38:05+07:00 => Step 0: FROM base
+2026-10-27 15:38:05+07:00 
+2026-10-27 15:38:05+07:00 => Step 1: COPY . /
+2026-10-27 15:38:07+07:00 Saving image...
+2026-10-27 15:38:08+07:00 Image saved, took 1.44s
+2026-10-27 15:38:08+07:00 
+2026-10-27 15:38:08+07:00 Built image im-TIOogtfSJUv2TE8xgphrQb in 3.82s
+2026-10-27 15:38:08+07:00 
+2026-10-27 15:38:08+07:00 
+2026-10-27 15:38:16+07:00 Building image im-4OgcAhs33skUMBDpI0w00g
+2026-10-27 15:38:20+07:00 
+2026-10-27 15:38:20+07:00 => Step 0: FROM base
+2026-10-27 15:38:20+07:00 
+2026-10-27 15:38:20+07:00 => Step 1: COPY . /
+2026-10-27 15:38:21+07:00 Saving image...
+2026-10-27 15:38:23+07:00 Image saved, took 1.31s
+2026-10-27 15:38:23+07:00 
+2026-10-27 15:38:23+07:00 Built image im-4OgcAhs33skUMBDpI0w00g in 6.63s
+2026-10-27 15:38:23+07:00 
+2026-10-27 15:38:23+07:00 
+2026-10-27 15:38:29+07:00 Building image im-hpMgVKlmrA6o01Tru2o7fh
+2026-10-27 15:38:30+07:00 
+2026-10-27 15:38:30+07:00 => Step 0: FROM base
+2026-10-27 15:38:30+07:00 
+2026-10-27 15:38:30+07:00 => Step 1: COPY . /
+2026-10-27 15:38:34+07:00 Saving image...
+2026-10-27 15:38:36+07:00 Image saved, took 1.60s
+2026-10-27 15:38:36+07:00 
+2026-10-27 15:38:36+07:00 Built image im-hpMgVKlmrA6o01Tru2o7fh in 6.73s
+2026-10-27 15:38:36+07:00 
+2026-10-27 15:38:36+07:00 
+2026-10-27 15:38:40+07:00 Building image im-NUWadl42WXj5NxnUixLQ2G
+2026-10-27 15:38:45+07:00 
+2026-10-27 15:38:45+07:00 => Step 0: FROM base
+2026-10-27 15:38:45+07:00 
+2026-10-27 15:38:45+07:00 => Step 1: COPY . /
+2026-10-27 15:38:48+07:00 Saving image...
+2026-10-27 15:38:50+07:00 Image saved, took 1.79s
+2026-10-27 15:38:50+07:00 
+2026-10-27 15:38:50+07:00 Built image im-NUWadl42WXj5NxnUixLQ2G in 9.61s
+2026-10-27 15:38:50+07:00 
+2026-10-27 15:38:50+07:00 
+2026-10-27 15:38:52+07:00 Building image im-qLKOcrOzB5rrXYZpFxul8k
+2026-10-27 15:38:52+07:00 Building image im-NcLkFs39onq1X4DpGBHcV5
+2026-10-27 15:38:53+07:00 
+2026-10-27 15:38:53+07:00 => Step 0: FROM base
+2026-10-27 15:38:53+07:00 
+2026-10-27 15:38:53+07:00 => Step 1: RUN python -m pip install --no-deps -e /opt/work/TreePO
+2026-10-27 15:38:53+07:00 
+2026-10-27 15:38:53+07:00 => Step 0: FROM base
+2026-10-27 15:38:53+07:00 
+2026-10-27 15:38:53+07:00 => Step 1: RUN python -m pip install deepspeed==0.16.5
+2026-10-27 15:38:55+07:00 Looking in indexes: http://pypi-mirror.modal.local:5555/simple
+2026-10-27 15:38:55+07:00 Collecting deepspeed==0.16.5
+2026-10-27 15:38:55+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/deepspeed/deepspeed-0.16.5.tar.gz (1.5 MB)
+2026-10-27 15:38:55+07:00      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.5/1.5 MB 468.4 MB/s eta 0:00:00
+2026-10-27 15:38:56+07:00   Installing build dependencies: started
+2026-10-27 15:38:56+07:00 Looking in indexes: http://pypi-mirror.modal.local:5555/simple
+2026-10-27 15:38:56+07:00 Obtaining file:///opt/work/TreePO
+2026-10-27 15:38:56+07:00   Installing build dependencies: started
+2026-10-27 15:38:58+07:00   Installing build dependencies: finished with status 'done'
+2026-10-27 15:38:58+07:00   Getting requirements to build wheel: started
+2026-10-27 15:38:59+07:00   Getting requirements to build wheel: finished with status 'done'
+2026-10-27 15:38:59+07:00   Preparing metadata (pyproject.toml): started
+2026-10-27 15:38:59+07:00   Preparing metadata (pyproject.toml): finished with status 'done'
+2026-10-27 15:38:59+07:00 Requirement already satisfied: einops in /usr/local/lib/python3.10/site-packages (from deepspeed==0.16.5) (0.8.1)
+2026-10-27 15:38:59+07:00 Collecting hjson (from deepspeed==0.16.5)
+2026-10-27 15:38:59+07:00   Obtaining dependency information for hjson from http://pypi-mirror.modal.local:5555/simple/hjson/hjson-3.1.0-py3-none-any.whl.metadata
+2026-10-27 15:38:59+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/hjson/hjson-3.1.0-py3-none-any.whl.metadata (2.6 kB)
+2026-10-27 15:38:59+07:00 Requirement already satisfied: msgpack in /usr/local/lib/python3.10/site-packages (from deepspeed==0.16.5) (1.2.4)
+2026-10-27 15:38:59+07:00 Requirement already satisfied: ninja in /usr/local/lib/python3.10/site-packages (from deepspeed==0.16.5) (1.13.2)
+2026-10-27 15:38:59+07:00 Requirement already satisfied: numpy in /usr/local/lib/python3.10/site-packages (from deepspeed==0.16.5) (1.26.4)
+2026-10-27 15:38:59+07:00 Requirement already satisfied: packaging>=20.0 in /usr/local/lib/python3.10/site-packages (from deepspeed==0.16.5) (26.3)
+2026-10-27 15:38:59+07:00 Requirement already satisfied: psutil in /usr/local/lib/python3.10/site-packages (from deepspeed==0.16.5) (7.2.2)
+2026-10-27 15:38:59+07:00 Requirement already satisfied: py-cpuinfo in /usr/local/lib/python3.10/site-packages (from deepspeed==0.16.5) (9.0.0)
+2026-10-27 15:38:59+07:00 Requirement already satisfied: pydantic>=2.0.0 in /usr/local/lib/python3.10/site-packages (from deepspeed==0.16.5) (2.14.1)
+2026-10-27 15:38:59+07:00 Requirement already satisfied: torch in /usr/local/lib/python3.10/site-packages (from deepspeed==0.16.5) (2.7.0+cu128)
+2026-10-27 15:38:59+07:00 Requirement already satisfied: tqdm in /usr/local/lib/python3.10/site-packages (from deepspeed==0.16.5) (4.70.1)
+2026-10-27 15:38:59+07:00 Requirement already satisfied: annotated-types>=0.6.0 in /usr/local/lib/python3.10/site-packages (from pydantic>=2.0.0->deepspeed==0.16.5) (0.8.0)
+2026-10-27 15:38:59+07:00 Requirement already satisfied: pydantic-core==2.50.1 in /usr/local/lib/python3.10/site-packages (from pydantic>=2.0.0->deepspeed==0.16.5) (2.50.1)
+2026-10-27 15:38:59+07:00 Requirement already satisfied: typing-extensions>=4.16.0 in /usr/local/lib/python3.10/site-packages (from pydantic>=2.0.0->deepspeed==0.16.5) (4.16.0)
+2026-10-27 15:38:59+07:00 Requirement already satisfied: typing-inspection>=0.4.4 in /usr/local/lib/python3.10/site-packages (from pydantic>=2.0.0->deepspeed==0.16.5) (0.4.4)
+2026-10-27 15:38:59+07:00 Requirement already satisfied: filelock in /usr/local/lib/python3.10/site-packages (from torch->deepspeed==0.16.5) (3.32.3)
+2026-10-27 15:38:59+07:00 Requirement already satisfied: sympy>=1.13.3 in /usr/local/lib/python3.10/site-packages (from torch->deepspeed==0.16.5) (1.14.0)
+2026-10-27 15:38:59+07:00 Requirement already satisfied: networkx in /usr/local/lib/python3.10/site-packages (from torch->deepspeed==0.16.5) (3.4.2)
+2026-10-27 15:38:59+07:00 Requirement already satisfied: jinja2 in /usr/local/lib/python3.10/site-packages (from torch->deepspeed==0.16.5) (3.1.6)
+2026-10-27 15:38:59+07:00 Requirement already satisfied: fsspec in /usr/local/lib/python3.10/site-packages (from torch->deepspeed==0.16.5) (2023.10.0)
+2026-10-27 15:38:59+07:00 Requirement already satisfied: nvidia-cuda-nvrtc-cu12==12.8.61 in /usr/local/lib/python3.10/site-packages (from torch->deepspeed==0.16.5) (12.8.61)
+2026-10-27 15:38:59+07:00 Requirement already satisfied: nvidia-cuda-runtime-cu12==12.8.57 in /usr/local/lib/python3.10/site-packages (from torch->deepspeed==0.16.5) (12.8.57)
+2026-10-27 15:38:59+07:00 Requirement already satisfied: nvidia-cuda-cupti-cu12==12.8.57 in /usr/local/lib/python3.10/site-packages (from torch->deepspeed==0.16.5) (12.8.57)
+2026-10-27 15:38:59+07:00 Requirement already satisfied: nvidia-cudnn-cu12==9.7.1.26 in /usr/local/lib/python3.10/site-packages (from torch->deepspeed==0.16.5) (9.7.1.26)
+2026-10-27 15:38:59+07:00 Requirement already satisfied: nvidia-cublas-cu12==12.8.3.14 in /usr/local/lib/python3.10/site-packages (from torch->deepspeed==0.16.5) (12.8.3.14)
+2026-10-27 15:38:59+07:00 Requirement already satisfied: nvidia-cufft-cu12==11.3.3.41 in /usr/local/lib/python3.10/site-packages (from torch->deepspeed==0.16.5) (11.3.3.41)
+2026-10-27 15:38:59+07:00 Requirement already satisfied: nvidia-curand-cu12==10.3.9.55 in /usr/local/lib/python3.10/site-packages (from torch->deepspeed==0.16.5) (10.3.9.55)
+2026-10-27 15:38:59+07:00 Requirement already satisfied: nvidia-cusolver-cu12==11.7.2.55 in /usr/local/lib/python3.10/site-packages (from torch->deepspeed==0.16.5) (11.7.2.55)
+2026-10-27 15:38:59+07:00 Requirement already satisfied: nvidia-cusparse-cu12==12.5.7.53 in /usr/local/lib/python3.10/site-packages (from torch->deepspeed==0.16.5) (12.5.7.53)
+2026-10-27 15:38:59+07:00 Requirement already satisfied: nvidia-cusparselt-cu12==0.6.3 in /usr/local/lib/python3.10/site-packages (from torch->deepspeed==0.16.5) (0.6.3)
+2026-10-27 15:38:59+07:00 Requirement already satisfied: nvidia-nccl-cu12==2.26.2 in /usr/local/lib/python3.10/site-packages (from torch->deepspeed==0.16.5) (2.26.2)
+2026-10-27 15:38:59+07:00 Requirement already satisfied: nvidia-nvtx-cu12==12.8.55 in /usr/local/lib/python3.10/site-packages (from torch->deepspeed==0.16.5) (12.8.55)
+2026-10-27 15:38:59+07:00 Requirement already satisfied: nvidia-nvjitlink-cu12==12.8.61 in /usr/local/lib/python3.10/site-packages (from torch->deepspeed==0.16.5) (12.8.61)
+2026-10-27 15:38:59+07:00 Requirement already satisfied: nvidia-cufile-cu12==1.13.0.11 in /usr/local/lib/python3.10/site-packages (from torch->deepspeed==0.16.5) (1.13.0.11)
+2026-10-27 15:38:59+07:00 Requirement already satisfied: triton==3.3.0 in /usr/local/lib/python3.10/site-packages (from torch->deepspeed==0.16.5) (3.3.0)
+2026-10-27 15:38:59+07:00 Requirement already satisfied: setuptools>=40.8.0 in /usr/local/lib/python3.10/site-packages (from triton==3.3.0->torch->deepspeed==0.16.5) (68.1.2)
+2026-10-27 15:38:59+07:00 Requirement already satisfied: mpmath<1.4,>=1.1.0 in /usr/local/lib/python3.10/site-packages (from sympy>=1.13.3->torch->deepspeed==0.16.5) (1.3.0)
+2026-10-27 15:38:59+07:00 Requirement already satisfied: MarkupSafe>=2.0 in /usr/local/lib/python3.10/site-packages (from jinja2->torch->deepspeed==0.16.5) (3.0.3)
+2026-10-27 15:38:59+07:00 Downloading http://pypi-mirror.modal.local:5555/simple/hjson/hjson-3.1.0-py3-none-any.whl (54 kB)
+2026-10-27 15:38:59+07:00    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 54.0/54.0 kB 307.3 MB/s eta 0:00:00
+2026-10-27 15:38:59+07:00 Building wheels for collected packages: deepspeed
+2026-10-27 15:38:59+07:00   Building wheel for deepspeed (pyproject.toml): started
+2026-10-27 15:39:00+07:00   Installing build dependencies: finished with status 'done'
+2026-10-27 15:39:00+07:00   Checking if build backend supports build_editable: started
+2026-10-27 15:39:00+07:00   Building wheel for deepspeed (pyproject.toml): finished with status 'done'
+2026-10-27 15:39:01+07:00   Checking if build backend supports build_editable: finished with status 'done'
+2026-10-27 15:39:00+07:00   Created wheel for deepspeed: filename=deepspeed-0.16.5-py3-none-any.whl size=1580591 sha256=5695a81f5b3b3ce6aece676fe570d4f9cbfa005681656de62d1656f6fbcb600b
+2026-10-27 15:39:00+07:00   Stored in directory: /tmp/pip-ephem-wheel-cache-35vf59gu/wheels/ce/1b/6e/be6fb4140e44e0d9d66e26f65505e30674c9aa8148ae22ee4b
+2026-10-27 15:39:00+07:00 Successfully built deepspeed
+2026-10-27 15:39:01+07:00   Getting requirements to build editable: started
+2026-10-27 15:39:01+07:00   Getting requirements to build editable: finished with status 'done'
+2026-10-27 15:39:01+07:00   Preparing editable metadata (pyproject.toml): started
+2026-10-27 15:39:01+07:00   Preparing editable metadata (pyproject.toml): finished with status 'done'
+2026-10-27 15:39:02+07:00 Installing collected packages: hjson, deepspeed
+2026-10-27 15:39:02+07:00 Building wheels for collected packages: verl
+2026-10-27 15:39:02+07:00   Building editable for verl (pyproject.toml): started
+2026-10-27 15:39:02+07:00 Successfully installed deepspeed-0.16.5 hjson-3.1.0
+2026-10-27 15:39:02+07:00   Building editable for verl (pyproject.toml): finished with status 'done'
+2026-10-27 15:39:02+07:00   Created wheel for verl: filename=verl-0.3.1.dev0-0.editable-py3-none-any.whl size=10999 sha256=a143f31d87032fae332d52bff9ffb68f7185213cd4bfd79de7e92f653e4ae688
+2026-10-27 15:39:02+07:00   Stored in directory: /tmp/pip-ephem-wheel-cache-g0fqno0i/wheels/22/ce/4f/7491cf00d666ffc66fd328590b462e062060630839435a5739
+2026-10-27 15:39:02+07:00 Successfully built verl
+2026-10-27 15:39:02+07:00 Installing collected packages: verl
+2026-10-27 15:39:02+07:00 Successfully installed verl-0.3.1.dev0
+2026-10-27 15:39:02+07:00 
+2026-10-27 15:39:02+07:00 [notice] A new release of pip is available: 23.2.1 -> 26.2.2
+2026-10-27 15:39:02+07:00 [notice] To update, run: pip install --upgrade pip
+2026-10-27 15:39:02+07:00 
+2026-10-27 15:39:02+07:00 [notice] A new release of pip is available: 23.2.1 -> 26.2.2
+2026-10-27 15:39:02+07:00 [notice] To update, run: pip install --upgrade pip
+2026-10-27 15:39:04+07:00 Saving image...
+2026-10-27 15:39:04+07:00 Saving image...
+2026-10-27 15:39:05+07:00 Image saved, took 1.15s
+2026-10-27 15:39:05+07:00 
+2026-10-27 15:39:05+07:00 Built image im-qLKOcrOzB5rrXYZpFxul8k in 13.31s
+2026-10-27 15:39:05+07:00 
+2026-10-27 15:39:05+07:00 
+2026-10-27 15:39:06+07:00 Image saved, took 1.82s
+2026-10-27 15:39:06+07:00 
+2026-10-27 15:39:06+07:00 Built image im-NcLkFs39onq1X4DpGBHcV5 in 13.68s
+2026-10-27 15:39:06+07:00 
+2026-10-27 15:39:06+07:00 
+2026-10-27 15:39:08+07:00 Building image im-NMsoPBWEA6erca8LHXKyD7
+2026-10-27 15:39:08+07:00 Building image im-mnalW0GRWvsOHbcPOPgY2a
+2026-10-27 15:39:09+07:00 
+2026-10-27 15:39:09+07:00 => Step 0: FROM base
+2026-10-27 15:39:09+07:00 
+2026-10-27 15:39:09+07:00 => Step 1: RUN python -m pip install base58==2.1.1 evaluate==0.4.1 fire==0.5.0 graphviz==0.20.1 nltk==3.9.1 overrides==7.7.0 peft==0.8.2 plotnine==0.13.0 pygtrie==2.5.0 pylatexenc==2.10
+2026-10-27 15:39:09+07:00 
+2026-10-27 15:39:09+07:00 => Step 0: FROM base
+2026-10-27 15:39:09+07:00 
+2026-10-27 15:39:09+07:00 => Step 1: RUN python -m pip install Levenshtein==0.27.4
+2026-10-27 15:39:11+07:00 Looking in indexes: http://pypi-mirror.modal.local:5555/simple
+2026-10-27 15:39:11+07:00 Collecting Levenshtein==0.27.4
+2026-10-27 15:39:11+07:00   Obtaining dependency information for Levenshtein==0.27.4 from http://pypi-mirror.modal.local:5555/simple/levenshtein/levenshtein-0.27.4-cp310-cp310-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl.metadata
+2026-10-27 15:39:11+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/levenshtein/levenshtein-0.27.4-cp310-cp310-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl.metadata (3.7 kB)
+2026-10-27 15:39:11+07:00 Collecting rapidfuzz<4.0.0,>=3.9.0 (from Levenshtein==0.27.4)
+2026-10-27 15:39:11+07:00   Obtaining dependency information for rapidfuzz<4.0.0,>=3.9.0 from http://pypi-mirror.modal.local:5555/simple/rapidfuzz/rapidfuzz-3.14.5-cp310-cp310-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata
+2026-10-27 15:39:11+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/rapidfuzz/rapidfuzz-3.14.5-cp310-cp310-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (12 kB)
+2026-10-27 15:39:11+07:00 Downloading http://pypi-mirror.modal.local:5555/simple/levenshtein/levenshtein-0.27.4-cp310-cp310-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl (157 kB)
+2026-10-27 15:39:11+07:00    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 157.7/157.7 kB 91.7 MB/s eta 0:00:00
+2026-10-27 15:39:11+07:00 Downloading http://pypi-mirror.modal.local:5555/simple/rapidfuzz/rapidfuzz-3.14.5-cp310-cp310-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (3.2 MB)
+2026-10-27 15:39:12+07:00    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.2/3.2 MB 235.0 MB/s eta 0:00:00
+2026-10-27 15:39:13+07:00 Installing collected packages: rapidfuzz, Levenshtein
+2026-10-27 15:39:13+07:00 Looking in indexes: http://pypi-mirror.modal.local:5555/simple
+2026-10-27 15:39:13+07:00 Successfully installed Levenshtein-0.27.4 rapidfuzz-3.14.5
+2026-10-27 15:39:13+07:00 Collecting base58==2.1.1
+2026-10-27 15:39:13+07:00   Obtaining dependency information for base58==2.1.1 from http://pypi-mirror.modal.local:5555/simple/base58/base58-2.1.1-py3-none-any.whl.metadata
+2026-10-27 15:39:13+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/base58/base58-2.1.1-py3-none-any.whl.metadata (3.1 kB)
+2026-10-27 15:39:13+07:00 Collecting evaluate==0.4.1
+2026-10-27 15:39:13+07:00   Obtaining dependency information for evaluate==0.4.1 from http://pypi-mirror.modal.local:5555/simple/evaluate/evaluate-0.4.1-py3-none-any.whl.metadata
+2026-10-27 15:39:13+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/evaluate/evaluate-0.4.1-py3-none-any.whl.metadata (9.4 kB)
+2026-10-27 15:39:13+07:00 Collecting fire==0.5.0
+2026-10-27 15:39:13+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/fire/fire-0.5.0.tar.gz (88 kB)
+2026-10-27 15:39:13+07:00      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 88.3/88.3 kB 372.6 MB/s eta 0:00:00
+2026-10-27 15:39:13+07:00   Installing build dependencies: started
+2026-10-27 15:39:13+07:00 
+2026-10-27 15:39:13+07:00 [notice] A new release of pip is available: 23.2.1 -> 26.2.2
+2026-10-27 15:39:13+07:00 [notice] To update, run: pip install --upgrade pip
+2026-10-27 15:39:14+07:00 Saving image...
+2026-10-27 15:39:15+07:00 Image saved, took 1.06s
+2026-10-27 15:39:15+07:00 
+2026-10-27 15:39:15+07:00 Built image im-NMsoPBWEA6erca8LHXKyD7 in 7.35s
+2026-10-27 15:39:15+07:00 
+2026-10-27 15:39:15+07:00 
+2026-10-27 15:39:16+07:00   Installing build dependencies: finished with status 'done'
+2026-10-27 15:39:16+07:00   Getting requirements to build wheel: started
+2026-10-27 15:39:16+07:00   Getting requirements to build wheel: finished with status 'done'
+2026-10-27 15:39:16+07:00   Preparing metadata (pyproject.toml): started
+2026-10-27 15:39:16+07:00   Preparing metadata (pyproject.toml): finished with status 'done'
+2026-10-27 15:39:16+07:00 Collecting graphviz==0.20.1
+2026-10-27 15:39:16+07:00   Obtaining dependency information for graphviz==0.20.1 from http://pypi-mirror.modal.local:5555/simple/graphviz/graphviz-0.20.1-py3-none-any.whl.metadata
+2026-10-27 15:39:16+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/graphviz/graphviz-0.20.1-py3-none-any.whl.metadata (12 kB)
+2026-10-27 15:39:16+07:00 Collecting nltk==3.9.1
+2026-10-27 15:39:16+07:00   Obtaining dependency information for nltk==3.9.1 from http://pypi-mirror.modal.local:5555/simple/nltk/nltk-3.9.1-py3-none-any.whl.metadata
+2026-10-27 15:39:16+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/nltk/nltk-3.9.1-py3-none-any.whl.metadata (2.9 kB)
+2026-10-27 15:39:16+07:00 Collecting overrides==7.7.0
+2026-10-27 15:39:16+07:00   Obtaining dependency information for overrides==7.7.0 from http://pypi-mirror.modal.local:5555/simple/overrides/overrides-7.7.0-py3-none-any.whl.metadata
+2026-10-27 15:39:16+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/overrides/overrides-7.7.0-py3-none-any.whl.metadata (5.8 kB)
+2026-10-27 15:39:16+07:00 Collecting peft==0.8.2
+2026-10-27 15:39:16+07:00   Obtaining dependency information for peft==0.8.2 from http://pypi-mirror.modal.local:5555/simple/peft/peft-0.8.2-py3-none-any.whl.metadata
+2026-10-27 15:39:16+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/peft/peft-0.8.2-py3-none-any.whl.metadata (25 kB)
+2026-10-27 15:39:16+07:00 Collecting plotnine==0.13.0
+2026-10-27 15:39:16+07:00   Obtaining dependency information for plotnine==0.13.0 from http://pypi-mirror.modal.local:5555/simple/plotnine/plotnine-0.13.0-py3-none-any.whl.metadata
+2026-10-27 15:39:16+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/plotnine/plotnine-0.13.0-py3-none-any.whl.metadata (9.0 kB)
+2026-10-27 15:39:16+07:00 Collecting pygtrie==2.5.0
+2026-10-27 15:39:16+07:00   Obtaining dependency information for pygtrie==2.5.0 from http://pypi-mirror.modal.local:5555/simple/pygtrie/pygtrie-2.5.0-py3-none-any.whl.metadata
+2026-10-27 15:39:16+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/pygtrie/pygtrie-2.5.0-py3-none-any.whl.metadata (7.5 kB)
+2026-10-27 15:39:16+07:00 Collecting pylatexenc==2.10
+2026-10-27 15:39:16+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/pylatexenc/pylatexenc-2.10.tar.gz (162 kB)
+2026-10-27 15:39:16+07:00      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 162.6/162.6 kB 370.9 MB/s eta 0:00:00
+2026-10-27 15:39:16+07:00   Installing build dependencies: started
+2026-10-27 15:39:17+07:00 Building image im-lpkfkcVC4b6fMmlZbMlT5F
+2026-10-27 15:39:17+07:00 
+2026-10-27 15:39:17+07:00 => Step 0: FROM base
+2026-10-27 15:39:17+07:00 
+2026-10-27 15:39:17+07:00 => Step 1: RUN python -m pip install --no-deps -e /opt/work/TreeRL && python -c 'from transformers.integrations import HfDeepSpeedConfig; import openrlhf.models.actor, openrlhf.models.model; import openrlhf.trainer.ppo_utils.parallel_mcts; print("TreeRL Transformers DeepSpeed imports OK")'
+2026-10-27 15:39:19+07:00 Looking in indexes: http://pypi-mirror.modal.local:5555/simple
+2026-10-27 15:39:19+07:00 Obtaining file:///opt/work/TreeRL
+2026-10-27 15:39:19+07:00   Installing build dependencies: started
+2026-10-27 15:39:19+07:00   Installing build dependencies: finished with status 'done'
+2026-10-27 15:39:19+07:00   Getting requirements to build wheel: started
+2026-10-27 15:39:19+07:00   Getting requirements to build wheel: finished with status 'done'
+2026-10-27 15:39:19+07:00   Preparing metadata (pyproject.toml): started
+2026-10-27 15:39:19+07:00   Preparing metadata (pyproject.toml): finished with status 'done'
+2026-10-27 15:39:19+07:00 Requirement already satisfied: datasets>=2.0.0 in /usr/local/lib/python3.10/site-packages (from evaluate==0.4.1) (2.17.1)
+2026-10-27 15:39:19+07:00 Requirement already satisfied: numpy>=1.17 in /usr/local/lib/python3.10/site-packages (from evaluate==0.4.1) (1.26.4)
+2026-10-27 15:39:19+07:00 Requirement already satisfied: dill in /usr/local/lib/python3.10/site-packages (from evaluate==0.4.1) (0.3.8)
+2026-10-27 15:39:19+07:00 Requirement already satisfied: pandas in /usr/local/lib/python3.10/site-packages (from evaluate==0.4.1) (2.2.3)
+2026-10-27 15:39:19+07:00 Requirement already satisfied: requests>=2.19.0 in /usr/local/lib/python3.10/site-packages (from evaluate==0.4.1) (2.34.2)
+2026-10-27 15:39:19+07:00 Requirement already satisfied: tqdm>=4.62.1 in /usr/local/lib/python3.10/site-packages (from evaluate==0.4.1) (4.70.1)
+2026-10-27 15:39:19+07:00 Requirement already satisfied: xxhash in /usr/local/lib/python3.10/site-packages (from evaluate==0.4.1) (4.0.2)
+2026-10-27 15:39:19+07:00 Requirement already satisfied: multiprocess in /usr/local/lib/python3.10/site-packages (from evaluate==0.4.1) (0.70.16)
+2026-10-27 15:39:19+07:00 Requirement already satisfied: fsspec[http]>=2021.05.0 in /usr/local/lib/python3.10/site-packages (from evaluate==0.4.1) (2023.10.0)
+2026-10-27 15:39:19+07:00 Requirement already satisfied: huggingface-hub>=0.7.0 in /usr/local/lib/python3.10/site-packages (from evaluate==0.4.1) (0.36.2)
+2026-10-27 15:39:19+07:00 Requirement already satisfied: packaging in /usr/local/lib/python3.10/site-packages (from evaluate==0.4.1) (26.3)
+2026-10-27 15:39:19+07:00 Collecting responses<0.19 (from evaluate==0.4.1)
+2026-10-27 15:39:19+07:00   Obtaining dependency information for responses<0.19 from http://pypi-mirror.modal.local:5555/simple/responses/responses-0.18.0-py3-none-any.whl.metadata
+2026-10-27 15:39:19+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/responses/responses-0.18.0-py3-none-any.whl.metadata (29 kB)
+2026-10-27 15:39:19+07:00 Requirement already satisfied: six in /usr/local/lib/python3.10/site-packages (from fire==0.5.0) (1.17.0)
+2026-10-27 15:39:19+07:00 Collecting termcolor (from fire==0.5.0)
+2026-10-27 15:39:19+07:00   Obtaining dependency information for termcolor from http://pypi-mirror.modal.local:5555/simple/termcolor/termcolor-3.3.0-py3-none-any.whl.metadata
+2026-10-27 15:39:19+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/termcolor/termcolor-3.3.0-py3-none-any.whl.metadata (6.5 kB)
+2026-10-27 15:39:19+07:00 Requirement already satisfied: click in /usr/local/lib/python3.10/site-packages (from nltk==3.9.1) (8.5.0)
+2026-10-27 15:39:19+07:00 Collecting joblib (from nltk==3.9.1)
+2026-10-27 15:39:19+07:00   Obtaining dependency information for joblib from http://pypi-mirror.modal.local:5555/simple/joblib/joblib-1.6.0-py3-none-any.whl.metadata
+2026-10-27 15:39:19+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/joblib/joblib-1.6.0-py3-none-any.whl.metadata (6.5 kB)
+2026-10-27 15:39:19+07:00 Requirement already satisfied: regex>=2021.8.3 in /usr/local/lib/python3.10/site-packages (from nltk==3.9.1) (2026.9.29)
+2026-10-27 15:39:19+07:00 Requirement already satisfied: psutil in /usr/local/lib/python3.10/site-packages (from peft==0.8.2) (7.2.2)
+2026-10-27 15:39:19+07:00 Requirement already satisfied: pyyaml in /usr/local/lib/python3.10/site-packages (from peft==0.8.2) (6.0.3)
+2026-10-27 15:39:19+07:00 Requirement already satisfied: torch>=1.13.0 in /usr/local/lib/python3.10/site-packages (from peft==0.8.2) (2.7.0+cu128)
+2026-10-27 15:39:19+07:00 Requirement already satisfied: transformers in /usr/local/lib/python3.10/site-packages (from peft==0.8.2) (4.51.3)
+2026-10-27 15:39:19+07:00 Requirement already satisfied: accelerate>=0.21.0 in /usr/local/lib/python3.10/site-packages (from peft==0.8.2) (0.33.0)
+2026-10-27 15:39:19+07:00 Requirement already satisfied: safetensors in /usr/local/lib/python3.10/site-packages (from peft==0.8.2) (0.8.0)
+2026-10-27 15:39:19+07:00 Requirement already satisfied: matplotlib>=3.6.0 in /usr/local/lib/python3.10/site-packages (from plotnine==0.13.0) (3.8.3)
+2026-10-27 15:39:19+07:00 Collecting mizani==0.11.0 (from plotnine==0.13.0)
+2026-10-27 15:39:19+07:00   Obtaining dependency information for mizani==0.11.0 from http://pypi-mirror.modal.local:5555/simple/mizani/mizani-0.11.0-py3-none-any.whl.metadata
+2026-10-27 15:39:19+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/mizani/mizani-0.11.0-py3-none-any.whl.metadata (4.8 kB)
+2026-10-27 15:39:19+07:00 Requirement already satisfied: scipy>=1.7.0 in /usr/local/lib/python3.10/site-packages (from plotnine==0.13.0) (1.15.2)
+2026-10-27 15:39:19+07:00 Collecting statsmodels>=0.14.0 (from plotnine==0.13.0)
+2026-10-27 15:39:19+07:00   Obtaining dependency information for statsmodels>=0.14.0 from http://pypi-mirror.modal.local:5555/simple/statsmodels/statsmodels-0.15.0-cp310-cp310-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata
+2026-10-27 15:39:19+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/statsmodels/statsmodels-0.15.0-cp310-cp310-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (9.6 kB)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: filelock in /usr/local/lib/python3.10/site-packages (from datasets>=2.0.0->evaluate==0.4.1) (3.32.3)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: pyarrow>=12.0.0 in /usr/local/lib/python3.10/site-packages (from datasets>=2.0.0->evaluate==0.4.1) (19.0.1)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: pyarrow-hotfix in /usr/local/lib/python3.10/site-packages (from datasets>=2.0.0->evaluate==0.4.1) (0.7)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: aiohttp in /usr/local/lib/python3.10/site-packages (from datasets>=2.0.0->evaluate==0.4.1) (3.14.5)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: hf-xet<2.0.0,>=1.1.3 in /usr/local/lib/python3.10/site-packages (from huggingface-hub>=0.7.0->evaluate==0.4.1) (1.7.0)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: typing-extensions>=3.7.4.3 in /usr/local/lib/python3.10/site-packages (from huggingface-hub>=0.7.0->evaluate==0.4.1) (4.16.0)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: contourpy>=1.0.1 in /usr/local/lib/python3.10/site-packages (from matplotlib>=3.6.0->plotnine==0.13.0) (1.3.2)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: cycler>=0.10 in /usr/local/lib/python3.10/site-packages (from matplotlib>=3.6.0->plotnine==0.13.0) (0.12.1)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: fonttools>=4.22.0 in /usr/local/lib/python3.10/site-packages (from matplotlib>=3.6.0->plotnine==0.13.0) (4.65.0)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: kiwisolver>=1.3.1 in /usr/local/lib/python3.10/site-packages (from matplotlib>=3.6.0->plotnine==0.13.0) (1.5.1)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: pillow>=8 in /usr/local/lib/python3.10/site-packages (from matplotlib>=3.6.0->plotnine==0.13.0) (12.3.0)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: pyparsing>=2.3.1 in /usr/local/lib/python3.10/site-packages (from matplotlib>=3.6.0->plotnine==0.13.0) (3.3.3)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: python-dateutil>=2.7 in /usr/local/lib/python3.10/site-packages (from matplotlib>=3.6.0->plotnine==0.13.0) (3.0.0)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: pytz>=2020.1 in /usr/local/lib/python3.10/site-packages (from pandas->evaluate==0.4.1) (2026.5)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: tzdata>=2022.7 in /usr/local/lib/python3.10/site-packages (from pandas->evaluate==0.4.1) (2026.5)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: charset_normalizer<4,>=2 in /usr/local/lib/python3.10/site-packages (from requests>=2.19.0->evaluate==0.4.1) (3.5.2)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: idna<4,>=2.5 in /usr/local/lib/python3.10/site-packages (from requests>=2.19.0->evaluate==0.4.1) (3.20)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: urllib3<3,>=1.26 in /usr/local/lib/python3.10/site-packages (from requests>=2.19.0->evaluate==0.4.1) (2.8.0)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: certifi>=2023.5.7 in /usr/local/lib/python3.10/site-packages (from requests>=2.19.0->evaluate==0.4.1) (2026.10.23)
+2026-10-27 15:39:20+07:00 Collecting patsy>=0.5.6 (from statsmodels>=0.14.0->plotnine==0.13.0)
+2026-10-27 15:39:20+07:00   Obtaining dependency information for patsy>=0.5.6 from http://pypi-mirror.modal.local:5555/simple/patsy/patsy-1.0.3-py2.py3-none-any.whl.metadata
+2026-10-27 15:39:20+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/patsy/patsy-1.0.3-py2.py3-none-any.whl.metadata (3.7 kB)
+2026-10-27 15:39:20+07:00 Collecting formulaic>=1.1.0 (from statsmodels>=0.14.0->plotnine==0.13.0)
+2026-10-27 15:39:20+07:00   Obtaining dependency information for formulaic>=1.1.0 from http://pypi-mirror.modal.local:5555/simple/formulaic/formulaic-1.2.2-py3-none-any.whl.metadata
+2026-10-27 15:39:20+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/formulaic/formulaic-1.2.2-py3-none-any.whl.metadata (7.0 kB)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: sympy>=1.13.3 in /usr/local/lib/python3.10/site-packages (from torch>=1.13.0->peft==0.8.2) (1.14.0)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: networkx in /usr/local/lib/python3.10/site-packages (from torch>=1.13.0->peft==0.8.2) (3.4.2)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: jinja2 in /usr/local/lib/python3.10/site-packages (from torch>=1.13.0->peft==0.8.2) (3.1.6)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: nvidia-cuda-nvrtc-cu12==12.8.61 in /usr/local/lib/python3.10/site-packages (from torch>=1.13.0->peft==0.8.2) (12.8.61)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: nvidia-cuda-runtime-cu12==12.8.57 in /usr/local/lib/python3.10/site-packages (from torch>=1.13.0->peft==0.8.2) (12.8.57)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: nvidia-cuda-cupti-cu12==12.8.57 in /usr/local/lib/python3.10/site-packages (from torch>=1.13.0->peft==0.8.2) (12.8.57)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: nvidia-cudnn-cu12==9.7.1.26 in /usr/local/lib/python3.10/site-packages (from torch>=1.13.0->peft==0.8.2) (9.7.1.26)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: nvidia-cublas-cu12==12.8.3.14 in /usr/local/lib/python3.10/site-packages (from torch>=1.13.0->peft==0.8.2) (12.8.3.14)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: nvidia-cufft-cu12==11.3.3.41 in /usr/local/lib/python3.10/site-packages (from torch>=1.13.0->peft==0.8.2) (11.3.3.41)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: nvidia-curand-cu12==10.3.9.55 in /usr/local/lib/python3.10/site-packages (from torch>=1.13.0->peft==0.8.2) (10.3.9.55)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: nvidia-cusolver-cu12==11.7.2.55 in /usr/local/lib/python3.10/site-packages (from torch>=1.13.0->peft==0.8.2) (11.7.2.55)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: nvidia-cusparse-cu12==12.5.7.53 in /usr/local/lib/python3.10/site-packages (from torch>=1.13.0->peft==0.8.2) (12.5.7.53)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: nvidia-cusparselt-cu12==0.6.3 in /usr/local/lib/python3.10/site-packages (from torch>=1.13.0->peft==0.8.2) (0.6.3)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: nvidia-nccl-cu12==2.26.2 in /usr/local/lib/python3.10/site-packages (from torch>=1.13.0->peft==0.8.2) (2.26.2)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: nvidia-nvtx-cu12==12.8.55 in /usr/local/lib/python3.10/site-packages (from torch>=1.13.0->peft==0.8.2) (12.8.55)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: nvidia-nvjitlink-cu12==12.8.61 in /usr/local/lib/python3.10/site-packages (from torch>=1.13.0->peft==0.8.2) (12.8.61)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: nvidia-cufile-cu12==1.13.0.11 in /usr/local/lib/python3.10/site-packages (from torch>=1.13.0->peft==0.8.2) (1.13.0.11)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: triton==3.3.0 in /usr/local/lib/python3.10/site-packages (from torch>=1.13.0->peft==0.8.2) (3.3.0)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: setuptools>=40.8.0 in /usr/local/lib/python3.10/site-packages (from triton==3.3.0->torch>=1.13.0->peft==0.8.2) (68.1.2)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: cloudpickle>=3.0 in /usr/local/lib/python3.10/site-packages (from joblib->nltk==3.9.1) (3.1.2)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: tokenizers<0.22,>=0.21 in /usr/local/lib/python3.10/site-packages (from transformers->peft==0.8.2) (0.21.1)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: aiohappyeyeballs>=2.5.0 in /usr/local/lib/python3.10/site-packages (from aiohttp->datasets>=2.0.0->evaluate==0.4.1) (2.7.1)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: aiosignal>=1.4.0 in /usr/local/lib/python3.10/site-packages (from aiohttp->datasets>=2.0.0->evaluate==0.4.1) (1.4.0)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: async-timeout<6.0,>=4.0 in /usr/local/lib/python3.10/site-packages (from aiohttp->datasets>=2.0.0->evaluate==0.4.1) (5.0.1)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: attrs>=17.3.0 in /usr/local/lib/python3.10/site-packages (from aiohttp->datasets>=2.0.0->evaluate==0.4.1) (26.1.0)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: frozenlist>=1.1.1 in /usr/local/lib/python3.10/site-packages (from aiohttp->datasets>=2.0.0->evaluate==0.4.1) (1.8.0)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: multidict<8.0,>=4.5 in /usr/local/lib/python3.10/site-packages (from aiohttp->datasets>=2.0.0->evaluate==0.4.1) (7.1.0)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: propcache>=0.2.0 in /usr/local/lib/python3.10/site-packages (from aiohttp->datasets>=2.0.0->evaluate==0.4.1) (0.5.4)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: yarl<2.0,>=1.25.1 in /usr/local/lib/python3.10/site-packages (from aiohttp->datasets>=2.0.0->evaluate==0.4.1) (1.25.1)
+2026-10-27 15:39:20+07:00 Collecting interface-meta>=1.2.0 (from formulaic>=1.1.0->statsmodels>=0.14.0->plotnine==0.13.0)
+2026-10-27 15:39:20+07:00   Obtaining dependency information for interface-meta>=1.2.0 from http://pypi-mirror.modal.local:5555/simple/interface-meta/interface_meta-2.0.1-py3-none-any.whl.metadata
+2026-10-27 15:39:20+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/interface-meta/interface_meta-2.0.1-py3-none-any.whl.metadata (6.4 kB)
+2026-10-27 15:39:20+07:00 Collecting narwhals>=1.17 (from formulaic>=1.1.0->statsmodels>=0.14.0->plotnine==0.13.0)
+2026-10-27 15:39:20+07:00   Obtaining dependency information for narwhals>=1.17 from http://pypi-mirror.modal.local:5555/simple/narwhals/narwhals-2.27.1-py3-none-any.whl.metadata
+2026-10-27 15:39:20+07:00   Downloading http://pypi-mirror.modal.local:5555/simple/narwhals/narwhals-2.27.1-py3-none-any.whl.metadata (15 kB)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: wrapt>=1.0 in /usr/local/lib/python3.10/site-packages (from formulaic>=1.1.0->statsmodels>=0.14.0->plotnine==0.13.0) (2.5.1)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: mpmath<1.4,>=1.1.0 in /usr/local/lib/python3.10/site-packages (from sympy>=1.13.3->torch>=1.13.0->peft==0.8.2) (1.3.0)
+2026-10-27 15:39:20+07:00 Requirement already satisfied: MarkupSafe>=2.0 in /usr/local/lib/python3.10/site-packages (from jinja2->torch>=1.13.0->peft==0.8.2) (3.0.3)
+2026-10-27 15:39:21+07:00 Downloading http://pypi-mirror.modal.local:5555/simple/base58/base58-2.1.1-py3-none-any.whl (5.6 kB)
+2026-10-27 15:39:21+07:00 Downloading http://pypi-mirror.modal.local:5555/simple/evaluate/evaluate-0.4.1-py3-none-any.whl (84 kB)
+2026-10-27 15:39:21+07:00    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 84.1/84.1 kB 360.3 MB/s eta 0:00:00
+2026-10-27 15:39:21+07:00 Downloading http://pypi-mirror.modal.local:5555/simple/graphviz/graphviz-0.20.1-py3-none-any.whl (47 kB)
+2026-10-27 15:39:21+07:00    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 47.0/47.0 kB 308.4 MB/s eta 0:00:00
+2026-10-27 15:39:21+07:00 Downloading http://pypi-mirror.modal.local:5555/simple/nltk/nltk-3.9.1-py3-none-any.whl (1.5 MB)
+2026-10-27 15:39:21+07:00    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.5/1.5 MB 445.2 MB/s eta 0:00:00
+2026-10-27 15:39:21+07:00 Downloading http://pypi-mirror.modal.local:5555/simple/overrides/overrides-7.7.0-py3-none-any.whl (17 kB)
+2026-10-27 15:39:21+07:00 Downloading http://pypi-mirror.modal.local:5555/simple/peft/peft-0.8.2-py3-none-any.whl (183 kB)
+2026-10-27 15:39:21+07:00    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 183.4/183.4 kB 427.2 MB/s eta 0:00:00
+2026-10-27 15:39:21+07:00 Downloading http://pypi-mirror.modal.local:5555/simple/plotnine/plotnine-0.13.0-py3-none-any.whl (1.3 MB)
+2026-10-27 15:39:21+07:00    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 475.9 MB/s eta 0:00:00
+2026-10-27 15:39:21+07:00 Downloading http://pypi-mirror.modal.local:5555/simple/pygtrie/pygtrie-2.5.0-py3-none-any.whl (25 kB)
+2026-10-27 15:39:21+07:00 Downloading http://pypi-mirror.modal.local:5555/simple/mizani/mizani-0.11.0-py3-none-any.whl (114 kB)
+2026-10-27 15:39:21+07:00    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 114.4/114.4 kB 403.7 MB/s eta 0:00:00
+2026-10-27 15:39:21+07:00 Downloading http://pypi-mirror.modal.local:5555/simple/responses/responses-0.18.0-py3-none-any.whl (38 kB)
+2026-10-27 15:39:21+07:00 Downloading http://pypi-mirror.modal.local:5555/simple/statsmodels/statsmodels-0.15.0-cp310-cp310-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (12.1 MB)
+2026-10-27 15:39:21+07:00    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 12.1/12.1 MB 479.5 MB/s eta 0:00:00
+2026-10-27 15:39:21+07:00 Downloading http://pypi-mirror.modal.local:5555/simple/joblib/joblib-1.6.0-py3-none-any.whl (306 kB)
+2026-10-27 15:39:21+07:00    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 306.1/306.1 kB 498.8 MB/s eta 0:00:00
+2026-10-27 15:39:21+07:00 Downloading http://pypi-mirror.modal.local:5555/simple/termcolor/termcolor-3.3.0-py3-none-any.whl (7.7 kB)
+2026-10-27 15:39:21+07:00 Downloading http://pypi-mirror.modal.local:5555/simple/formulaic/formulaic-1.2.2-py3-none-any.whl (118 kB)
+2026-10-27 15:39:21+07:00    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 118.9/118.9 kB 408.5 MB/s eta 0:00:00
+2026-10-27 15:39:21+07:00 Downloading http://pypi-mirror.modal.local:5555/simple/patsy/patsy-1.0.3-py2.py3-none-any.whl (233 kB)
+2026-10-27 15:39:21+07:00    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 233.3/233.3 kB 458.0 MB/s eta 0:00:00
+2026-10-27 15:39:21+07:00 Downloading http://pypi-mirror.modal.local:5555/simple/interface-meta/interface_meta-2.0.1-py3-none-any.whl (15 kB)
+2026-10-27 15:39:21+07:00 Downloading http://pypi-mirror.modal.local:5555/simple/narwhals/narwhals-2.27.1-py3-none-any.whl (483 kB)
+2026-10-27 15:39:21+07:00    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 483.2/483.2 kB 556.3 MB/s eta 0:00:00
+2026-10-27 15:39:21+07:00 Building wheels for collected packages: fire, pylatexenc
+2026-10-27 15:39:21+07:00   Building wheel for fire (pyproject.toml): started
+2026-10-27 15:39:21+07:00   Building wheel for fire (pyproject.toml): finished with status 'done'
+2026-10-27 15:39:21+07:00   Created wheel for fire: filename=fire-0.5.0-py2.py3-none-any.whl size=117018 sha256=c3ba6b1fb5d55fbbfcb5a4d32f62af5ca3e8731ff906b68cb7d0c07c3487487c
+2026-10-27 15:39:21+07:00   Stored in directory: /tmp/pip-ephem-wheel-cache-93et_udf/wheels/22/e7/30/2763ea0c15201158eca0a9b682e660766c82be4fb2fd023b4d
+2026-10-27 15:39:21+07:00   Building wheel for pylatexenc (pyproject.toml): started
+2026-10-27 15:39:21+07:00   Installing build dependencies: finished with status 'done'
+2026-10-27 15:39:21+07:00   Building wheel for pylatexenc (pyproject.toml): finished with status 'done'
+2026-10-27 15:39:21+07:00   Checking if build backend supports build_editable: started
+2026-10-27 15:39:21+07:00   Created wheel for pylatexenc: filename=pylatexenc-2.10-py3-none-any.whl size=136896 sha256=bc94d57c3a6404f4e37f0104a3dfb070e6b55c3c94bd55f4cff1b6579e39acc6
+2026-10-27 15:39:21+07:00   Stored in directory: /tmp/pip-ephem-wheel-cache-93et_udf/wheels/8c/ca/da/e590e6687332daa8edaa04df87b31bb240c7e406bc8202fc53
+2026-10-27 15:39:21+07:00 Successfully built fire pylatexenc
+2026-10-27 15:39:21+07:00   Checking if build backend supports build_editable: finished with status 'done'
+2026-10-27 15:39:21+07:00   Getting requirements to build editable: started
+2026-10-27 15:39:21+07:00   Getting requirements to build editable: finished with status 'done'
+2026-10-27 15:39:21+07:00   Preparing editable metadata (pyproject.toml): started
+2026-10-27 15:39:21+07:00   Preparing editable metadata (pyproject.toml): finished with status 'done'
+2026-10-27 15:39:21+07:00 Building wheels for collected packages: openrlhf
+2026-10-27 15:39:21+07:00   Building editable for openrlhf (pyproject.toml): started
+2026-10-27 15:39:22+07:00   Building editable for openrlhf (pyproject.toml): finished with status 'done'
+2026-10-27 15:39:22+07:00   Created wheel for openrlhf: filename=openrlhf-0.2.0-0.editable-py3-none-any.whl size=8781 sha256=1581c01f02f56405c13ff504c7d241201f5154db1e56512a9e033f23837caf79
+2026-10-27 15:39:22+07:00   Stored in directory: /tmp/pip-ephem-wheel-cache-fbgu79ak/wheels/74/1a/4a/4d6a1ebd01e21ffcd55b4dc444c98de91ff2777db9d7833c2a
+2026-10-27 15:39:22+07:00 Successfully built openrlhf
+2026-10-27 15:39:22+07:00 Installing collected packages: openrlhf
+2026-10-27 15:39:22+07:00 Successfully installed openrlhf-0.2.0
+2026-10-27 15:39:22+07:00 
+2026-10-27 15:39:22+07:00 [notice] A new release of pip is available: 23.2.1 -> 26.2.2
+2026-10-27 15:39:22+07:00 [notice] To update, run: pip install --upgrade pip
+2026-10-27 15:39:22+07:00 Installing collected packages: pylatexenc, pygtrie, termcolor, patsy, overrides, narwhals, joblib, interface-meta, graphviz, base58, responses, nltk, fire, mizani, formulaic, statsmodels, plotnine, peft, evaluate
+2026-10-27 15:39:25+07:00 [2026-10-27 08:39:25,084] [WARNING] [real_accelerator.py:194:get_accelerator] Setting accelerator to CPU. If you have GPU or other accelerator, we were unable to detect it.
+2026-10-27 15:39:25+07:00 [2026-10-27 08:39:25,094] [INFO] [real_accelerator.py:239:get_accelerator] Setting ds_accelerator to cpu (auto detect)
+2026-10-27 15:39:25+07:00   Attempting uninstall: peft
+2026-10-27 15:39:25+07:00     Found existing installation: peft 0.15.2
+2026-10-27 15:39:26+07:00     Uninstalling peft-0.15.2:
+2026-10-27 15:39:26+07:00       Successfully uninstalled peft-0.15.2
+2026-10-27 15:39:26+07:00 Successfully installed base58-2.1.1 evaluate-0.4.1 fire-0.5.0 formulaic-1.2.2 graphviz-0.20.1 interface-meta-2.0.1 joblib-1.6.0 mizani-0.11.0 narwhals-2.27.1 nltk-3.9.1 overrides-7.7.0 patsy-1.0.3 peft-0.8.2 plotnine-0.13.0 pygtrie-2.5.0 pylatexenc-2.10 responses-0.18.0 statsmodels-0.15.0 termcolor-3.3.0
+2026-10-27 15:39:26+07:00 
+2026-10-27 15:39:26+07:00 [notice] A new release of pip is available: 23.2.1 -> 26.2.2
+2026-10-27 15:39:26+07:00 [notice] To update, run: pip install --upgrade pip
+2026-10-27 15:39:28+07:00 Saving image...
+2026-10-27 15:39:30+07:00 Image saved, took 1.63s
+2026-10-27 15:39:30+07:00 
+2026-10-27 15:39:30+07:00 Built image im-mnalW0GRWvsOHbcPOPgY2a in 21.53s
+2026-10-27 15:39:30+07:00 
+2026-10-27 15:39:30+07:00 
+2026-10-27 15:39:30+07:00 INFO 10-27 08:39:30 [__init__.py:248] No platform detected, vLLM is running on UnspecifiedPlatform
+2026-10-27 15:39:30+07:00 WARNING 10-27 08:39:30 [_custom_ops.py:20] Failed to import from vllm._C with ImportError('libcuda.so.1: cannot open shared object file: No such file or directory')
+2026-10-27 15:39:31+07:00 Building image im-YHxQQFQEqEW7Em88OTn9xT
+2026-10-27 15:39:32+07:00 TreeRL Transformers DeepSpeed imports OK
+2026-10-27 15:39:32+07:00 
+2026-10-27 15:39:32+07:00 => Step 0: FROM base
+2026-10-27 15:39:32+07:00 
+2026-10-27 15:39:32+07:00 => Step 1: RUN cp /opt/vdra/integrations/igpo/configs/vdra/*.jsonnet /opt/work/igpo/configs/vdra/ && python -c "from pathlib import Path; from modal_app.script_utils import normalize_shell_script; normalize_shell_script(Path('/opt/work/igpo/scripts/_common.sh')); normalize_shell_script(Path('/opt/work/igpo/scripts/start_vllm_server_named_params.sh'))" && bash -n /opt/work/igpo/scripts/_common.sh && bash -n /opt/work/igpo/scripts/start_vllm_server_named_params.sh && python -c "from pathlib import Path; g=Path('/opt/work/igpo/treetune/episode_generators/on_policy_episode_generator.py').read_text(); h=Path('/opt/work/igpo/treetune/episode_generators/hybrid_episode_generator.py').read_text(); v=Path('/opt/work/igpo/treetune/common/vllm_server.py').read_text(); assert 'Timing [' in g and 'Timing [iteration=' in h and '_stop_owned_processes' in v; print('IGPO timing and vLLM cleanup markers OK')" && python -c "import fire, overrides, base58, evaluate, graphviz, nltk, plotnine, peft, accelerate, pylatexenc, pygtrie; import treetune.main, treetune.common, treetune.tasks.math_grader; print('IGPO runtime imports OK')" && python -c "import _jsonnet; p='/opt/work/igpo/configs/vdra/'; e={'APP_VDRA_TRAIN_DATASET_DICT':'/work/data_vdra/math-nodiag', 'APP_VDRA_MODEL_PATH':'/work/hf_cache/model','APP_VDRA_STOP_STEP':'4', 'APP_VDRA_VARIANT_JSON':'{}'}; [_jsonnet.evaluate_file(p+n, ext_vars=e) for n in ['data_nodiag.jsonnet','stop.jsonnet','variant.jsonnet']]; print('IGPO VDRA Jsonnet configs OK')" && python /opt/vdra/modal_app/igpo_config_preflight.py --configs-root /opt/work/igpo/configs --model-path /work/hf_cache/model
+2026-10-27 15:39:35+07:00 IGPO timing and vLLM cleanup markers OK
+2026-10-27 15:39:36+07:00 Saving image...
+2026-10-27 15:39:37+07:00 Image saved, took 1.10s
+2026-10-27 15:39:37+07:00 
+2026-10-27 15:39:37+07:00 Built image im-lpkfkcVC4b6fMmlZbMlT5F in 20.49s
+2026-10-27 15:39:37+07:00 
+2026-10-27 15:39:37+07:00 
+2026-10-27 15:39:43+07:00 [2026-10-27 08:39:43,814] [WARNING] [real_accelerator.py:194:get_accelerator] Setting accelerator to CPU. If you have GPU or other accelerator, we were unable to detect it.
+2026-10-27 15:39:43+07:00 [2026-10-27 08:39:43,823] [INFO] [real_accelerator.py:239:get_accelerator] Setting ds_accelerator to cpu (auto detect)
+2026-10-27 15:39:46+07:00 IGPO runtime imports OK
+2026-10-27 15:39:48+07:00 IGPO VDRA Jsonnet configs OK
+2026-10-27 15:39:50+07:00 {"expected_model_path": "/work/hf_cache/model", "runs": {"R1": {"early_stop_iteration": 4, "model_paths": {"episode_generator.inference_strategy.guidance_llm.model": "/work/hf_cache/model", "episode_generator.inference_strategy.guidance_llm.tokenizer_name": "/work/hf_cache/model", "episode_generator.initial_model_name_or_path": "/work/hf_cache/model", "episode_generator.value_estimation_inference_strategy.guidance_llm.model": "/work/hf_cache/model", "episode_generator.value_estimation_inference_strategy.guidance_llm.tokenizer_name": "/work/hf_cache/model", "tokenizer.hf_model_name": "/work/hf_cache/model", "trainer.actor_model.hf_model_name": "/work/hf_cache/model", "trainer.reference_model.hf_model_name": "/work/hf_cache/model"}, "phase_d_internal_pipeline_count": 0, "pipeline_count": 6, "runtime_overlay_generated": true, "runtime_overlay_prefix_cache_field": false, "tokenizer_paths": {"aime24_test": "/work/hf_cache/model", "aime25_test": "/work/hf_cache/model", "amc23_test": "/work/hf_cache/model", "collegeMath_test": "/work/hf_cache/model", "math_test": "/work/hf_cache/model", "olympiadbench_test": "/work/hf_cache/model"}, "vdra_config": null}, "R2": {"early_stop_iteration": 4, "model_paths": {"episode_generator.inference_strategy.guidance_llm.model": "/work/hf_cache/model", "episode_generator.inference_strategy.guidance_llm.tokenizer_name": "/work/hf_cache/model", "episode_generator.initial_model_name_or_path": "/work/hf_cache/model", "episode_generator.value_estimation_inference_strategy.guidance_llm.model": "/work/hf_cache/model", "episode_generator.value_estimation_inference_strategy.guidance_llm.tokenizer_name": "/work/hf_cache/model", "tokenizer.hf_model_name": "/work/hf_cache/model", "trainer.actor_model.hf_model_name": "/work/hf_cache/model", "trainer.reference_model.hf_model_name": "/work/hf_cache/model"}, "phase_d_internal_pipeline_count": 0, "pipeline_count": 6, "runtime_overlay_generated": true, "runtime_overlay_prefix_cache_field": false, "tokenizer_paths": {"aime24_test": "/work/hf_cache/model", "aime25_test": "/work/hf_cache/model", "amc23_test": "/work/hf_cache/model", "collegeMath_test": "/work/hf_cache/model", "math_test": "/work/hf_cache/model", "olympiadbench_test": "/work/hf_cache/model"}, "vdra_config": {"eps_tail": 0.01, "eps_trunc": 0.02, "k0": 6, "log_dir": "", "m": 32, "n_min": 1, "n_queues": 32, "pilot_tokens": 96, "proxy": "tv", "queue_capacity": 16, "queue_timeout_s": 1, "r": 6, "reuse_terminal_pilots": true, "terminal_pair_mode": "answer", "use_redundancy_cap": true, "weighting": "equal"}}}, "status": "pass"}
+2026-10-27 15:39:51+07:00 Saving image...
+2026-10-27 15:39:53+07:00 Image saved, took 1.75s
+2026-10-27 15:39:53+07:00 
+2026-10-27 15:39:53+07:00 Built image im-YHxQQFQEqEW7Em88OTn9xT in 21.43s
+2026-10-27 15:39:53+07:00 
+2026-10-27 15:39:53+07:00 
+✓ Created objects.
+├── ✓ Uploaded D:\vdra_experiments\vdra_experiments\modal_app\phase_c.py
+├── ✓ Created Function orchestrate.
+├── ✓ Uploaded D:\vdra_experiments\vdra_experiments
+├── ✓ Uploaded D:\vdra_experiments\vdra_experiments\work\igpo
+├── ✓ Uploaded D:\vdra_experiments\vdra_experiments\work\TreePO
+├── ✓ Uploaded D:\vdra_experiments\vdra_experiments\work\TreeRL
+├── ✓ Created Function setup_data.
+├── ✓ Created Function train_treepo.
+├── ✓ Created Function phase_f_treepo_smoke.
+├── ✓ Created Function phase_f_treepo_r4_smoke.
+├── ✓ Created Function phase_f_treepo_one_update.
+├── ✓ Created Function continue_treepo.
+├── ✓ Created Function evaluate_treepo.
+├── ✓ Created Function train_treerl.
+├── ✓ Created Function phase_f_treerl_smoke.
+├── ✓ Created Function phase_f_treerl_one_update.
+├── ✓ Created Function continue_treerl.
+├── ✓ Created Function evaluate_treerl.
+├── ✓ Created Function register_migrated_data.
+├── ✓ Created Function train_igpo.
+├── ✓ Created Function phase_f_igpo_smoke.
+├── ✓ Created Function phase_f_igpo_recover_smoke.
+├── ✓ Created Function phase_f_null_smoke.
+├── ✓ Created Function phase_f_remaining_smoke.
+├── ✓ Created Function phase_f_final_methods_smoke.
+├── ✓ Created Function phase_f_treerl_retry_smoke.
+├── ✓ Created Function continue_spo.
+└── ✓ Created Function evaluate_igpo.
+2026-10-27 15:40:02+07:00 
+2026-10-27 15:40:02+07:00 ==========
+2026-10-27 15:40:02+07:00 == CUDA ==
+2026-10-27 15:40:02+07:00 ==========
+2026-10-27 15:40:02+07:00 
+2026-10-27 15:40:02+07:00 CUDA Version 12.8.1
+2026-10-27 15:40:02+07:00 
+2026-10-27 15:40:02+07:00 Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+2026-10-27 15:40:02+07:00 
+2026-10-27 15:40:02+07:00 This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+2026-10-27 15:40:02+07:00 By pulling and using the container, you accept the terms and conditions of this license:
+2026-10-27 15:40:02+07:00 https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+2026-10-27 15:40:02+07:00 
+2026-10-27 15:40:02+07:00 A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+2026-10-27 15:40:02+07:00 
+2026-10-27 15:40:02+07:00 WARNING: The NVIDIA Driver was not detected.  GPU functionality will not be available.
+2026-10-27 15:40:02+07:00    Use the NVIDIA Container Toolkit to start this container with GPU support; see
+2026-10-27 15:40:02+07:00    https://docs.nvidia.com/datacenter/cloud-native/ .
+2026-10-27 15:40:02+07:00 
+2026-10-27 15:40:05+07:00 --2026-10-27 08:40:05--  https://rl-llm.oss-cn-hongkong.aliyuncs.com/wandb_export_root.zip
+2026-10-27 15:40:05+07:00 Resolving rl-llm.oss-cn-hongkong.aliyuncs.com (rl-llm.oss-cn-hongkong.aliyuncs.com)... 47.79.66.80
+2026-10-27 15:40:05+07:00 Connecting to rl-llm.oss-cn-hongkong.aliyuncs.com (rl-llm.oss-cn-hongkong.aliyuncs.com)|47.79.66.80|:443... connected.
+2026-10-27 15:40:06+07:00 HTTP request sent, awaiting response... 200 OK
+2026-10-27 15:40:06+07:00 Length: 14791561 (14M) [application/zip]
+2026-10-27 15:40:06+07:00 Saving to: ‘wandb_export_root.zip’
+2026-10-27 15:40:06+07:00 
+2026-10-27 15:40:06+07:00      0K .......... .......... .......... .......... ..........  0% 1.41M 10s
+2026-10-27 15:40:06+07:00     50K .......... .......... .......... .......... ..........  0% 1.33M 10s
+2026-10-27 15:40:06+07:00    100K .......... .......... .......... .......... ..........  1%  281K 24s
+2026-10-27 15:40:06+07:00    150K .......... .......... .......... .......... ..........  1% 1.41M 20s
+2026-10-27 15:40:06+07:00    200K .......... .......... .......... .......... ..........  1% 1.40M 18s
+2026-10-27 15:40:06+07:00    250K .......... .......... .......... .......
+2026-10-27 15:40:07+07:00 ... ..........  2% 1.40M 17s
+2026-10-27 15:40:07+07:00    300K .......... .......... .......... .......... ..........  2%  402K 19s
+2026-10-27 15:40:07+07:00    350K .......... .......... .......... .......... ..........  2% 1.13M 18s
+2026-10-27 15:40:07+07:00    400K .......... .......... .......... .......... ..........  3% 1.67M 17s
+2026-10-27 15:40:07+07:00    450K .......... .......... .......... .......... ..........  3% 1.77M 16s
+2026-10-27 15:40:07+07:00    500K .......... .......... .......... .......... ..........  3% 1.96M 15s
+2026-10-27 15:40:07+07:00    550K .......... .......... .......... .......... ..........  4% 1.87M 15s
+2026-10-27 15:40:07+07:00    600K .......... .......... .......... .......... ..........  4% 2.13M 14s
+2026-10-27 15:40:07+07:00    650K .......... .......... .......... .......... ..........  4% 2.00M 13s
+2026-10-27 15:40:07+07:00    700K .......... .......... .......... .......... ..........  5% 1.77M 13s
+2026-10-27 15:40:07+07:00    750K .......... .......... .......... .......... ..........  5% 1.93M 12s
+2026-10-27 15:40:07+07:00    800K .......... .......... .......... .......... ..........  5% 2.52M 12s
+2026-10-27 15:40:07+07:00    850K .......... .......... .......... .......... ..........  6% 2.53M 12s
+2026-10-27 15:40:07+07:00    900K .......... .......... .......... .......... ..........  6% 2.74M 11s
+2026-10-27 15:40:07+07:00    950K .......... .......... .......... .......... ..........  6% 2.48M 11s
+2026-10-27 15:40:07+07:00   1000K .......... .......... .......... .......... ..........  7% 2.72M 10s
+2026-10-27 15:40:07+07:00   1050K .......... .......... .......... .......... ..........  7% 3.06M 10s
+2026-10-27 15:40:07+07:00   1100K .......... .......... .......... .......... ..........  7% 3.01M 10s
+2026-10-27 15:40:07+07:00   1150K .......... .......... .......... .......... ..........  8% 2.40M 10s
+2026-10-27 15:40:07+07:00   1200K .......... .......... .......... .......... ..........  8% 3.36M 9s
+2026-10-27 15:40:07+07:00   1250K .......... .......... .......... .......... ..........  8% 3.49M 9s
+2026-10-27 15:40:07+07:00   1300K .......... .......... .......... .......... ..........  9% 3.74M 9s
+2026-10-27 15:40:07+07:00   1350K .......... .......... .......... .......... ..........  9% 4.75M 9s
+2026-10-27 15:40:07+07:00   1400K .......... .......... .......... .......... .......... 10% 5.16M 8s
+2026-10-27 15:40:07+07:00   1450K .......... .......... .......... .......... .......... 10% 4.96M 8s
+2026-10-27 15:40:07+07:00   1500K .......... .......... .......... .......... .......... 10% 5.53M 8s
+2026-10-27 15:40:07+07:00   1550K .......... .......... .......... .......... .......... 11% 4.14M 8s
+2026-10-27 15:40:07+07:00   1600K .......... .......... .......... .......... .......... 11% 5.36M 8s
+2026-10-27 15:40:07+07:00   1650K .......... .......... .......... .......... .......... 11% 6.18M 7s
+2026-10-27 15:40:07+07:00   1700K .......... .......... .......... .......... .......... 12% 5.62M 7s
+2026-10-27 15:40:07+07:00   1750K .......... .......... .......... .......... .......... 12% 5.92M 7s
+2026-10-27 15:40:07+07:00   1800K .......... .......... .......... .......... .......... 12% 5.32M 7s
+2026-10-27 15:40:07+07:00   1850K .......... .......... .......... .......... .......... 13% 6.42M 7s
+2026-10-27 15:40:07+07:00   1900K .......... .......... .......... .......... .......... 13% 5.86M 7s
+2026-10-27 15:40:07+07:00   1950K .......... .......... .......... .......... .......... 13% 4.88M 6s
+2026-10-27 15:40:07+07:00   2000K .......... .......... .......... .......... .......... 14% 6.94M 6s
+2026-10-27 15:40:07+07:00   2050K .......... .......... .......... .......... .......... 14% 5.17M 6s
+2026-10-27 15:40:07+07:00   2100K .......... .......... .......... .......... .......... 14% 8.08M 6s
+2026-10-27 15:40:07+07:00   2150K .......... .......... .......... .......... .......... 15% 6.56M 6s
+2026-10-27 15:40:07+07:00   2200K .......... .......... .......... .......... .......... 15% 6.26M 6s
+2026-10-27 15:40:07+07:00   2250K .......... .......... .......... .......... .......... 15% 7.17M 6s
+2026-10-27 15:40:07+07:00   2300K .......... .......... .......... .......... .......... 16% 7.39M 6s
+2026-10-27 15:40:07+07:00   2350K .......... .......... .......... .......... .......... 16% 5.06M 6s
+2026-10-27 15:40:07+07:00   2400K .......... .......... .......... .......... .......... 16% 7.50M 5s
+2026-10-27 15:40:07+07:00   2450K .......... .......... .......... .......... .......... 17% 7.07M 5s
+2026-10-27 15:40:07+07:00   2500K .......... .......... .......... .......... .......... 17% 7.00M 5s
+2026-10-27 15:40:07+07:00   2550K .......... .......... .......... .......... .......... 17% 7.27M 5s
+2026-10-27 15:40:07+07:00   2600K .......... .......... .......... .......... .......... 18% 7.24M 5s
+2026-10-27 15:40:07+07:00   2650K .......... .......... .......... .......... .......... 18% 9.15M 5s
+2026-10-27 15:40:07+07:00   2700K .......... .......... .......... .......... .......... 19% 6.50M 5s
+2026-10-27 15:40:07+07:00   2750K .......... .......... .......... .......... .......... 19% 6.97M 5s
+2026-10-27 15:40:07+07:00   2800K .......... .......... .......... .......... .......... 19% 8.12M 5s
+2026-10-27 15:40:07+07:00   2850K .......... .......... .......... .......... .......... 20% 7.81M 5s
+2026-10-27 15:40:07+07:00   2900K .......... .......... .......... .......... .......... 20% 9.41M 5s
+2026-10-27 15:40:07+07:00   2950K .......... .......... .......... .......... .......... 20% 9.09M 4s
+2026-10-27 15:40:07+07:00   3000K .......... .......... .......... .......... .......... 21% 9.12M 4s
+2026-10-27 15:40:07+07:00   3050K .......... .......... .......... .......... .......... 21% 8.90M 4s
+2026-10-27 15:40:07+07:00   3100K .......... .......... .......... .......... .......... 21% 9.60M 4s
+2026-10-27 15:40:07+07:00   3150K .......... .......... .......... .......... .......... 22% 7.37M 4s
+2026-10-27 15:40:07+07:00   3200K .......... .......... .......... .......... .......... 22% 8.85M 4s
+2026-10-27 15:40:07+07:00   3250K .......... .......... .......... .......... .......... 22% 9.99M 4s
+2026-10-27 15:40:07+07:00   3300K .......... .......... .......... .......... .......... 23% 12.1M 4s
+2026-10-27 15:40:07+07:00   3350K .......... .......... .......... .......... .......... 23% 9.10M 4s
+2026-10-27 15:40:07+07:00   3400K .......... .......... .......... .......... .......... 23% 11.4M 4s
+2026-10-27 15:40:07+07:00   3450K .......... .......... .......... .......... .......... 24% 9.97M 4s
+2026-10-27 15:40:07+07:00   3500K .......... .......... .......... .......... .......... 24% 10.6M 4s
+2026-10-27 15:40:07+07:00   3550K .......... .......... .......... .......... .......... 24% 8.53M 4s
+2026-10-27 15:40:07+07:00   3600K .......... .......... .......... .......... .......... 25% 12.1M 4s
+2026-10-27 15:40:07+07:00   3650K .......... .......... .......... .......... .......... 25% 12.4M 4s
+2026-10-27 15:40:07+07:00   3700K .......... .......... .......... .......... .......... 25% 10.8M 4s
+2026-10-27 15:40:07+07:00   3750K .......... .......... .......... .......... .......... 26% 11.0M 4s
+2026-10-27 15:40:07+07:00   3800K .......... .......... .......... .......... .......... 26% 12.9M 3s
+2026-10-27 15:40:07+07:00   3850K .......... .......... .......... .......... .......... 26% 11.1M 3s
+2026-10-27 15:40:07+07:00   3900K .......... .......... .......... .......... .......... 27% 14.5M 3s
+2026-10-27 15:40:07+07:00   3950K .......... .......... .......... .......... .......... 27% 9.63M 3s
+2026-10-27 15:40:07+07:00   4000K .......... .......... .......... .......... .......... 28% 12.2M 3s
+2026-10-27 15:40:07+07:00   4050K .......... .......... .......... .......... .......... 28% 12.1M 3s
+2026-10-27 15:40:07+07:00   4100K .......... .......... .......... .......... .......... 28% 5.98M 3s
+2026-10-27 15:40:07+07:00   4150K .......... .......... .......... .......... .......... 29% 8.94M 3s
+2026-10-27 15:40:07+07:00   4200K .......... .......... .......... .......... .......... 29% 6.15M 3s
+2026-10-27 15:40:07+07:00   4250K .......... .......... .......... .......... .......... 29% 7.22M 3s
+2026-10-27 15:40:07+07:00   4300K .......... .......... .......... .......... .......... 30% 7.28M 3s
+2026-10-27 15:40:07+07:00   4350K .......... .......... .......... .......... .......... 30% 4.97M 3s
+2026-10-27 15:40:07+07:00   4400K .......... .......... .......... .......... .......... 30% 6.94M 3s
+2026-10-27 15:40:07+07:00   4450K .......... .......... .......... .......... .......... 31% 6.97M 3s
+2026-10-27 15:40:07+07:00   4500K .......... .......... .......... .......... .......... 31% 6.76M 3s
+2026-10-27 15:40:07+07:00   4550K .......... .......... .......... .......... .......... 31% 8.50M 3s
+2026-10-27 15:40:07+07:00   4600K .......
+2026-10-27 15:40:08+07:00 ... .......... .......... .......... .......... 32% 7.14M 3s
+2026-10-27 15:40:08+07:00   4650K .......... .......... .......... .......... .......... 32% 7.73M 3s
+2026-10-27 15:40:08+07:00   4700K .......... .......... .......... .......... .......... 32% 7.47M 3s
+2026-10-27 15:40:08+07:00   4750K .......... .......... .......... .......... .......... 33% 5.91M 3s
+2026-10-27 15:40:08+07:00   4800K .......... .......... .......... .......... .......... 33% 8.01M 3s
+2026-10-27 15:40:08+07:00   4850K .......... .......... .......... .......... .......... 33% 8.17M 3s
+2026-10-27 15:40:08+07:00   4900K .......... .......... .......... .......... .......... 34% 8.86M 3s
+2026-10-27 15:40:08+07:00   4950K .......... .......... .......... .......... .......... 34% 7.82M 3s
+2026-10-27 15:40:08+07:00   5000K .......... .......... .......... .......... .......... 34% 9.17M 3s
+2026-10-27 15:40:08+07:00   5050K .......... .......... .......... .......... .......... 35% 9.22M 3s
+2026-10-27 15:40:08+07:00   5100K .......... .......... .......... .......... .......... 35% 10.7M 3s
+2026-10-27 15:40:08+07:00   5150K .......... .......... .......... .......... .......... 35% 6.08M 3s
+2026-10-27 15:40:08+07:00   5200K .......... .......... .......... .......... .......... 36% 11.2M 3s
+2026-10-27 15:40:08+07:00   5250K .......... .......... .......... .......... .......... 36% 10.1M 2s
+2026-10-27 15:40:08+07:00   5300K .......... .......... .......... .......... .......... 37% 9.75M 2s
+2026-10-27 15:40:08+07:00   5350K .......... .......... .......... .......... .......... 37% 8.94M 2s
+2026-10-27 15:40:08+07:00   5400K .......... .......... .......... .......... .......... 37% 13.1M 2s
+2026-10-27 15:40:08+07:00   5450K .......... .......... .......... .......... .......... 38% 9.20M 2s
+2026-10-27 15:40:08+07:00   5500K .......... .......... .......... .......... .......... 38% 9.99M 2s
+2026-10-27 15:40:08+07:00   5550K .......... .......... .......... .......... .......... 38% 10.2M 2s
+2026-10-27 15:40:08+07:00   5600K .......... .......... .......... .......... .......... 39% 10.3M 2s
+2026-10-27 15:40:08+07:00   5650K .......... .......... .......... .......... .......... 39% 12.1M 2s
+2026-10-27 15:40:08+07:00   5700K .......... .......... .......... .......... .......... 39% 10.2M 2s
+2026-10-27 15:40:08+07:00   5750K .......... .......... .......... .......... .......... 40% 13.9M 2s
+2026-10-27 15:40:08+07:00   5800K .......... .......... .......... .......... .......... 40% 10.8M 2s
+2026-10-27 15:40:08+07:00   5850K .......... .......... .......... .......... .......... 40% 12.5M 2s
+2026-10-27 15:40:08+07:00   5900K .......... .......... .......... .......... .......... 41% 11.4M 2s
+2026-10-27 15:40:08+07:00   5950K .......... .......... .......... .......... .......... 41% 9.96M 2s
+2026-10-27 15:40:08+07:00   6000K .......... .......... .......... .......... .......... 41% 11.4M 2s
+2026-10-27 15:40:08+07:00   6050K .......... .......... .......... .......... .......... 42% 10.9M 2s
+2026-10-27 15:40:08+07:00   6100K .......... .......... .......... .......... .......... 42% 6.09M 2s
+2026-10-27 15:40:08+07:00   6150K .......... .......... .......... .......... .......... 42% 9.30M 2s
+2026-10-27 15:40:08+07:00   6200K .......... .......... .......... .......... .......... 43% 9.83M 2s
+2026-10-27 15:40:08+07:00   6250K .......... .......... .......... .......... .......... 43% 7.19M 2s
+2026-10-27 15:40:08+07:00   6300K .......... .......... .......... .......... .......... 43% 6.47M 2s
+2026-10-27 15:40:08+07:00   6350K .......... .......... .......... .......... .......... 44% 5.80M 2s
+2026-10-27 15:40:08+07:00   6400K .......... .......... .......... .......... .......... 44% 7.47M 2s
+2026-10-27 15:40:08+07:00   6450K .......... .......... .......... .......... .......... 44% 6.66M 2s
+2026-10-27 15:40:08+07:00   6500K .......... .......... .......... .......... .......... 45% 6.87M 2s
+2026-10-27 15:40:08+07:00   6550K .......... .......... .......... .......... .......... 45% 6.05M 2s
+2026-10-27 15:40:08+07:00   6600K .......... .......... .......... .......... .......... 46% 8.52M 2s
+2026-10-27 15:40:08+07:00   6650K .......... .......... .......... .......... .......... 46% 7.09M 2s
+2026-10-27 15:40:08+07:00   6700K .......... .......... .......... .......... .......... 46% 7.97M 2s
+2026-10-27 15:40:08+07:00   6750K .......... .......... .......... .......... .......... 47% 6.03M 2s
+2026-10-27 15:40:08+07:00   6800K .......... .......... .......... .......... .......... 47% 7.02M 2s
+2026-10-27 15:40:08+07:00   6850K .......... .......... .......... .......... .......... 47% 10.5M 2s
+2026-10-27 15:40:08+07:00   6900K .......... .......... .......... .......... .......... 48% 8.11M 2s
+2026-10-27 15:40:08+07:00   6950K .......... .......... .......... .......... .......... 48% 7.91M 2s
+2026-10-27 15:40:08+07:00   7000K .......... .......... .......... .......... .......... 48% 8.56M 2s
+2026-10-27 15:40:08+07:00   7050K .......... .......... .......... .......... .......... 49% 8.92M 2s
+2026-10-27 15:40:08+07:00   7100K .......... .......... .......... .......... .......... 49% 8.13M 2s
+2026-10-27 15:40:08+07:00   7150K .......... .......... .......... .......... .......... 49% 7.95M 2s
+2026-10-27 15:40:08+07:00   7200K .......... .......... .......... .......... .......... 50% 8.94M 2s
+2026-10-27 15:40:08+07:00   7250K .......... .......... .......... .......... .......... 50% 10.6M 2s
+2026-10-27 15:40:08+07:00   7300K .......... .......... .......... .......... .......... 50% 10.2M 2s
+2026-10-27 15:40:08+07:00   7350K .......... .......... .......... .......... .......... 51% 8.08M 2s
+2026-10-27 15:40:08+07:00   7400K .......... .......... .......... .......... .......... 51% 11.2M 2s
+2026-10-27 15:40:08+07:00   7450K .......... .......... .......... .......... .......... 51% 9.02M 2s
+2026-10-27 15:40:08+07:00   7500K .......... .......... .......... .......... .......... 52% 13.9M 2s
+2026-10-27 15:40:08+07:00   7550K .......... .......... .......... .......... .......... 52% 8.34M 2s
+2026-10-27 15:40:08+07:00   7600K .......... .......... .......... .......... .......... 52% 9.98M 2s
+2026-10-27 15:40:08+07:00   7650K .......... .......... .......... .......... .......... 53% 12.5M 1s
+2026-10-27 15:40:08+07:00   7700K .......... .......... .......... .......... .......... 53% 9.91M 1s
+2026-10-27 15:40:08+07:00   7750K .......... .......... .......... .......... .......... 53% 12.2M 1s
+2026-10-27 15:40:08+07:00   7800K .......... .......... .......... .......... .......... 54% 11.0M 1s
+2026-10-27 15:40:08+07:00   7850K .......... .......... .......... .......... .......... 54% 14.0M 1s
+2026-10-27 15:40:08+07:00   7900K .......... .......... .......... .......... .......... 55% 8.20M 1s
+2026-10-27 15:40:08+07:00   7950K .......... .......... .......... .......... .......... 55% 11.7M 1s
+2026-10-27 15:40:08+07:00   8000K .......... .......... .......... .......... .......... 55% 13.8M 1s
+2026-10-27 15:40:08+07:00   8050K .......... .......... .......... .......... .......... 56% 13.7M 1s
+2026-10-27 15:40:08+07:00   8100K .......... .......... .......... .......... .......... 56% 9.95M 1s
+2026-10-27 15:40:08+07:00   8150K .......... .......... .......... .......... .......... 56% 6.25M 1s
+2026-10-27 15:40:08+07:00   8200K .......... .......... .......... .......... .......... 57% 10.1M 1s
+2026-10-27 15:40:08+07:00   8250K .......... .......... .......... .......... .......... 57% 9.65M 1s
+2026-10-27 15:40:08+07:00   8300K .......... .......... .......... .......... .......... 57% 6.30M 1s
+2026-10-27 15:40:08+07:00   8350K .......... .......... .......... .......... .......... 58% 5.31M 1s
+2026-10-27 15:40:08+07:00   8400K .......... .......... .......... .......... .......... 58% 6.73M 1s
+2026-10-27 15:40:08+07:00   8450K .......... .......... .......... .......... .......... 58% 7.43M 1s
+2026-10-27 15:40:08+07:00   8500K .......... .......... .......... .......... .......... 59% 7.07M 1s
+2026-10-27 15:40:08+07:00   8550K .......... .......... .......... .......... .......... 59% 5.08M 1s
+2026-10-27 15:40:08+07:00   8600K .......... .......... .......... .......... .......... 59% 10.5M 1s
+2026-10-27 15:40:08+07:00   8650K .......... .......... .......... .......... .......... 60% 4.37M 1s
+2026-10-27 15:40:08+07:00   8700K .......... .......... .......... .......... .......... 60% 20.8M 1s
+2026-10-27 15:40:08+07:00   8750K .......... .......... .......... .......... .......... 60% 7.10M 1s
+2026-10-27 15:40:08+07:00   8800K .......... .......... .......... .......... .......... 61% 5.76M 1s
+2026-10-27 15:40:08+07:00   8850K .......... .......... .......... .......... .......... 61% 9.07M 1s
+2026-10-27 15:40:08+07:00   8900K .......... .......... .......... .......... .......... 61% 9.57M 1s
+2026-10-27 15:40:08+07:00   8950K .......... .......... .......... .......... .......... 62% 6.68M 1s
+2026-10-27 15:40:08+07:00   9000K .......... .......... .......... .......... .......... 62% 9.95M 1s
+2026-10-27 15:40:08+07:00   9050K .......... .......... .......... .......... .......... 62% 8.91M 1s
+2026-10-27 15:40:08+07:00   9100K .......... .......... .......... .......... .......... 63% 9.96M 1s
+2026-10-27 15:40:08+07:00   9150K .......... .......... .......... .......... .......... 63% 6.62M 1s
+2026-10-27 15:40:08+07:00   9200K .......... .......... .......... .......... .......... 64% 9.04M 1s
+2026-10-27 15:40:08+07:00   9250K .......... .......... .......... .......... .......... 64% 10.5M 1s
+2026-10-27 15:40:08+07:00   9300K .......... .......... .......... .......... .......... 64% 9.42M 1s
+2026-10-27 15:40:08+07:00   9350K .......... .......... .......... .......... .......... 65% 7.73M 1s
+2026-10-27 15:40:08+07:00   9400K .......... .......... .......... .......... .......... 65% 9.94M 1s
+2026-10-27 15:40:08+07:00   9450K .......... .......... .......... .......... .......... 65% 15.0M 1s
+2026-10-27 15:40:08+07:00   9500K .......... .......... .......... .......... .......... 66% 9.09M 1s
+2026-10-27 15:40:08+07:00   9550K .......... .......... .......... .......... .......... 66% 9.77M 1s
+2026-10-27 15:40:08+07:00   9600K .......... .......... .......... .......... .......... 66% 10.5M 1s
+2026-10-27 15:40:08+07:00   9650K .......... .......... .......... .......... .......... 67% 8.75M 1s
+2026-10-27 15:40:08+07:00   9700K .......... .......... .......... .......... .......... 67% 16.9M 1s
+2026-10-27 15:40:08+07:00   9750K .......... .......... .......... .......... .......... 67% 9.47M 1s
+2026-10-27 15:40:08+07:00   9800K .......... .......... .......... .......... .......... 68% 9.11M 1s
+2026-10-27 15:40:08+07:00   9850K .......... .......... .......... .......... .......... 68% 16.0M 1s
+2026-10-27 15:40:08+07:00   9900K .......... .......... .......... .......... .......... 68% 12.8M 1s
+2026-10-27 15:40:08+07:00   9950K .......... .......... .......... .......... .......... 69% 6.89M 1s
+2026-10-27 15:40:08+07:00  10000K .......... .......... .......... .......... .......... 69% 16.0M 1s
+2026-10-27 15:40:08+07:00  10050K .......... .......... .......... .......... .......... 69% 12.7M 1s
+2026-10-27 15:40:08+07:00  10100K .......... .......... .......... .......... .......... 70% 16.3M 1s
+2026-10-27 15:40:08+07:00  10150K .......... .......... .......... .......... .......... 70% 4.48M 1s
+2026-10-27 15:40:08+07:00  10200K .......... .......... .......... .......... .......... 70% 17.4M 1s
+2026-10-27 15:40:08+07:00  10250K .......... .......... .......... .......... .......... 71% 12.4M 1s
+2026-10-27 15:40:08+07:00  10300K .......... .......... .......... .......... .......... 71% 8.46M 1s
+2026-10-27 15:40:08+07:00  10350K .......... .......... .......... .......... .......... 71% 5.17M 1s
+2026-10-27 15:40:08+07:00  10400K .......... .......... .......... .......... .......... 72% 4.99M 1s
+2026-10-27 15:40:08+07:00  10450K .......... .......... .......... .......... .......... 72% 10.1M 1s
+2026-10-27 15:40:08+07:00  10500K .......... .......... .......... .......... .......... 73% 6.38M 1s
+2026-10-27 15:40:08+07:00  10550K .......... .......... .......... .......... .......... 73% 9.23M 1s
+2026-10-27 15:40:08+07:00  10600K .......... .......... .......... .......... .......... 73% 5.18M 1s
+2026-10-27 15:40:08+07:00  10650K .......... .......... .......... .......... .......... 74% 11.1M 1s
+2026-10-27 15:40:08+07:00  10700K .......... .......... .......... .......... .......... 74% 4.19M 1s
+2026-10-27 15:40:08+07:00  10750K .......... .......... .......... .......... .......... 74% 11.3M 1s
+2026-10-27 15:40:08+07:00  10800K .......... .......... .......... .......... .......... 75% 7.08M 1s
+2026-10-27 15:40:08+07:00  10850K .......... .......... .......... .......... .......... 75% 6.87M 1s
+2026-10-27 15:40:08+07:00  10900K .......... .......... .......... .......... .......... 75% 8.23M 1s
+2026-10-27 15:40:08+07:00  10950K .......... .......... .......... .......... .......... 76% 10.9M 1s
+2026-10-27 15:40:08+07:00  11000K .......... .......... .......... .......... .......... 76% 7.32M 1s
+2026-10-27 15:40:08+07:00  11050K .......... .......... .......... .......... .......... 76% 10.0M 1s
+2026-10-27 15:40:08+07:00  11100K .......
+2026-10-27 15:40:19+07:00 
+2026-10-27 15:40:19+07:00 [1A2026-10-27 15:40:19+07:00 Downloading readme:   0%|          | 0.00/974 [00:00<?, ?B/s]2026-10-27 15:40:19+07:00 Downloading readme: 100%|██████████| 974/974 [00:00<00:00, 4.36MB/s]
+2026-10-27 15:40:20+07:00 
+2026-10-27 15:40:20+07:00 [1A2026-10-27 15:40:20+07:00 Downloading data:   0%|          | 0.00/11.2k [00:00<?, ?B/s]
+2026-10-27 15:40:20+07:00 [1A2026-10-27 15:40:20+07:00 Downloading data: 100%|██████████| 11.2k/11.2k [00:00<00:00, 26.8kB/s]
+2026-10-27 15:40:20+07:00 [1A2026-10-27 15:40:20+07:00 Downloading data: 100%|██████████| 11.2k/11.2k [00:00<00:00, 26.7kB/s]
+2026-10-27 15:40:20+07:00 
+2026-10-27 15:40:20+07:00 [1A2026-10-27 15:40:20+07:00 Generating test split:   0%|          | 0/30 [00:00<?, ? examples/s]2026-10-27 15:40:20+07:00 Generating test split: 100%|██████████| 30/30 [00:00<00:00, 2325.22 examples/s]
+2026-10-27 15:40:20+07:00 
+2026-10-27 15:40:20+07:00 [1A2026-10-27 15:40:20+07:00 Saving the dataset (0/1 shards):   0%|          | 0/30 [00:00<?, ? examples/s]
+2026-10-27 15:40:20+07:00 [1A2026-10-27 15:40:20+07:00 Saving the dataset (1/1 shards): 100%|██████████| 30/30 [00:00<00:00, 5045.27 examples/s]
+2026-10-27 15:40:20+07:00 [1A2026-10-27 15:40:20+07:00 Saving the dataset (1/1 shards): 100%|██████████| 30/30 [00:00<00:00, 4906.58 examples/s]
+2026-10-27 15:40:20+07:00 aime24: saved to /work/source_data/aime24
+2026-10-27 15:40:21+07:00 
+2026-10-27 15:40:21+07:00 [1A2026-10-27 15:40:21+07:00 Downloading readme:   0%|          | 0.00/878 [00:00<?, ?B/s]
+2026-10-27 15:40:21+07:00 [1A2026-10-27 15:40:21+07:00 Downloading readme: 100%|██████████| 878/878 [00:00<00:00, 4.99MB/s]
+2026-10-27 15:40:22+07:00 
+2026-10-27 15:40:22+07:00 [1A2026-10-27 15:40:22+07:00 Downloading data:   0%|          | 0.00/15.8k [00:00<?, ?B/s]
+2026-10-27 15:40:22+07:00 [1A2026-10-27 15:40:22+07:00 Downloading data: 100%|██████████| 15.8k/15.8k [00:00<00:00, 151kB/s]
+2026-10-27 15:40:22+07:00 [1A2026-10-27 15:40:22+07:00 Downloading data: 100%|██████████| 15.8k/15.8k [00:00<00:00, 149kB/s]
+2026-10-27 15:40:22+07:00 
+2026-10-27 15:40:22+07:00 [1A2026-10-27 15:40:22+07:00 Generating test split:   0%|          | 0/30 [00:00<?, ? examples/s]2026-10-27 15:40:22+07:00 Generating test split: 100%|██████████| 30/30 [00:00<00:00, 4487.01 examples/s]
+2026-10-27 15:40:22+07:00 
+2026-10-27 15:40:22+07:00 [1A2026-10-27 15:40:22+07:00 Saving the dataset (0/1 shards):   0%|          | 0/30 [00:00<?, ? examples/s]
+2026-10-27 15:40:22+07:00 [1A2026-10-27 15:40:22+07:00 Saving the dataset (1/1 shards): 100%|██████████| 30/30 [00:00<00:00, 5522.70 examples/s]
+2026-10-27 15:40:22+07:00 [1A2026-10-27 15:40:22+07:00 Saving the dataset (1/1 shards): 100%|██████████| 30/30 [00:00<00:00, 5360.59 examples/s]
+2026-10-27 15:40:22+07:00 aime25: saved to /work/source_data/aime25
+2026-10-27 15:40:23+07:00 
+2026-10-27 15:40:23+07:00 [1A2026-10-27 15:40:23+07:00 Downloading readme:   0%|          | 0.00/374 [00:00<?, ?B/s]
+2026-10-27 15:40:23+07:00 [1A2026-10-27 15:40:23+07:00 Downloading readme: 100%|██████████| 374/374 [00:00<00:00, 1.66MB/s]
+2026-10-27 15:40:24+07:00 
+2026-10-27 15:40:24+07:00 [1A2026-10-27 15:40:24+07:00 Downloading data:   0%|          | 0.00/11.9k [00:00<?, ?B/s]
+2026-10-27 15:40:24+07:00 [1A2026-10-27 15:40:24+07:00 Downloading data: 100%|██████████| 11.9k/11.9k [00:00<00:00, 28.7kB/s]
+2026-10-27 15:40:24+07:00 [1A2026-10-27 15:40:24+07:00 Downloading data: 100%|██████████| 11.9k/11.9k [00:00<00:00, 28.6kB/s]
+2026-10-27 15:40:24+07:00 
+2026-10-27 15:40:24+07:00 [1A2026-10-27 15:40:24+07:00 Generating test split:   0%|          | 0/40 [00:00<?, ? examples/s]
+2026-10-27 15:40:24+07:00 [1A2026-10-27 15:40:24+07:00 Generating test split: 100%|██████████| 40/40 [00:00<00:00, 7894.05 examples/s]
+2026-10-27 15:40:24+07:00 
+2026-10-27 15:40:24+07:00 [1A2026-10-27 15:40:24+07:00 Saving the dataset (0/1 shards):   0%|          | 0/40 [00:00<?, ? examples/s]
+2026-10-27 15:40:24+07:00 [1A2026-10-27 15:40:24+07:00 Saving the dataset (1/1 shards): 100%|██████████| 40/40 [00:00<00:00, 7812.08 examples/s]2026-10-27 15:40:24+07:00 Saving the dataset (1/1 shards): 100%|██████████| 40/40 [00:00<00:00, 7611.48 examples/s]
+2026-10-27 15:40:24+07:00 amc23: saved to /work/source_data/amc23
+2026-10-27 15:40:25+07:00 
+2026-10-27 15:40:25+07:00 [1A2026-10-27 15:40:25+07:00 Downloading readme: 0.00B [00:00, ?B/s]2026-10-27 15:40:25+07:00 Downloading readme: 4.48kB [00:00, 3.96MB/s]
+2026-10-27 15:40:26+07:00 
+2026-10-27 15:40:26+07:00 [1ADownloading data:   0%|          | 0.00/724k [00:00<?, ?B/s]
+2026-10-27 15:40:27+07:00 
+2026-10-27 15:40:27+07:00 [1A2026-10-27 15:40:27+07:00 Downloading data: 100%|██████████| 724k/724k [00:00<00:00, 807kB/s]
+2026-10-27 15:40:27+07:00 [1A2026-10-27 15:40:27+07:00 Downloading data: 100%|██████████| 724k/724k [00:00<00:00, 800kB/s]
+2026-10-27 15:40:27+07:00 
+2026-10-27 15:40:27+07:00 [1A2026-10-27 15:40:27+07:00 Generating train split: 0 examples [00:00, ? examples/s]
+2026-10-27 15:40:27+07:00 [1A2026-10-27 15:40:27+07:00 Generating train split: 674 examples [00:00, 15849.48 examples/s]
+2026-10-27 15:40:27+07:00 
+2026-10-27 15:40:27+07:00 [1A2026-10-27 15:40:27+07:00 Saving the dataset (0/1 shards):   0%|          | 0/674 [00:00<?, ? examples/s]
+2026-10-27 15:40:27+07:00 [1A2026-10-27 15:40:27+07:00 Saving the dataset (1/1 shards): 100%|██████████| 674/674 [00:00<00:00, 17985.04 examples/s]
+2026-10-27 15:40:27+07:00 [1A2026-10-27 15:40:27+07:00 Saving the dataset (1/1 shards): 100%|██████████| 674/674 [00:00<00:00, 17849.45 examples/s]
+2026-10-27 15:40:27+07:00 olympiadbench_hf: saved to /work/source_data/olympiadbench_hf
+2026-10-27 15:40:36+07:00 
+2026-10-27 15:40:36+07:00 [1A2026-10-27 15:40:36+07:00 Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]
+2026-10-27 15:40:36+07:00 [1AFetching 9 files:  89%|████████▉ | 8/9 [00:00<00:00, 14.53it/s]2026-10-27 15:40:46+07:00 
+2026-10-27 15:40:46+07:00 [1A2026-10-27 15:40:46+07:00 Fetching 9 files: 100%|██████████| 9/9 [00:10<00:00,  1.17s/it]
+2026-10-27 15:40:47+07:00 [2026-10-27 08:40:47] + python3 /opt/vdra/analysis/prepare_data.py --math_dict /work/source_data/math --train_split train --out /work/data_vdra --n_diag 256 --seed 2026
+2026-10-27 15:40:49+07:00 
+2026-10-27 15:40:49+07:00 [1A2026-10-27 15:40:49+07:00 Saving the dataset (0/1 shards):   0%|          | 0/11244 [00:00<?, ? examples/s]
+2026-10-27 15:40:49+07:00 [1A2026-10-27 15:40:49+07:00 Saving the dataset (0/1 shards):  62%|██████▏   | 7000/11244 [00:00<00:00, 64322.77 examples/s]
+2026-10-27 15:40:49+07:00 [1A2026-10-27 15:40:49+07:00 Saving the dataset (1/1 shards): 100%|██████████| 11244/11244 [00:00<00:00, 64322.77 examples/s]
+2026-10-27 15:40:49+07:00 [1A2026-10-27 15:40:49+07:00 Saving the dataset (1/1 shards): 100%|██████████| 11244/11244 [00:00<00:00, 64509.92 examples/s]
+2026-10-27 15:40:49+07:00 
+2026-10-27 15:40:49+07:00 [1A2026-10-27 15:40:49+07:00 Saving the dataset (0/1 shards):   0%|          | 0/500 [00:00<?, ? examples/s]
+2026-10-27 15:40:49+07:00 [1A2026-10-27 15:40:49+07:00 Saving the dataset (1/1 shards): 100%|██████████| 500/500 [00:00<00:00, 46496.95 examples/s]
+2026-10-27 15:40:49+07:00 [1A2026-10-27 15:40:49+07:00 Saving the dataset (1/1 shards): 100%|██████████| 500/500 [00:00<00:00, 45462.77 examples/s]
+2026-10-27 15:40:49+07:00 
+2026-10-27 15:40:49+07:00 [1A2026-10-27 15:40:49+07:00 Saving the dataset (0/1 shards):   0%|          | 0/500 [00:00<?, ? examples/s]
+2026-10-27 15:40:49+07:00 [1A2026-10-27 15:40:49+07:00 Saving the dataset (1/1 shards): 100%|██████████| 500/500 [00:00<00:00, 52125.17 examples/s]
+2026-10-27 15:40:49+07:00 [1A2026-10-27 15:40:49+07:00 Saving the dataset (1/1 shards): 100%|██████████| 500/500 [00:00<00:00, 51298.94 examples/s]
+2026-10-27 15:40:50+07:00 {"n_train_total": 11500, "n_train_kept": 11244, "n_diag": 256, "seed": 2026}
+2026-10-27 15:40:50+07:00 [2026-10-27 08:40:50] + python3 /opt/vdra/analysis/check_leakage.py --train /work/data_vdra/train.parquet --eval math500=/work/source_data/math:test aime24=/work/source_data/aime24 aime25=/work/source_data/aime25 amc23=/work/source_data/amc23 olympiadbench=/work/source_data/olympiadbench_hf --diag /work/data_vdra/diag256.jsonl --out /work/results/leakage.json
+2026-10-27 15:40:51+07:00 Traceback (most recent call last):
+2026-10-27 15:40:51+07:00   File "/opt/vdra/analysis/check_leakage.py", line 100, in <module>
+2026-10-27 15:40:51+07:00     main()
+2026-10-27 15:40:51+07:00   File "/opt/vdra/analysis/check_leakage.py", line 66, in main
+2026-10-27 15:40:51+07:00     train = [p for s in a.train for p in load_problems(s)]
+2026-10-27 15:40:51+07:00   File "/opt/vdra/analysis/check_leakage.py", line 66, in <listcomp>
+2026-10-27 15:40:51+07:00     train = [p for s in a.train for p in load_problems(s)]
+2026-10-27 15:40:51+07:00   File "/opt/vdra/analysis/datasets_util.py", line 82, in load_problems
+2026-10-27 15:40:51+07:00     out.append({"id": _id(r, i), "problem": _problem(r), "answer": _gold(r)})
+2026-10-27 15:40:51+07:00   File "/opt/vdra/analysis/datasets_util.py", line 34, in _gold
+2026-10-27 15:40:51+07:00     raise KeyError(f"no gold answer field or boxed solution in {sorted(r)}")
+2026-10-27 15:40:51+07:00 KeyError: "no gold answer field or boxed solution in ['ability', 'data_source', 'extra_info', 'prompt', 'reward_model']"
+2026-10-27 15:40:51+07:00 Traceback (most recent call last):
+2026-10-27 15:40:51+07:00   File "/pkg/modal/_runtime/container_io_manager.py", line 987, in handle_input_exception
+2026-10-27 15:40:51+07:00     yield
+2026-10-27 15:40:51+07:00   File "/pkg/modal/_container_entrypoint.py", line 189, in run_input_sync
+2026-10-27 15:40:51+07:00     values = io_context.call_function_sync()
+2026-10-27 15:40:51+07:00   File "/pkg/modal/_runtime/container_io_manager.py", line 266, in call_function_sync
+2026-10-27 15:40:51+07:00     expected_value_or_values = self.finalized_function.callable(*args, **kwargs)
+2026-10-27 15:40:51+07:00   File "/root/phase_c.py", line 696, in setup_data
+2026-10-27 15:40:51+07:00     subprocess.run(["bash", "/opt/vdra/scripts/01_prepare_data.sh"], env=setup_env, check=True)
+2026-10-27 15:40:51+07:00   File "/usr/local/lib/python3.10/subprocess.py", line 526, in run
+2026-10-27 15:40:51+07:00     raise CalledProcessError(retcode, process.args,
+2026-10-27 15:40:51+07:00 subprocess.CalledProcessError: Command '['bash', '/opt/vdra/scripts/01_prepare_data.sh']' returned non-zero exit status 1.
+2026-10-27 15:40:51+07:00 
+2026-10-27 15:40:51+07:00 Stopping app - uncaught exception raised locally: CalledProcessError(1, ['bash', '/opt/vdra/scripts/01_prepare_data.sh']).
+2026-10-27 15:40:58+07:00 Runner terminated.
+┌───────────────────── Traceback (most recent call last) ─────────────────────┐
+│ D:\vdra_experiments\vdra_experiments\modal_app/phase_c.py:1893 in main      │
+│                                                                             │
+│   1892 │   if action == "setup":                                            │
+│ > 1893 │   │   print(json.dumps(setup_data.remote(), indent=2, sort_keys=Tr │
+│   1894 │   elif action == "register_migrated":                              │
+│                                                                             │
+│ C:\Users\DELL\AppData\Local\Programs\Python\Python312\Lib\site-packages\mod │
+│ al\_object.py:49 in wrapped                                                 │
+│                                                                             │
+│    48 │   │   await self.hydrate()                                          │
+│ >  49 │   │   return await method(self, *args, **kwargs)                    │
+│    50                                                                       │
+│                                                                             │
+│ C:\Users\DELL\AppData\Local\Programs\Python\Python312\Lib\site-packages\mod │
+│ al\_functions.py:2067 in remote                                             │
+│                                                                             │
+│   2066 │   │                                                                │
+│ > 2067 │   │   return await self._call_function(args, kwargs)               │
+│   2068                                                                      │
+│                                                                             │
+│ C:\Users\DELL\AppData\Local\Programs\Python\Python312\Lib\site-packages\mod │
+│ al\_functions.py:2004 in _call_function                                     │
+│                                                                             │
+│   2003 │   │                                                                │
+│ > 2004 │   │   return await invocation.run_function()                       │
+│   2005                                                                      │
+│                                                                             │
+│ C:\Users\DELL\AppData\Local\Programs\Python\Python312\Lib\site-packages\mod │
+│ al\_functions.py:515 in run_function                                        │
+│                                                                             │
+│    514 │   │   │   # No more retries left.                                  │
+│ >  515 │   │   │   return await _process_result(                            │
+│    516 │   │   │   │   await_response.output.result, await_response.output. │
+│                                                                             │
+│ C:\Users\DELL\AppData\Local\Programs\Python\Python312\Lib\site-packages\mod │
+│ al\_utils\function_utils.py:572 in _process_result                          │
+│                                                                             │
+│   571 │   │   │                                                             │
+│ > 572 │   │   │   raise exc_with_hints(exc)                                 │
+│   573                                                                       │
+│                                                                             │
+│     ...Remote call to Modal Function (ta-01M5Y88C64PSRR2MNSX6HTXRFR)...     │
+│                                                                             │
+│ /root/phase_c.py:696 in setup_data                                          │
+│                                                                             │
+│ > 696 subprocess.run(["bash", "/opt/vdra/scripts/01_prepare_data.sh"], env= │
+│                                                                             │
+│                                                                             │
+│ /usr/local/lib/python3.10/subprocess.py:526 in run                          │
+│                                                                             │
+│ > 526 raise CalledProcessError(retcode, process.args,                       │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+CalledProcessError: Command '['bash', '/opt/vdra/scripts/01_prepare_data.sh']' 
+returned non-zero exit status 1.

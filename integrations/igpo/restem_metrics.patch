@@ -1,0 +1,63 @@
+diff --git a/treetune/trainers/restem_trainer.py b/treetune/trainers/restem_trainer.py
+index e24271b..b22cef3 100644
+--- a/treetune/trainers/restem_trainer.py
++++ b/treetune/trainers/restem_trainer.py
+@@ -457,6 +457,13 @@ class RestEMTrainer(DeepSpeedPolicyTrainer):
+             actor (DeepSpeedEngine):
+                 The actor model to train.
+         """
++        self._vdra_last_training_metrics = {}
++        if os.environ.get("VDRA_METRICS_JSONL"):
++            self._vdra_rollout_metrics = {
++                "rollout_count": len(episodes),
++                "generated_tokens": sum(len(row["response_token_ids"]) for row in episodes),
++                "mean_reward": float(np.mean([row["scores"] for row in episodes])),
++            }
+         kls = self._log_episodes_metrics(episodes)
+         if self.state.epoch == 0:
+             assert np.mean(kls) == 0.0, "The KLs should be zero in the first epoch as the actor and the reference are the same model"
+@@ -598,6 +605,14 @@ class RestEMTrainer(DeepSpeedPolicyTrainer):
+             # Recreate the dataloader iterator
+             dataloader_iter = iter(dataloader)
+ 
++        if os.environ.get("VDRA_METRICS_JSONL") and globalstep_last_logged != self.state.global_step:
++            self._log_training_metrics(
++                globalstep_last_logged,
++                accumulated_metrics=accumulated_metrics,
++                progress_bar=progress_bar,
++                actor=actor,
++            )
++
+         dist.barrier()
+ 
+         for key, value in running_metrics.items():
+@@ -611,6 +626,21 @@ class RestEMTrainer(DeepSpeedPolicyTrainer):
+ 
+         progress_bar.close()
+ 
++        if os.environ.get("VDRA_METRICS_JSONL") and self._is_main_process():
++            from modal_app.metric_capture import write_training_metrics
++
++            rollout_metrics = self._vdra_rollout_metrics
++            train_metrics = self._vdra_last_training_metrics
++            write_training_metrics(
++                "treetune",
++                int(self.state.iteration) + 1,
++                rollout_count=rollout_metrics["rollout_count"],
++                generated_tokens=rollout_metrics["generated_tokens"],
++                mean_reward=rollout_metrics["mean_reward"],
++                loss=train_metrics.get("actor/loss"),
++                grad_norm=train_metrics.get("actor/grad_norm"),
++            )
++
+     def _training_step(
+         self,
+         inputs: Dict[str, torch.Tensor],
+@@ -999,6 +1029,7 @@ class RestEMTrainer(DeepSpeedPolicyTrainer):
+         logs["epoch"] = round(self.state.epoch, 4)
+         logs["step"] = self.state.global_step
+         logs["actor/ds_step"] = actor.global_steps
++        self._vdra_last_training_metrics = dict(logs)
+ 
+         # First log the metrics on the progress bar
+         progress_bar.set_postfix(logs)

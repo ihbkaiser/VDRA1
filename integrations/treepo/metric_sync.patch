@@ -1,0 +1,92 @@
+diff --git a/verl/trainer/ppo/metric_utils.py b/verl/trainer/ppo/metric_utils.py
+index b39579f..e04a1db 100644
+--- a/verl/trainer/ppo/metric_utils.py
++++ b/verl/trainer/ppo/metric_utils.py
+@@ -76,6 +76,13 @@ def _compute_response_info(batch: DataProto) -> Dict[str, Any]:
+     )
+ 
+ 
++def _materialize_metric_tensors(metrics: Dict[str, torch.Tensor]) -> Dict[str, Any]:
++    """Copy scalar metrics to Python in one device synchronization."""
++    keys = list(metrics)
++    values = torch.stack([metrics[key].detach().reshape(()) for key in keys]).cpu().tolist()
++    return dict(zip(keys, values))
++
++
+ def compute_data_metrics(batch: DataProto, use_critic: bool = True) -> Dict[str, Any]:
+     """
+     Computes various metrics from a batch of data for PPO training.
+@@ -125,47 +132,47 @@ def compute_data_metrics(batch: DataProto, use_critic: bool = True) -> Dict[str,
+         return_diff_var = torch.var(valid_returns - valid_values)
+         return_var = torch.var(valid_returns)
+ 
+-    metrics = {
++    metric_tensors = {
+         # score
+-        "critic/score/mean": torch.mean(sequence_score).detach().item(),
+-        "critic/score/max": torch.max(sequence_score).detach().item(),
+-        "critic/score/min": torch.min(sequence_score).detach().item(),
++        "critic/score/mean": torch.mean(sequence_score).detach(),
++        "critic/score/max": torch.max(sequence_score).detach(),
++        "critic/score/min": torch.min(sequence_score).detach(),
+         # reward
+-        "critic/rewards/mean": torch.mean(sequence_reward).detach().item(),
+-        "critic/rewards/max": torch.max(sequence_reward).detach().item(),
+-        "critic/rewards/min": torch.min(sequence_reward).detach().item(),
++        "critic/rewards/mean": torch.mean(sequence_reward).detach(),
++        "critic/rewards/max": torch.max(sequence_reward).detach(),
++        "critic/rewards/min": torch.min(sequence_reward).detach(),
+         # adv
+-        "critic/advantages/mean": torch.mean(valid_adv).detach().item(),
+-        "critic/advantages/max": torch.max(valid_adv).detach().item(),
+-        "critic/advantages/min": torch.min(valid_adv).detach().item(),
++        "critic/advantages/mean": torch.mean(valid_adv).detach(),
++        "critic/advantages/max": torch.max(valid_adv).detach(),
++        "critic/advantages/min": torch.min(valid_adv).detach(),
+         # returns
+-        "critic/returns/mean": torch.mean(valid_returns).detach().item(),
+-        "critic/returns/max": torch.max(valid_returns).detach().item(),
+-        "critic/returns/min": torch.min(valid_returns).detach().item(),
++        "critic/returns/mean": torch.mean(valid_returns).detach(),
++        "critic/returns/max": torch.max(valid_returns).detach(),
++        "critic/returns/min": torch.min(valid_returns).detach(),
+         **(
+             {
+                 # values
+-                "critic/values/mean": torch.mean(valid_values).detach().item(),
+-                "critic/values/max": torch.max(valid_values).detach().item(),
+-                "critic/values/min": torch.min(valid_values).detach().item(),
++                "critic/values/mean": torch.mean(valid_values).detach(),
++                "critic/values/max": torch.max(valid_values).detach(),
++                "critic/values/min": torch.min(valid_values).detach(),
+                 # vf explained var
+-                "critic/vf_explained_var": (1.0 - return_diff_var / (return_var + 1e-5)).detach().item(),
++                "critic/vf_explained_var": (1.0 - return_diff_var / (return_var + 1e-5)).detach(),
+             }
+             if use_critic
+             else {}
+         ),
+         # response length
+-        "response_length/mean": torch.mean(response_length).detach().item(),
+-        "response_length/max": torch.max(response_length).detach().item(),
+-        "response_length/min": torch.min(response_length).detach().item(),
+-        "response_length/clip_ratio": torch.mean(torch.eq(response_length, max_response_length).float()).detach().item(),
++        "response_length/mean": torch.mean(response_length).detach(),
++        "response_length/max": torch.max(response_length).detach(),
++        "response_length/min": torch.min(response_length).detach(),
++        "response_length/clip_ratio": torch.mean(torch.eq(response_length, max_response_length).float()).detach(),
+         # prompt length
+-        "prompt_length/mean": torch.mean(prompt_length).detach().item(),
+-        "prompt_length/max": torch.max(prompt_length).detach().item(),
+-        "prompt_length/min": torch.min(prompt_length).detach().item(),
+-        "prompt_length/clip_ratio": torch.mean(torch.eq(prompt_length, max_prompt_length).float()).detach().item(),
++        "prompt_length/mean": torch.mean(prompt_length).detach(),
++        "prompt_length/max": torch.max(prompt_length).detach(),
++        "prompt_length/min": torch.min(prompt_length).detach(),
++        "prompt_length/clip_ratio": torch.mean(torch.eq(prompt_length, max_prompt_length).float()).detach(),
+     }
+-    return metrics
++    return _materialize_metric_tensors(metric_tensors)
+ 
+ 
+ def compute_timing_metrics(batch: DataProto, timing_raw: Dict[str, float]) -> Dict[str, Any]:

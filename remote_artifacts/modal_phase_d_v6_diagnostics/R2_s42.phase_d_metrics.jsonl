@@ -1,0 +1,6 @@
+{"framework": "treetune", "generated_tokens": 33470, "grad_norm": 6.48389387, "loss": 1e-08, "mean_reward": 0.5961371527777777, "rollout_count": 64, "update": 1}
+{"framework": "treetune", "generated_tokens": 38599, "grad_norm": 2.9504087, "loss": -0.00137954, "mean_reward": 0.4605034722222222, "rollout_count": 64, "update": 2}
+{"framework": "treetune", "generated_tokens": 33470, "grad_norm": 6.48870754, "loss": 1e-08, "mean_reward": 0.5961371527777777, "rollout_count": 64, "update": 1}
+{"framework": "treetune", "generated_tokens": 31157, "grad_norm": 5.15825796, "loss": -0.00095741, "mean_reward": 0.546875, "rollout_count": 64, "update": 2}
+{"framework": "treetune", "generated_tokens": 31861, "grad_norm": 5.64966679, "loss": 0.00183853, "mean_reward": 0.5577256944444444, "rollout_count": 64, "update": 3}
+{"framework": "treetune", "generated_tokens": 35155, "grad_norm": 5.08782625, "loss": 0.00244199, "mean_reward": 0.55078125, "rollout_count": 64, "update": 4}

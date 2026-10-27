@@ -1,0 +1,81 @@
+{
+  "experiment": "Phase D IGPO bounded pair",
+  "date": "2026-10-26",
+  "modal_app_id": "ap-egF39znZOJm8HSdUkwzsEC",
+  "app_state": "stopped",
+  "active_tasks": 0,
+  "timeout_seconds": 540,
+  "pair_status": "failed",
+  "arms": {
+    "R1": {
+      "status": "failed",
+      "reported_resumable_update": 0,
+      "failure": "FileNotFoundError: /opt/work/igpo/data/math/dataset_dict.json"
+    },
+    "R2": {
+      "status": "not_started"
+    }
+  },
+  "data_path_evidence": {
+    "igpo_builtin_eval_requested": "/opt/work/igpo/data/math/dataset_dict.json",
+    "prepared_dataset": "/work/source_data/math/dataset_dict.json",
+    "stack": "PolicyIterationRuntime.evaluate -> math_test -> DatasetDict.load_from_disk"
+  },
+  "remote_checkpoint_audit": {
+    "volume": "vdra-work",
+    "run_path": "/mock/runs/R1_s42",
+    "run_status_resumable_update": 0,
+    "temporary_checkpoint": "temp_ppo_checkpoints/ckpt--iter_0001--epoch_1.00--step_0002",
+    "temporary_checkpoint_contents": ["hf_pretrained"],
+    "actor_deepspeed_state_present": false,
+    "permanent_checkpoint_entries": [
+      "checkpoints/episodes__iter0000/w_actLogp",
+      "checkpoints/episodes__iter0000/w_refLogp"
+    ],
+    "resumable": false,
+    "evidence": "Read-only Modal volume listings; no training task launched"
+  },
+  "first_logprob_pass": {
+    "column": "ref_shifted_log_probs",
+    "batch_count": 32,
+    "total_seconds": 284.542,
+    "batches": [
+      {
+        "index": 0,
+        "padded_seq_len": 2048,
+        "batch_fetch_seconds": 0.139,
+        "host_enqueue_seconds": 283.300,
+        "profile_cuda_sync_seconds": 0.000
+      },
+      {
+        "index": 1,
+        "padded_seq_len": 2039,
+        "batch_fetch_seconds": 0.004,
+        "host_enqueue_seconds": 0.040,
+        "profile_cuda_sync_seconds": 0.000
+      },
+      {
+        "index": 2,
+        "padded_seq_len": 2048,
+        "batch_fetch_seconds": 0.003,
+        "host_enqueue_seconds": 0.035,
+        "profile_cuda_sync_seconds": 0.000
+      }
+    ],
+    "deferred_sync_wait_seconds": 0.000,
+    "host_materialization_seconds": 0.002,
+    "interpretation": "The first batch delay was not DataLoader wait or pending CUDA work at the final synchronization. The existing profile groups device transfer, forward, collectives, and host-copy enqueue, so the slow substage is still undetermined. Opt-in CUDA-event and host-wall timing now separates model forward, logits conversion, shift/mask, log-softmax, and gather/mask for the next permitted run."
+  },
+  "billing_after_run": {
+    "modal_metered_cost_usd": 18.68355186,
+    "workspace_budget_usd": 36,
+    "project_cap_usd": 20,
+    "local_hard_stop_usd": 19,
+    "remaining_to_hard_stop_usd": 0.31644814,
+    "non_gpu_reserve_usd": 0.25,
+    "remaining_after_reserve_usd": 0.06644814,
+    "decision": "No further Modal compute launched; even a 180-second B200 reservation plus reserve exceeds the local hard stop."
+  },
+  "training_corpus_changed": false,
+  "phase_f_started": false
+}

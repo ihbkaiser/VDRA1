@@ -1,0 +1,61 @@
+{
+  "device": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
+  "torch": "2.3.1+cu121",
+  "cuda": "12.1",
+  "old_per_metric": {
+    "trace": "profile_output/treerl_status_sync_20261026/old_per_metric.json",
+    "updates": 8,
+    "counts": {
+      "aten::item": 88,
+      "aten::_local_scalar_dense": 88,
+      "aten::to": 200,
+      "aten::_to_copy": 136,
+      "aten::stack": 0,
+      "aten::index_copy_": 0,
+      "aten::copy_": 136
+    },
+    "self_cpu_time_us": {
+      "aten::to": 2702,
+      "aten::_to_copy": 6029,
+      "aten::copy_": 4931,
+      "aten::item": 1606,
+      "aten::_local_scalar_dense": 581
+    },
+    "self_cuda_time_us": {
+      "aten::to": 3313,
+      "aten::_to_copy": 4241,
+      "aten::copy_": 6405,
+      "aten::item": 1370,
+      "aten::_local_scalar_dense": 1308
+    },
+    "cpu_summary": "-----------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  \n                         Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg       CPU Mem  Self CPU Mem      CUDA Mem  Self CUDA Mem    # of Calls  \n-----------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  \n     old_per_metric_8_updates        50.35%      19.593ms       100.00%      38.916ms      38.916ms      15.733ms        40.41%      38.929ms      38.929ms           0 b        -608 b           0 b     -36.00 Kb             1  \n               aten::_to_copy        15.49%       6.029ms        29.30%      11.401ms      83.831us       4.241ms        10.89%      12.132ms      89.206us         256 b          16 b      36.00 Kb           0 b           136  \n                  aten::copy_        12.67%       4.931ms        12.67%       4.931ms      36.257us       6.405ms        16.45%       6.405ms      47.096us           0 b           0 b           0 b           0 b           136  \n                     aten::to         6.94%       2.702ms        36.24%      14.103ms      70.515us       3.313ms         8.51%      15.445ms      77.225us         256 b           0 b      36.00 Kb           0 b           200  \n                   aten::item         4.13%       1.606ms         5.62%       2.187ms      24.852us       1.370ms         3.52%       2.678ms      30.432us           0 b           0 b           0 b           0 b            88  \n                   aten::div_         3.82%       1.487ms         3.82%       1.487ms      23.234us       2.125ms         5.46%       2.125ms      33.203us           0 b           0 b           0 b           0 b            64  \n                 aten::select         2.18%     849.000us         2.23%     868.000us      36.167us     811.000us         2.08%       1.093ms      45.542us           0 b           0 b           0 b           0 b            24  \n    aten::_local_scalar_dense         1.49%     581.000us         1.49%     581.000us       6.602us       1.308ms         3.36%       1.308ms      14.864us           0 b           0 b           0 b           0 b            88  \n                  aten::empty         1.34%     521.000us         1.34%     521.000us       7.236us       1.280ms         3.29%       1.280ms      17.778us         352 b         352 b           0 b           0 b            72  \n          aten::empty_strided         1.13%     441.000us         1.13%     441.000us       3.243us       1.486ms         3.82%       1.486ms      10.926us         240 b         240 b      36.00 Kb      36.00 Kb           136  \n                aten::detach_         0.38%     148.000us         0.40%     155.000us      19.375us     109.000us         0.28%     185.000us      23.125us           0 b           0 b           0 b           0 b             8  \n             aten::as_strided         0.05%      19.000us         0.05%      19.000us       0.792us     282.000us         0.72%     282.000us      11.750us           0 b           0 b           0 b           0 b            24  \n-----------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  \nSelf CPU time total: 38.916ms\nSelf CUDA time total: 38.929ms\n"
+  },
+  "packed_vector": {
+    "trace": "profile_output/treerl_status_sync_20261026/packed_vector.json",
+    "updates": 8,
+    "counts": {
+      "aten::item": 0,
+      "aten::_local_scalar_dense": 0,
+      "aten::to": 56,
+      "aten::_to_copy": 32,
+      "aten::stack": 8,
+      "aten::index_copy_": 8,
+      "aten::copy_": 32
+    },
+    "self_cpu_time_us": {
+      "aten::to": 535,
+      "aten::_to_copy": 1454,
+      "aten::copy_": 1016,
+      "aten::stack": 1019,
+      "aten::index_copy_": 430
+    },
+    "self_cuda_time_us": {
+      "aten::to": 692,
+      "aten::_to_copy": 1094,
+      "aten::copy_": 1427,
+      "aten::stack": 702,
+      "aten::index_copy_": 465
+    },
+    "cpu_summary": "---------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  \n                       Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg       CPU Mem  Self CPU Mem      CUDA Mem  Self CUDA Mem    # of Calls  \n---------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  \n    packed_vector_8_updates        44.36%       6.189ms       100.00%      13.952ms      13.952ms       4.564ms        32.64%      13.982ms      13.982ms           0 b        -800 b           0 b     -16.00 Kb             1  \n             aten::_to_copy        10.42%       1.454ms        18.53%       2.586ms      80.812us       1.094ms         7.82%       2.860ms      89.375us         256 b           0 b      12.00 Kb           0 b            32  \n                aten::stack         7.30%       1.019ms        12.99%       1.812ms     226.500us     702.000us         5.02%       1.810ms     226.250us           0 b           0 b       4.00 Kb           0 b             8  \n                aten::copy_         7.28%       1.016ms         7.28%       1.016ms      31.750us       1.427ms        10.21%       1.427ms      44.594us           0 b           0 b           0 b           0 b            32  \n               aten::detach         5.63%     786.000us         5.88%     821.000us      34.208us     456.000us         3.26%     935.000us      38.958us           0 b           0 b           0 b           0 b            24  \n                   aten::to         3.83%     535.000us        22.37%       3.121ms      55.732us     692.000us         4.95%       3.552ms      63.429us         256 b           0 b      12.00 Kb           0 b            56  \n               aten::select         3.40%     474.000us         3.45%     482.000us      20.083us     516.000us         3.69%     712.000us      29.667us           0 b           0 b           0 b           0 b            24  \n            aten::unsqueeze         3.30%     461.000us         3.60%     502.000us      20.917us     418.000us         2.99%     726.000us      30.250us           0 b           0 b           0 b           0 b            24  \n          aten::index_copy_         3.08%     430.000us         3.13%     437.000us      54.625us     465.000us         3.33%     550.000us      68.750us           0 b           0 b           0 b           0 b             8  \n              aten::reshape         2.89%     403.000us         3.18%     443.000us      18.458us     266.000us         1.90%     463.000us      19.292us           0 b           0 b           0 b           0 b            24  \n              aten::detach_         2.88%     402.000us         2.90%     405.000us      16.875us     354.000us         2.53%     622.000us      25.917us           0 b           0 b           0 b           0 b            24  \n                  aten::cat         2.09%     291.000us         2.09%     291.000us      36.375us     382.000us         2.73%     382.000us      47.750us           0 b           0 b       4.00 Kb       4.00 Kb             8  \n---------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  \nSelf CPU time total: 13.952ms\nSelf CUDA time total: 13.982ms\n"
+  }
+}

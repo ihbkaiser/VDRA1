@@ -1,0 +1,25 @@
+﻿{
+    "run_id":  "R1_s42",
+    "seed":  42,
+    "framework":  "treetune",
+    "updates":  {
+                    "1":  {
+                              "framework":  "treetune",
+                              "update":  1,
+                              "rollout_count":  64,
+                              "generated_tokens":  32418,
+                              "mean_reward":  0.5776909722222222,
+                              "loss":  -6E-08,
+                              "grad_norm":  3.9087348
+                          },
+                    "2":  {
+                              "framework":  "treetune",
+                              "update":  2,
+                              "rollout_count":  64,
+                              "generated_tokens":  33113,
+                              "mean_reward":  0.5438368055555556,
+                              "loss":  -0.00010729,
+                              "grad_norm":  3.60384393
+                          }
+                }
+}

@@ -1,0 +1,26 @@
+﻿bash.exe : [2026-10-25 20:32:22] + bash /d/vdra_experiments/vdra_experiments/scripts/20_train.sh R2 42 2 
+null_R2_constant
+At line:2 char:748
++ ...  R2 R3 R4 R5 R6' bash '$script'"; $out = & $bash -c $cmd 2>&1; $rc =  ...
++                                              ~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([2026-10-25 20:...ull_R2_constant:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[2026-10-25 20:32:22] + bash /d/vdra_experiments/vdra_experiments/scripts/20_train.sh R1 42 2 null_R1
+[2026-10-25 20:32:22] + bash /d/vdra_experiments/vdra_experiments/scripts/20_train.sh R2 42 2 null_R2_tv
+[2026-10-25 20:32:22] + bash /d/vdra_experiments/vdra_experiments/scripts/20_train.sh R4 42 2 null_R4_tv
+[2026-10-25 20:32:22] + bash /d/vdra_experiments/vdra_experiments/scripts/20_train.sh R6 42 2 null_R6_tv
+[2026-10-25 20:32:22] + python3 /d/vdra_experiments/vdra_experiments/analysis/budget_audit.py --null 
+/d/vdra_experiments/vdra_experiments/work/runs/null_R2_constant /d/vdra_experiments/vdra_experiments/work/runs/null_R1 
+--out /d/vdra_experiments/vdra_experiments/work/results/audit/null_igpo.json
+[2026-10-25 20:32:22] + python3 /d/vdra_experiments/vdra_experiments/analysis/budget_audit.py --logs 
+/d/vdra_experiments/vdra_experiments/work/runs/null_R2_tv --out 
+/d/vdra_experiments/vdra_experiments/work/results/audit/null_R2_tv.json
+[2026-10-25 20:32:23] + python3 /d/vdra_experiments/vdra_experiments/analysis/budget_audit.py --logs 
+/d/vdra_experiments/vdra_experiments/work/runs/null_R4_tv --out 
+/d/vdra_experiments/vdra_experiments/work/results/audit/null_R4_tv.json
+[2026-10-25 20:32:23] + python3 /d/vdra_experiments/vdra_experiments/analysis/budget_audit.py --logs 
+/d/vdra_experiments/vdra_experiments/work/runs/null_R6_tv --out 
+/d/vdra_experiments/vdra_experiments/work/results/audit/null_R6_tv.json
+[2026-10-25 20:32:23] check results/audit/*.json: null_igpo.pass must be true and budget_violations 0
+[2026-10-25 20:32:23] next: GPUS=... bash scripts/12_resume_test.sh  (kill-and-resume check for every framework)

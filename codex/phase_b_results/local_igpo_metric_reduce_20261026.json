@@ -1,0 +1,23 @@
+{
+  "collectives_per_interval": {
+    "old": 17,
+    "packed": 2
+  },
+  "cuda": "12.1",
+  "date_utc": "2026-10-26T09:48:12.945274+00:00",
+  "device": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
+  "max_abs_metric_delta": 0.0,
+  "measurement": "Synthetic IGPO metric logging with single-rank identity collectives; captures tensor synchronization and Python overhead, not NCCL latency or transformer compute.",
+  "median_ms": {
+    "old_per_metric": 19.828100004815497,
+    "packed_by_dtype": 10.597400003462099
+  },
+  "shape": {
+    "dtype_groups": 2,
+    "logged_tensor_metrics": 17,
+    "synthetic_logging_intervals": 48,
+    "updates_per_interval": 4
+  },
+  "speedup_ratio_old_over_new": 1.8710344045084446,
+  "torch": "2.3.1+cu121"
+}

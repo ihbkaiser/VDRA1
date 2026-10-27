@@ -1,0 +1,24 @@
+﻿[2026-10-25 20:32:11] experiment R1 (treetune) on GPU 0; seeds: 42; stop 220; eval every 25
+[2026-10-25 20:32:11] === R1 seed 42: training ===
+[2026-10-25 20:32:12] + python3 /d/vdra_experiments/vdra_experiments/analysis/gpu_hours.py --run_dir /d/vdra_experiments/vdra_experiments/work/runs/R1_s42 --framework treetune --gpus 1 --out /d/vdra_experiments/vdra_experiments/work/results/gpu_hours/R1_s42.json
+[2026-10-25 20:32:12] + python3 /d/vdra_experiments/vdra_experiments/analysis/eval_pending.py --run_dir /d/vdra_experiments/vdra_experiments/work/runs/R1_s42 --run_id R1_s42 --gpus 0 --dataset math500=/d/vdra_experiments/vdra_experiments/work/igpo/data/math:test aime24=/d/vdra_experiments/vdra_experiments/work/igpo/data/aime24 aime25=/d/vdra_experiments/vdra_experiments/work/igpo/data/aime25 amc23=/d/vdra_experiments/vdra_experiments/work/igpo/data/amc23 olympiadbench=/d/vdra_experiments/vdra_experiments/work/igpo/data/olympiadbench_hf --out_dir /d/vdra_experiments/vdra_experiments/work/results/eval --gpu_hours_json /d/vdra_experiments/vdra_experiments/work/results/gpu_hours/R1_s42.json --sample_k 2 --include_step0 --base_model deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B
+  File "<string>", line 1
+    import
+          ^
+SyntaxError: invalid syntax
+[2026-10-25 20:32:12] R1_s42: attempt 1, resuming from update 0, training to 25 (final 220)
+  File "<string>", line 1
+    import
+          ^
+SyntaxError: invalid syntax
+[2026-10-25 20:32:12] + ingpo_run R1_s42 /d/vdra_experiments/vdra_experiments/work/igpo/configs/polIter_deepseekR1Qwen_spo_logged_MATH.jsonnet,/d/vdra_experiments/vdra_experiments/work/igpo/configs/episode_generators/branch_factor_666.jsonnet,/d/vdra_experiments/vdra_experiments/work/igpo/configs/vdra/data_nodiag.jsonnet,/d/vdra_experiments/vdra_experiments/work/igpo/configs/vdra/model_path.jsonnet,/d/vdra_experiments/vdra_experiments/work/igpo/configs/vdra/stop.jsonnet
+[2026-10-25 20:32:13] R1_s42: training paused at update 25; evaluating on GPUs 0
+[2026-10-25 20:32:13] + python3 /d/vdra_experiments/vdra_experiments/analysis/gpu_hours.py --run_dir /d/vdra_experiments/vdra_experiments/work/runs/R1_s42 --framework treetune --gpus 1 --out /d/vdra_experiments/vdra_experiments/work/results/gpu_hours/R1_s42.json
+[2026-10-25 20:32:13] + python3 /d/vdra_experiments/vdra_experiments/analysis/eval_pending.py --run_dir /d/vdra_experiments/vdra_experiments/work/runs/R1_s42 --run_id R1_s42 --gpus 0 --dataset math500=/d/vdra_experiments/vdra_experiments/work/igpo/data/math:test aime24=/d/vdra_experiments/vdra_experiments/work/igpo/data/aime24 aime25=/d/vdra_experiments/vdra_experiments/work/igpo/data/aime25 amc23=/d/vdra_experiments/vdra_experiments/work/igpo/data/amc23 olympiadbench=/d/vdra_experiments/vdra_experiments/work/igpo/data/olympiadbench_hf --out_dir /d/vdra_experiments/vdra_experiments/work/results/eval --gpu_hours_json /d/vdra_experiments/vdra_experiments/work/results/gpu_hours/R1_s42.json --sample_k 2 --include_step0 --base_model deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B
+[2026-10-25 20:32:13] (dry run: one chunk shown)
+[2026-10-25 20:32:13] done R1_s42
+[2026-10-25 20:32:13] === R1 seed 42: compute-matched continuation (waits for R2_s42) ===
+[2026-10-25 20:32:13] + python3 /d/vdra_experiments/vdra_experiments/analysis/gpu_hours.py --run_dir /d/vdra_experiments/vdra_experiments/work/runs/R1_s42 --framework treetune --gpus 1 --out /d/vdra_experiments/vdra_experiments/work/results/gpu_hours/R1_s42.json
+[2026-10-25 20:32:13] + python3 /d/vdra_experiments/vdra_experiments/analysis/gpu_hours.py --run_dir /d/vdra_experiments/vdra_experiments/work/runs/R2_s42 --framework treetune --gpus 1 --out /d/vdra_experiments/vdra_experiments/work/results/gpu_hours/R2_s42.json
+[2026-10-25 20:32:13] dry run: skipping target computation
+[2026-10-25 20:32:13] R1 complete on GPU 0. Results: /d/vdra_experiments/vdra_experiments/work/results/eval

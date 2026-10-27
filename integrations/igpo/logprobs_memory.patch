@@ -1,0 +1,305 @@
+diff --git a/treetune/trainers/ppo_trainer.py b/treetune/trainers/ppo_trainer.py
+index b55ae9f..a481778 100644
+--- a/treetune/trainers/ppo_trainer.py
++++ b/treetune/trainers/ppo_trainer.py
+@@ -1,5 +1,6 @@
+ import json
+ import logging
++import os
+ import shutil
+ import subprocess
+ import time
+@@ -954,7 +955,6 @@ class PPOTrainer(DeepSpeedPolicyTrainer):
+             model_inputs,
+             return_all_logps=True,
+             return_entropy=self.report_entropy,
+-            return_all_tokens_logps=True,
+         )
+         logprobs = outputs["all_logps"]        # (batch_size, seq_len-1)
+ 
+@@ -1059,21 +1059,22 @@ class PPOTrainer(DeepSpeedPolicyTrainer):
+             action_mask = action_mask & prob_mask
+ 
+         # Compute the log probabilities of the actor
++        needs_all_token_logps = self.ppo_hparams.forward_kl_penalty_coef > 0
+         outputs = self._forward_pass_actor(
+             actor,
+             model_inputs,
+             return_all_logps=True,
+             return_entropy=self.report_entropy,
+-            return_all_tokens_logps=True
++            return_all_tokens_logps=needs_all_token_logps,
+         )
+         logprobs = outputs["all_logps"]  # Shape: (batch_size, max_seq_len-1)
+-        all_tokens_logps = outputs["all_tokens_logps"] # Shape: (batch_size, max_seq_len-1?, |V|)
+ 
+         assert logprobs.shape == old_logprobs.shape
+         assert action_mask.shape == logprobs.shape
+-        assert all_tokens_logps.shape[1] == logprobs.shape[1]
+ 
+-        if self.ppo_hparams.forward_kl_penalty_coef > 0:
++        if needs_all_token_logps:
++            all_tokens_logps = outputs["all_tokens_logps"]
++            assert all_tokens_logps.shape[1] == logprobs.shape[1]
+             ref_outputs = self._forward_pass_actor(
+                 self._reference_engine, # TODO this should be passed in the parameter
+                 model_inputs,
+@@ -1738,14 +1739,22 @@ class PPOTrainer(DeepSpeedPolicyTrainer):
+                 if key not in running_metrics:
+                     running_metrics[key] = get_initial_value(step_metrics[key])
+ 
+-        num_tokens = step_metrics["_num_participating_tokens"].item()
++        num_tokens_tensor = step_metrics["_num_participating_tokens"]
++        num_tokens_value = None
+ 
+         for key, value in step_metrics.items():
+             if value is None:
+                 continue
+ 
+             if key in self.log_keys_weighed_by_num_participating_tokens:
+-                weight = num_tokens
++                if isinstance(value, torch.Tensor):
++                    weight = num_tokens_tensor
++                else:
++                    # Preserve support for Python-scalar metrics without forcing
++                    # a device synchronization for the normal tensor metrics.
++                    if num_tokens_value is None:
++                        num_tokens_value = num_tokens_tensor.item()
++                    weight = num_tokens_value
+             else:
+                 weight = 1
+ 
+@@ -1753,7 +1762,7 @@ class PPOTrainer(DeepSpeedPolicyTrainer):
+             accumulated_metrics[key] += value
+ 
+         # Update Running Metrics
+-        running_metrics["_num_participating_tokens"] += num_tokens
++        running_metrics["_num_participating_tokens"] += num_tokens_tensor
+ 
+     def _get_episodes_w_ref_logps(self, episodes: Dataset) -> Dataset:
+         logger.info(f"Computing the reference log probabilities.")
+@@ -1920,10 +1929,23 @@ class PPOTrainer(DeepSpeedPolicyTrainer):
+ 
+         dist.barrier()
+ 
+-        list_of_log_probs = []
+-        for inputs in tqdm(
+-            data_loader, desc="Computing log probs", disable=not self._is_main_process()
++        host_log_prob_chunks = []
++        host_seq_length_chunks = []
++        logps = None
++        seq_lengths = None
++        outputs = None
++        inputs = None
++        async_host_copy = False
++        profile_log_probs = os.environ.get("VDRA_LOGPROB_PROFILE") == "1"
++        profile_started = time.perf_counter()
++        for batch_index, inputs in enumerate(
++            tqdm(
++                data_loader,
++                desc="Computing log probs",
++                disable=not self._is_main_process(),
++            )
+         ):
++            batch_started = time.perf_counter()
+             with torch.no_grad():
+                 # Assume every sequence is padded from the right
+                 # noinspection DuplicatedCode
+@@ -1954,23 +1976,82 @@ class PPOTrainer(DeepSpeedPolicyTrainer):
+                 # Note that after all_gather, the order in which the batches were
+                 # distributed across processes is preserved. So, concatenating
+                 # them along the batch dimension will give us the original order.
+-                seq_lengths = gather(seq_lengths).cpu()
++                seq_lengths = gather(seq_lengths)
+                 logps = gather(
+                     pad_across_processes(logps, dim=1, pad_index=0.0, pad_first=False)
+-                ).cpu()
++                )
+ 
+                 assert (
+                     logps.shape[0]
+                     == inputs["input_ids"].shape[0] * dist.get_world_size()
+                 )
+ 
+-                # Convert 2d tensors to a list of lists
+-                logps_seq_lengths = seq_lengths - 1
+-                for i, seq_len in enumerate(logps_seq_lengths.squeeze().tolist()):
+-                    assert seq_len <= logps.shape[1]
+-                    list_of_log_probs.append(logps[i, :seq_len].tolist())
+-            
+-            torch.cuda.empty_cache()
++                # Stage padded batches into pinned host memory asynchronously.
++                # CUDA boolean indexing would synchronize to learn its dynamic
++                # output size, so keep padding until CPU list materialization.
++                host_logps = torch.empty(
++                    logps.shape,
++                    dtype=logps.dtype,
++                    device="cpu",
++                    pin_memory=logps.is_cuda,
++                )
++                host_seq_lengths = torch.empty(
++                    seq_lengths.shape,
++                    dtype=seq_lengths.dtype,
++                    device="cpu",
++                    pin_memory=seq_lengths.is_cuda,
++                )
++                async_host_copy = logps.is_cuda
++                host_logps.copy_(logps, non_blocking=async_host_copy)
++                host_seq_lengths.copy_(
++                    seq_lengths, non_blocking=seq_lengths.is_cuda
++                )
++                host_log_prob_chunks.append(host_logps)
++                host_seq_length_chunks.append(host_seq_lengths)
++
++            if profile_log_probs and batch_index < 3:
++                logger.info(
++                    "Logprob profile: column=%s batch=%d padded_seq_len=%d "
++                    "batch_seconds_before_host_copy_enqueue=%.3f elapsed_seconds_before_deferred_sync=%.3f",
++                    column_name,
++                    batch_index,
++                    inputs["input_ids"].shape[1],
++                    time.perf_counter() - batch_started,
++                    time.perf_counter() - profile_started,
++                )
++
++        # Wait for all queued device-to-host copies once, then build ragged lists
++        # from CPU memory without synchronizing once per batch.
++        list_of_log_probs = []
++        sync_started = time.perf_counter()
++        if host_log_prob_chunks and async_host_copy:
++            torch.cuda.synchronize()
++        sync_wait_seconds = time.perf_counter() - sync_started
++        materialization_started = time.perf_counter()
++        for host_logps, host_seq_lengths in zip(
++            host_log_prob_chunks, host_seq_length_chunks
++        ):
++            for row, sequence_length in enumerate(host_seq_lengths.reshape(-1).tolist()):
++                logp_length = int(sequence_length) - 1
++                assert logp_length <= host_logps.shape[1]
++                list_of_log_probs.append(host_logps[row, :logp_length].tolist())
++
++        if profile_log_probs:
++            logger.info(
++                "Logprob profile: column=%s deferred_sync_wait_seconds=%.3f "
++                "host_materialization_seconds=%.3f "
++                "total_seconds=%.3f",
++                column_name,
++                sync_wait_seconds,
++                time.perf_counter() - materialization_started,
++                time.perf_counter() - profile_started,
++            )
++
++        # Drop staged batches before releasing unused allocator blocks.
++        del host_log_prob_chunks, host_seq_length_chunks
++        del logps, seq_lengths
++        del outputs, inputs
++        torch.cuda.empty_cache()
+ 
+         # Remove any extra log probs that were added due to padding
+         list_of_log_probs = list_of_log_probs[: len(dataset)]
+@@ -2001,7 +2082,13 @@ class PPOTrainer(DeepSpeedPolicyTrainer):
+ 
+         dist.barrier()
+ 
+-        list_of_values = []
++        host_value_chunks = []
++        host_value_length_chunks = []
++        async_host_copy = False
++        values = None
++        seq_lengths = None
++        outputs = None
++        inputs = None
+         for inputs in tqdm(
+             data_loader, desc="Computing values", disable=not self._is_main_process()
+         ):
+@@ -2030,20 +2117,53 @@ class PPOTrainer(DeepSpeedPolicyTrainer):
+                 assert values.shape[1] == inputs["input_ids"].shape[1]
+ 
+                 # Gather across all distributed processes
+-                seq_lengths = gather(seq_lengths).cpu()
++                seq_lengths = gather(seq_lengths)
+                 values = gather(
+                     pad_across_processes(values, dim=1, pad_index=0.0, pad_first=False)
+-                ).cpu()
++                )
+ 
+                 assert (
+                     values.shape[0]
+                     == inputs["input_ids"].shape[0] * dist.get_world_size()
+                 )
+ 
+-                # Convert 2d tensors to a list of lists
+-                for i, seq_len in enumerate(seq_lengths.squeeze().tolist()):
+-                    assert seq_len <= values.shape[1]
+-                    list_of_values.append(values[i, :seq_len].tolist())
++                # Stage padded values asynchronously; convert ragged rows on CPU
++                # after one synchronization instead of blocking once per batch.
++                async_host_copy = values.is_cuda
++                host_values = torch.empty(
++                    values.shape,
++                    dtype=values.dtype,
++                    device="cpu",
++                    pin_memory=async_host_copy,
++                )
++                host_seq_lengths = torch.empty(
++                    seq_lengths.shape,
++                    dtype=seq_lengths.dtype,
++                    device="cpu",
++                    pin_memory=seq_lengths.is_cuda,
++                )
++                host_values.copy_(values, non_blocking=async_host_copy)
++                host_seq_lengths.copy_(
++                    seq_lengths, non_blocking=seq_lengths.is_cuda
++                )
++                host_value_chunks.append(host_values)
++                host_value_length_chunks.append(host_seq_lengths)
++
++        if host_value_chunks and async_host_copy:
++            torch.cuda.synchronize()
++        list_of_values = []
++        for host_values, host_seq_lengths in zip(
++            host_value_chunks, host_value_length_chunks
++        ):
++            for row, sequence_length in enumerate(
++                host_seq_lengths.reshape(-1).tolist()
++            ):
++                assert sequence_length <= host_values.shape[1]
++                list_of_values.append(
++                    host_values[row, : int(sequence_length)].tolist()
++                )
++        del host_value_chunks, host_value_length_chunks
++        del values, seq_lengths, outputs, inputs
+ 
+         # Remove any extra values that were added due to padding
+         list_of_values = list_of_values[: len(dataset)]
+@@ -2108,17 +2228,18 @@ class PPOTrainer(DeepSpeedPolicyTrainer):
+         # Make sure all label indices are valid. i.e. convert -100 to 0
+         shift_labels[shift_labels == -100] = 0
+ 
++        # Avoid the extra masked all-token tensor unless forward-KL needs it.
++        all_tokens_logps = None
+         log_probs = shift_logits.log_softmax(-1)
+         per_token_log_probs = torch.gather(
+             log_probs, dim=2, index=shift_labels.unsqueeze(2)
+-        )
+-        per_token_log_probs = per_token_log_probs.squeeze(2)
++        ).squeeze(2)
++        if return_all_tokens_logps:
++            all_tokens_logps = log_probs * shift_label_mask.unsqueeze(-1)
+ 
+         # Multiply the log probs by the label mask to ignore the padding labels
+         per_token_log_probs = per_token_log_probs * shift_label_mask
+ 
+-        all_tokens_logps = log_probs * shift_label_mask.unsqueeze(-1)
+-
+         output = {}
+         if return_entropy:
+             with torch.no_grad():
+@@ -2141,6 +2262,7 @@ class PPOTrainer(DeepSpeedPolicyTrainer):
+             output["all_logps"] = per_token_log_probs
+ 
+         if return_all_tokens_logps:
++            assert all_tokens_logps is not None
+             output["all_tokens_logps"] = all_tokens_logps
+ 
+         return output

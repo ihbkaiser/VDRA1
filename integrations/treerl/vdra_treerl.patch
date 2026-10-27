@@ -1,0 +1,452 @@
+diff --git a/openrlhf/trainer/ppo_utils/entropy_chain_local_manager.py b/openrlhf/trainer/ppo_utils/entropy_chain_local_manager.py
+index da26053..ab958e1 100644
+--- a/openrlhf/trainer/ppo_utils/entropy_chain_local_manager.py
++++ b/openrlhf/trainer/ppo_utils/entropy_chain_local_manager.py
+@@ -291,7 +291,16 @@ class EntropyGuidedChainLocalManager:
+             # prepare the inference
+             m_tree_top_n_prompt_ids = []
+             task_mapping = {}
+-            for i, (tree_idx, node_idx, node, split_idx) in enumerate(expansion_tasks * T):
++            # VDRA: optionally replace the uniform T continuations per fork by a
++            # dispersion-guided split of the same budget T * |forks|.
++            _vdra_counts = self._vdra_expansion_counts(
++                expansion_tasks, init_prompt_ids_with_template, T, iteration, problem_str, answer_str
++            )
++            if _vdra_counts is None:
++                _expanded_tasks = expansion_tasks * T
++            else:
++                _expanded_tasks = [task for task, c in zip(expansion_tasks, _vdra_counts) for _ in range(c)]
++            for i, (tree_idx, node_idx, node, split_idx) in enumerate(_expanded_tasks):
+                 prefix_ids = node.get_prefix_ids(split_idx)
+                 prompt_ids = init_prompt_ids_with_template + prefix_ids
+                 m_tree_top_n_prompt_ids.append(prompt_ids)
+@@ -437,6 +446,57 @@ class EntropyGuidedChainLocalManager:
+             'parent_node_split_idx': node.parent_node_split_idx
+         } for node in tree_list]
+ 
++    # ------------------------------------------------------------------ VDRA
++    def _vdra_expansion_counts(self, expansion_tasks, init_prompt_ids, T, iteration, problem_str, answer_str):
++        """Return a continuation count per fork (sum = T * len(forks)), or None
++        when VDRA allocation is off (VDRA_TREERL_ALLOC != "vdra")."""
++        import os
++        if os.environ.get("VDRA_TREERL_ALLOC", "") != "vdra" or not expansion_tasks:
++            return None
++        import json as _json
++        import time as _time
++        from vdra_core import VDRAConfig, QueueItem, allocate_queue, partition_into_queues, JsonlLogger
++        from vdra_core.backend import TokenBackend, estimate_batch, from_ray_actor, from_vllm_llm
++        from vdra_core import verifier as _verifier
++
++        cfg_raw = _json.loads(os.environ.get("VDRA_CONFIG_JSON", "{}") or "{}")
++        cfg_raw["reuse_terminal_pilots"] = False   # forks are re-sampled by TreeRL itself
++        cfg = VDRAConfig.from_dict(cfg_raw)
++        if getattr(self, "_vdra_backend", None) is None:
++            eos = [t for t in self.eos_tokens_set if isinstance(t, int)] or None
++            gen = from_ray_actor(self.llm) if hasattr(self.llm, "generate") and hasattr(self.llm.generate, "remote") else from_vllm_llm(self.llm)
++            self._vdra_backend = TokenBackend(
++                generate_fn=gen,
++                temperature=float(self.args.get("temperature", 1.0)),
++                top_p=float(self.args.get("top_p", 1.0)),
++                stop_token_ids=eos,
++                max_model_len=int(os.environ.get("VDRA_MAX_MODEL_LEN", "4096")),
++            )
++        backend = self._vdra_backend
++        prefixes = [list(init_prompt_ids) + list(node.get_prefix_ids(split_idx))
++                    for (_, _, node, split_idx) in expansion_tasks]
++
++        def _terminal_reward(v, pilot_ids):
++            text = self.decode_fn(list(prefixes[v][len(init_prompt_ids):]) + list(pilot_ids))
++            return _verifier.score(text, answer_str, problem_str)
++
++        t0 = _time.time()
++        results, _ = estimate_batch(prefixes, backend, cfg, terminal_reward_fn=_terminal_reward)
++        items = [QueueItem(node_id=f"{tree_idx}/{node_idx}/{split_idx}", coef=r.coef, k_v=r.k_v,
++                           nominal=int(T), capped=r.capped)
++                 for (tree_idx, node_idx, _, split_idx), r in zip(expansion_tasks, results)]
++        counts = []
++        log_dir = os.environ.get("VDRA_LOG_DIR", "")
++        qlog = JsonlLogger(os.path.join(log_dir, f"vdra_queues.pid{os.getpid()}.jsonl") if log_dir else "")
++        for chunk in partition_into_queues(items, cfg.queue_capacity):
++            alloc = allocate_queue(chunk, n_min=cfg.n_min)
++            counts.extend(alloc)
++            qlog.write({"iteration": int(iteration), "budget": int(T) * len(chunk), "n_v": alloc,
++                        "coefs": [it.coef for it in chunk], "k_v": [it.k_v for it in chunk],
++                        "capped": [bool(it.capped) for it in chunk],
++                        "seconds": _time.time() - t0, "counters": dict(backend.counters)})
++        return counts
++
+     def process_single_item(self, item: Dict[str, Any], args: Dict[str, Any]) -> Dict[str, Any]:
+         """
+         process the single data item.
+diff --git a/openrlhf/trainer/ppo_utils/evaluation.py b/openrlhf/trainer/ppo_utils/evaluation.py
+index 195cde7..9d23fa0 100644
+--- a/openrlhf/trainer/ppo_utils/evaluation.py
++++ b/openrlhf/trainer/ppo_utils/evaluation.py
+@@ -353,6 +353,11 @@ def check_result(
+         if label == "":
+             print("dummy label")
+         return None, 0
++    import os as _os
++    if _os.environ.get("VDRA_LOCAL_VERIFIER", "") == "1":
++        # Same local math verifier as the other runs; no remote judge services.
++        from vdra_core import verifier as _verifier
++        return None, int(_verifier.score(response, label, question))
+     answer = extract_answer(question, response, extractor_urls)
+     if not answer:
+         return None, 0
+diff --git a/openrlhf/trainer/ppo_utils/experience_maker.py b/openrlhf/trainer/ppo_utils/experience_maker.py
+index 6e9ee1d..30955ef 100644
+--- a/openrlhf/trainer/ppo_utils/experience_maker.py
++++ b/openrlhf/trainer/ppo_utils/experience_maker.py
+@@ -3204,6 +3204,10 @@ class RemoteExperienceMaker(NaiveExperienceMaker):
+                     "training_type": self.strategy.args.training_type,
+                 }
+                 
++            import os as _os
++            if _os.environ.get("VDRA_TREERL_EOS_IDS"):
++                # e.g. DeepSeek-R1-Distill: "151643"; vLLM needs integer stop ids
++                args["eos_tokens"] = [int(x) for x in _os.environ["VDRA_TREERL_EOS_IDS"].split(",")]
+             print("entropy args:",args)
+             system_prompt = kwargs.get("system_prompt", None)
+             if self.strategy.args.training_type == "general":
+diff --git a/openrlhf/trainer/ray/reinforce_actor.py b/openrlhf/trainer/ray/reinforce_actor.py
+index 9e0a076..e4f3c6f 100644
+--- a/openrlhf/trainer/ray/reinforce_actor.py
++++ b/openrlhf/trainer/ray/reinforce_actor.py
+@@ -70,7 +70,8 @@ class ActorReinforceTrainer(ReinforceTrainer):
+         # For ZeRO-3:
+         #   1. AllGather paramters to rank 0
+         #   2. Broadcast parameters from rank 0 to all vllm engines
+-        if self.vllm_engines is not None and torch.distributed.get_rank() == 0:
++        colocated = os.environ.get("VDRA_TREERL_COLOCATE") == "1"
++        if self.vllm_engines is not None and torch.distributed.get_rank() == 0 and not colocated:
+             master_address = ray._private.services.get_node_ip_address()
+             with socket.socket() as sock:
+                 sock.bind(("", 0))
+@@ -128,6 +129,8 @@ class ActorReinforceTrainer(ReinforceTrainer):
+ 
+     def _broadcast_to_vllm(self):
+         torch.cuda.empty_cache()
++        if os.environ.get("VDRA_TREERL_COLOCATE") == "1":
++            return self._sync_to_colocated_vllm()
+         
+         model = self.actor.model.module
+         count, num_params = 0, len(list(model.named_parameters()))
+@@ -152,6 +155,53 @@ class ActorReinforceTrainer(ReinforceTrainer):
+                     if torch.distributed.get_rank() == 0:
+                         torch.distributed.broadcast(param.data, 0, group=self._model_update_group)
+ 
++    def _sync_to_colocated_vllm(self):
++        """Actor and vLLM share one GPU: send weights in ~512 MB buckets through Ray."""
++        model = self.actor.model.module
++        rank0 = torch.distributed.get_rank() == 0
++        limit = int(float(os.environ.get("VDRA_TREERL_SYNC_BUCKET_MB", "512")) * 2**20)
++        bucket, size, pending = [], 0, []
++
++        def flush():
++            nonlocal bucket, size
++            if rank0 and bucket:
++                ref = ray.put(bucket)
++                pending.extend(engine.update_weights_from_cpu.remote(ref) for engine in self.vllm_engines)
++                ray.get(pending)
++                pending.clear()
++            bucket, size = [], 0
++
++        for name, param in model.named_parameters():
++            with deepspeed.zero.GatheredParameters(_z3_params_to_fetch([param]),
++                                                   enabled=self.strategy.args.zero_stage == 3):
++                if rank0:
++                    bucket.append((name, param.data.detach().to("cpu", copy=True)))
++                    size += param.numel() * param.element_size()
++            if size >= limit:
++                flush()
++        flush()
++        torch.cuda.empty_cache()
++        if os.environ.get("VDRA_TREERL_VERIFY_SYNC") == "1" and not getattr(self, "_vdra_sync_verified", False):
++            verified = [None]
++            if torch.distributed.get_rank() == 0:
++                from pathlib import Path
++                import json
++
++                from modal_app.treerl_sync import verify_actor_vllm_sync
++
++                atol = float(os.environ.get("VDRA_TREERL_SYNC_ATOL", "0.05"))
++                verified[0] = verify_actor_vllm_sync(model, self.tokenizer, self.vllm_engines[0], atol=atol)
++                report_path = os.environ.get("VDRA_TREERL_SYNC_REPORT")
++                if not report_path:
++                    raise RuntimeError("VDRA_TREERL_SYNC_REPORT must be set when sync verification is enabled")
++                path = Path(report_path)
++                path.parent.mkdir(parents=True, exist_ok=True)
++                path.write_text(json.dumps(verified[0], indent=2, sort_keys=True) + "\n", encoding="utf-8")
++            torch.distributed.broadcast_object_list(verified, src=0)
++            if not verified[0] or verified[0].get("matched") is not True:
++                raise RuntimeError(f"TreeRL actor/vLLM sync verification failed: {verified[0]}")
++            self._vdra_sync_verified = True
++
+     # def _broadcast_to_reference_model(self):
+     #     model = self.actor.model.module
+ 
+@@ -369,6 +419,14 @@ class ActorModelRayActor(BasePPORole):
+             b_mean = args.b_mean,
+         )
+ 
++        # VDRA resume: load module + optimizer + LR scheduler + client state if a
++        # resumable checkpoint exists (written by save_logs_and_checkpoints).
++        resume_dir = os.path.join(args.ckpt_path, "_actor_resume")
++        if args.load_checkpoint and os.path.exists(os.path.join(resume_dir, "latest")):
++            _, states = strategy.load_ckpt(self.actor.model, resume_dir)
++            trainer.vdra_resume_state = states or {}
++            strategy.print(f"[vdra-resume] loaded {resume_dir} at update {trainer.vdra_resume_state.get('update_step')}")
++
+         trainer.fit(self.prompts_dataloader, self.pretrain_dataloader, args)
+ 
+     def save_model(self):
+diff --git a/openrlhf/trainer/ray/vllm_engine.py b/openrlhf/trainer/ray/vllm_engine.py
+index 8ec07ed..20dd09a 100644
+--- a/openrlhf/trainer/ray/vllm_engine.py
++++ b/openrlhf/trainer/ray/vllm_engine.py
+@@ -47,6 +47,15 @@ class LLMRayActor:
+     def generate(self, *args, **kwargs):
+         return self.llm.generate(*args, **kwargs)
+ 
++    def ready(self):
++        return True
++
++    def update_weights_from_cpu(self, named_tensors):
++        # VDRA single-GPU mode: weights arrive through the Ray object store instead of NCCL
++        # (NCCL cannot connect two processes on the same GPU)
++        assert self.use_gpu_executor, "colocated weight sync needs tensor_parallel_size=1"
++        return self.llm.llm_engine.model_executor.driver_worker.update_weights_from_cpu(named_tensors)
++
+     # def init_process_group(self, master_address, master_port, rank_offset, world_size, group_name):
+     #     if self.use_gpu_executor:
+     #         return self.llm.llm_engine.model_executor.driver_worker.init_process_group(
+@@ -92,6 +101,8 @@ def create_vllm_engines(
+     for _ in range(num_engines):
+         # When tensor_parallel_size=1, vLLM init model in LLMEngine directly, assign 1 GPU for it.
+         num_gpus = int(tensor_parallel_size == 1)
++        if os.environ.get("VDRA_TREERL_COLOCATE") == "1" and tensor_parallel_size == 1:
++            num_gpus = float(os.environ.get("VDRA_TREERL_GPU_FRAC_VLLM", "0.4"))
+         scheduling_strategy = None
+ 
+         if tensor_parallel_size > 1:
+@@ -113,11 +124,11 @@ def create_vllm_engines(
+                 trust_remote_code=True,
+                 tensor_parallel_size=tensor_parallel_size,
+                 dtype="bfloat16",
+-                gpu_memory_utilization=0.9,
+-                max_num_batched_tokens=300000,
++                gpu_memory_utilization=float(os.environ.get("VDRA_TREERL_VLLM_MEM", "0.9")),
++                max_num_batched_tokens=int(os.environ.get("VDRA_TREERL_VLLM_BATCHED_TOKENS", "300000")),
+                 # gpu_memory_utilization=0.85,
+                 seed=int(seed) + _,
+-                max_model_len=23856,
++                max_model_len=int(os.environ.get("VDRA_TREERL_ENGINE_MAX_LEN", "23856")),
+                 enable_prefix_caching=enable_prefix_caching,
+                 # enforce_eager=True
+             )
+diff --git a/openrlhf/trainer/ray/vllm_worker_wrap.py b/openrlhf/trainer/ray/vllm_worker_wrap.py
+index 6875eba..257e7e0 100644
+--- a/openrlhf/trainer/ray/vllm_worker_wrap.py
++++ b/openrlhf/trainer/ray/vllm_worker_wrap.py
+@@ -44,4 +44,10 @@ class WorkerWrap(Worker):
+         del weight
+         # TODO: should we empty cache if all weights have updated?
+         # if empty_cache:
+-        #     torch.cuda.empty_cache()
+\ No newline at end of file
++        #     torch.cuda.empty_cache()
++
++    def update_weights_from_cpu(self, named_tensors):
++        """VDRA single-GPU mode: load a bucket of (name, cpu tensor) weights."""
++        weights = [(n, t.to(device="cuda", dtype=self.model_config.dtype)) for n, t in named_tensors]
++        self.model_runner.model.load_weights(weights=weights)
++        del weights
+diff --git a/openrlhf/trainer/reinforce_trainer.py b/openrlhf/trainer/reinforce_trainer.py
+index 3f55f96..0866f80 100644
+--- a/openrlhf/trainer/reinforce_trainer.py
++++ b/openrlhf/trainer/reinforce_trainer.py
+@@ -179,8 +179,30 @@ class ReinforceTrainer(ABC):
+         # self.strategy.copy_model_weight(self.initial_model, self.actor)
+         
+         past_steps = 0
+-        
+-        if "_actor_global_step" in args.pretrain:
++
++        # VDRA resume: restore RNG / KL state, skip the prompt micro-batches that were
++        # already consumed (the sampler order is deterministic), stop at VDRA_STOP_UPDATE.
++        from vdra_core.resume import ResumePlan, restore_rng
++        _vdra_state = getattr(self, "vdra_resume_state", None)
++        self._vdra_plan = ResumePlan.from_env(_vdra_state, keep_every=args.save_steps if args.save_steps != float("inf") else 0)
++        self._vdra_update_timesteps = update_timesteps
++        if _vdra_state:
++            restore_rng(_vdra_state.get("rng"))
++            if "kl_value" in _vdra_state:
++                self.kl_ctl.value = _vdra_state["kl_value"]
++            if getattr(self, "vllm_engines", None) is not None and hasattr(self, "_broadcast_to_vllm"):
++                # vLLM engines start from the pretrained weights: push the resumed policy
++                self._broadcast_to_vllm()
++                torch.distributed.barrier()
++            self.strategy.print(f"[vdra-resume] update {self._vdra_plan.start_update}, "
++                                f"skipping {self._vdra_plan.skip_micro_batches} prompt micro-batches")
++        if self._vdra_plan.already_done:
++            self.strategy.print(f"[vdra-resume] already at update {self._vdra_plan.start_update} >= stop; nothing to do")
++            return
++
++        if _vdra_state:
++            past_steps = self._vdra_plan.skip_micro_batches
++        elif "_actor_global_step" in args.pretrain:
+             past_steps = int(args.pretrain.split("_actor_global_step")[-1])
+             print("*" * 20)
+             print("past_steps: ", past_steps)
+@@ -234,15 +256,28 @@ class ReinforceTrainer(ABC):
+                 self.replay_buffer.append(experience)
+ 
+                 if global_step % update_timesteps == 0:
++                    self._vdra_consumed = global_step   # micro-batches consumed so far
+                     torch.cuda.empty_cache()
+                     if self.strategy.args.normalize_advantage:
+                         self.replay_buffer.normalize("advantages", self.strategy)
+                     status = self.reinforce_train(global_step)
++                    if os.environ.get("VDRA_METRICS_JSONL"):
++                        items = self.replay_buffer.items
++                        if not items:
++                            raise RuntimeError("Phase D metric capture found an empty TreeRL rollout buffer")
++                        self._vdra_phase_d_metrics = {
++                            "rollout_count": len(items),
++                            "generated_tokens": sum(int(item.info["response_length"]) for item in items),
++                            "mean_reward": sum(float(item.info["reward"]) for item in items) / len(items),
++                        }
+                     self.replay_buffer.clear()
+                     torch.cuda.empty_cache()
+                     self.kl_ctl.update(status["kl"], args.rollout_batch_size)
+                     # logs/checkpoints
+                     self.save_logs_and_checkpoints(args, global_step // update_timesteps, pbar, status)
++                    if self._vdra_plan.is_stop(global_step // update_timesteps):
++                        self.strategy.print(f"[vdra-resume] reached stop update {global_step // update_timesteps}")
++                        return
+ 
+                 pbar.update()
+                 global_step = global_step + 1
+@@ -438,6 +473,20 @@ class ReinforceTrainer(ABC):
+             self._wandb.log(logs)
+                 
+     def save_logs_and_checkpoints(self, args, global_step, step_bar, logs_dict={}):
++        phase_d_metrics = getattr(self, "_vdra_phase_d_metrics", None)
++        if os.environ.get("VDRA_METRICS_JSONL") and phase_d_metrics is not None and self.strategy.is_rank_0():
++            from modal_app.metric_capture import write_training_metrics
++
++            write_training_metrics(
++                "openrlhf",
++                int(global_step),
++                rollout_count=phase_d_metrics["rollout_count"],
++                generated_tokens=phase_d_metrics["generated_tokens"],
++                mean_reward=phase_d_metrics["mean_reward"],
++                loss=logs_dict["policy_loss"],
++                grad_norm=logs_dict["grad_norm"],
++            )
++            self._vdra_phase_d_metrics = None
+         if global_step % args.logging_steps == 0:
+             # step bar
+             step_bar.set_postfix(logs_dict)
+@@ -458,21 +507,32 @@ class ReinforceTrainer(ABC):
+             pass
+         # save ckpt
+         # TODO: save best model on dev, use loss/perplexity/others on whole dev dataset as metric
+-        if global_step % args.save_steps == 0:
++        # Evaluation weights (HF) every save_steps updates and at the stop update.
++        # (The original code referenced `tag` outside this branch, which raised a
++        # NameError on non-save steps when --save_ckpt was set.)
++        plan = getattr(self, "_vdra_plan", None)
++        save_eval = plan.save_eval_weights(global_step) if plan is not None else global_step % args.save_steps == 0
++        if save_eval:
+             tag = f"global_step{global_step}"
+-            # self.strategy.save_ckpt(
+-            #     self.actor.model, os.path.join(args.ckpt_path, "_actor"), tag, args.max_ckpt_num, args.max_ckpt_mem
+-            # )
+             self.strategy.save_model(
+                 self.actor.model, self.tokenizer, os.path.join(args.ckpt_path, f"_actor_{tag}")
+             )
+ 
+-        if self.strategy.args.save_ckpt:
+-            os.makedirs(os.path.join(args.ckpt_path, f"_actor_ckpt_{tag}"), exist_ok=True)
++        # Resumable DeepSpeed state (module, optimizer, LR scheduler) + loop position + RNG.
++        save_resume = plan.save_resume_state(global_step) if plan is not None else save_eval
++        if self.strategy.args.save_ckpt and save_resume:
++            from vdra_core.resume import capture_rng
++            client_state = {
++                "update_step": int(global_step),
++                "consumed_micro_batches": int(getattr(self, "_vdra_consumed", 0)),
++                "kl_value": float(getattr(self.kl_ctl, "value", 0.0)),
++                "rng": capture_rng(),
++            }
+             self.strategy.save_ckpt(
+-                self.actor.model, 
+-                os.path.join(args.ckpt_path, f"_actor_ckpt_{tag}"), 
+-                tag, 
+-                max_num=args.max_ckpt_num, 
+-                max_mem=args.max_ckpt_mem
+-            )
+\ No newline at end of file
++                self.actor.model,
++                os.path.join(args.ckpt_path, "_actor_resume"),
++                f"update{global_step}",
++                max_num=args.max_ckpt_num,
++                max_mem=args.max_ckpt_mem,
++                client_state=client_state,
++            )
+diff --git a/train_reinforce_ray.py b/train_reinforce_ray.py
+index ce50367..c47cd35 100644
+--- a/train_reinforce_ray.py
++++ b/train_reinforce_ray.py
+@@ -1,4 +1,5 @@
+ import argparse
++import os
+ from datetime import datetime
+ from typing import List
+ 
+@@ -88,12 +89,24 @@ def train(args):
+     #   |actor|critic|actor|critic|actor|critic|actor|critic|
+     #   |GPU0 | GPU0 |GPU1 | GPU1 |GPU2 | GPU2 |GPU3 | GPU3 |
+ 
++    # VDRA single-GPU mode: actor, reference and vLLM share one GPU (fractional Ray GPUs).
++    colocate = os.environ.get("VDRA_TREERL_COLOCATE") == "1"
++    frac_actor = float(os.environ.get("VDRA_TREERL_GPU_FRAC_ACTOR", "0.4")) if colocate else 1
++    frac_ref = float(os.environ.get("VDRA_TREERL_GPU_FRAC_REF", "0.2")) if colocate else 1
++    vllm_engines = None
++    if colocate and args.vllm_num_engines is not None:
++        # start vLLM first, on an empty GPU, so its memory profiling is not disturbed
++        vllm_engines = create_vllm_engines(
++            args.vllm_num_engines, args.vllm_tensor_parallel_size, args.pretrain, args.seed,
++        )
++        ray.get([e.ready.remote() for e in vllm_engines])
++
+     actor_model = ReinforceRayActorGroup(
+         args.actor_num_nodes,
+         args.actor_num_gpus_per_node,
+         ActorModelRayActorReinforce,
+         pg=pg,
+-        num_gpus_per_actor=1,
++        num_gpus_per_actor=frac_actor,
+     )
+ 
+     # if colocated, create placement group for reference and reward model explicitly.
+@@ -114,7 +127,7 @@ def train(args):
+         args.ref_num_gpus_per_node,
+         ReferenceModelRayActor,
+         pg=pg,
+-        num_gpus_per_actor=1,
++        num_gpus_per_actor=frac_ref,
+     )
+ 
+     # multiple reward models
+@@ -143,8 +156,7 @@ def train(args):
+             refs.extend(reward_model.async_init_model_from_pretrained(strategy, reward_pretrain))
+ 
+     # init vLLM engine for text generation
+-    vllm_engines = None
+-    if args.vllm_num_engines is not None:
++    if args.vllm_num_engines is not None and vllm_engines is None:
+         vllm_engines = create_vllm_engines(
+             args.vllm_num_engines, args.vllm_tensor_parallel_size, args.pretrain, args.seed,
+         )

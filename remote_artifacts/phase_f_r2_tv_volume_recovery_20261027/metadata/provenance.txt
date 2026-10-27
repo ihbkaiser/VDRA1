@@ -1,0 +1,54 @@
+code_dir=/opt/work/igpo
+commit=8da9d7f9c66ffdf9d6485be55abff196ce720c9d
+ M .gitignore
+ M PLAN.md
+ M README.md
+ M configs/_paths.libsonnet
+ M configs/ablations/abl1_K10_m200.jsonnet
+ M configs/ablations/abl1_K1_m20.jsonnet
+ M configs/ablations/abl1_K20_m100.jsonnet
+ M configs/ablations/abl1_K20_m500.jsonnet
+ M configs/ablations/abl1_K5_m50.jsonnet
+ M configs/ablations/abl2_eta_0p005.jsonnet
+ M configs/ablations/abl2_eta_0p01.jsonnet
+ M configs/ablations/abl2_eta_0p02.jsonnet
+ M configs/ablations/abl2_eta_0p05.jsonnet
+ M configs/ablations/abl2_eta_0p10.jsonnet
+ M configs/ablations/abl2_eta_0p20.jsonnet
+ M configs/ablations/abl2_eta_grid.libsonnet
+ M configs/ablations/abl3_share_target_parent.jsonnet
+ M configs/ablations/abl3_share_target_root.jsonnet
+ M configs/ablations/abl4_neither.jsonnet
+ M configs/ablations/abl4_prune_only.jsonnet
+ M configs/ablations/abl4_share_only.jsonnet
+ M configs/ablations/abl6_logp_vs_prob.jsonnet
+ M configs/ablations/abl7_oracle_record.jsonnet
+ M configs/ablations/abl_budget_allocation.jsonnet
+ M configs/ablations/abl_budget_allocation_n16.jsonnet
+ M configs/ablations/abl_budget_allocation_n4.jsonnet
+ M configs/ablations/abl_score_concurrency_16.jsonnet
+ M configs/algorithms/dpo.libsonnet
+ M configs/algorithms/grpo.libsonnet
+ M configs/algorithms/ingpo.libsonnet
+ M configs/algorithms/ppo.libsonnet
+ M configs/algorithms/restem.libsonnet
+ M configs/algorithms/rloo.libsonnet
+ M configs/algorithms/spo_chain.libsonnet
+ M configs/algorithms/spo_tree.libsonnet
+ M configs/algorithms/vineppo.libsonnet
+ M configs/analyzers/kl_with_reference.jsonnet
+ M configs/analyzers/mc_advantage_distribution.jsonnet
+ M configs/analyzers/mc_value_action_ranking.jsonnet
+ M configs/analyzers/mc_value_prediction.jsonnet
+ M configs/analyzers/ppo_grad_variance.jsonnet
+ M configs/analyzers/restem_upload_chosen_checkpoint.jsonnet
+ M configs/analyzers/task_performance.jsonnet
+ M configs/analyzers/tree_diversity.jsonnet
+ M configs/analyzers/valnet_action_ranking.jsonnet
+ M configs/analyzers/valnet_prediction.jsonnet
+ M configs/analyzers/weight_l2_distance.jsonnet
+ M configs/baselines/dpo_positive_GSM8K.jsonnet
+ M configs/baselines/dpo_positive_MATH.jsonnet
+ M configs/baselines/grpo_GSM8K.jsonnet
+vdra_home_commit=none
+NVIDIA B200, 183359 MiB

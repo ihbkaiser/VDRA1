@@ -1,0 +1,15 @@
+﻿bash.exe : [2026-10-25 20:32:25] bank jobs: 1
+At line:2 char:748
++ ...  R2 R3 R4 R5 R6' bash '$script'"; $out = & $bash -c $cmd 2>&1; $rc =  ...
++                                              ~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([2026-10-25 20:32:25] bank jobs: 1:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[2026-10-25 20:32:25] [queue] GPUS=0 :: 
+PYTHONPATH=/d/vdra_experiments/vdra_experiments/work/igpo:/d/vdra_experiments/vdra_experiments 
+CUDA_VISIBLE_DEVICES=$GPUS python3 /d/vdra_experiments/vdra_experiments/diagnostics/build_node_bank.py --model 
+deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B --label base_step0 --out 
+/d/vdra_experiments/vdra_experiments/work/banks/R0_base_step0.jsonl.gz --prompts 
+/d/vdra_experiments/vdra_experiments/work/data_vdra/diag256.jsonl --n_prompts 64 --seed 42 --temperature 0.6 
+--vdra_config '{}'
+[2026-10-25 20:32:25] [queue] dry run; job not executed

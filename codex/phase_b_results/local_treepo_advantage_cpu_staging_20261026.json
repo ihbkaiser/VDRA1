@@ -1,0 +1,77 @@
+{
+  "benchmark": "treepo_tree_rfpp_advantage_cpu_staging",
+  "source_commit": "f05552394e734ea2838cf9e3b8191f5093319dcf",
+  "source_file": "TreePO/verl/trainer/ppo/core_algos.py",
+  "device": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
+  "torch": "2.2.0+cu121",
+  "cuda": "12.1",
+  "method": "one score-vector GPU-to-CPU copy, existing group aggregation on CPU, one CPU-to-GPU copy before masked whitening",
+  "results": [
+    {
+      "batch_size": 64,
+      "response_length": 256,
+      "strategy": "average",
+      "remove_no_std_subgroup": false,
+      "legacy_median_ms": 32.79740001016762,
+      "candidate_median_ms": 6.705599997076206,
+      "speedup": 4.891046293317232,
+      "legacy_samples_ms": [
+        30.616299991379492,
+        32.962199999019504,
+        31.910099991364405,
+        32.21119999943767,
+        32.00220000871923,
+        32.79740001016762,
+        34.01419999136124,
+        34.53950000402983,
+        38.923200001590885
+      ],
+      "candidate_samples_ms": [
+        7.515099990996532,
+        6.710100002237596,
+        6.331799988402054,
+        6.705599997076206,
+        6.952700001420453,
+        6.749399995896965,
+        6.672999996226281,
+        6.417699987650849,
+        6.415099996956997
+      ],
+      "max_abs_output_delta": 0.0,
+      "allclose_rtol_1e-6_atol_1e-7": true
+    },
+    {
+      "batch_size": 256,
+      "response_length": 256,
+      "strategy": "average",
+      "remove_no_std_subgroup": false,
+      "legacy_median_ms": 123.1539000000339,
+      "candidate_median_ms": 23.88220001012087,
+      "speedup": 5.1567234152566925,
+      "legacy_samples_ms": [
+        120.8494000020437,
+        119.01930000749417,
+        123.1539000000339,
+        144.98330000787973,
+        138.43930000439286,
+        120.11410000559408,
+        136.53589999012183,
+        120.65169999550562,
+        144.3580000050133
+      ],
+      "candidate_samples_ms": [
+        23.589599994011223,
+        24.15589999873191,
+        29.416600009426475,
+        23.88220001012087,
+        23.90440000453964,
+        23.94339999591466,
+        23.49289999983739,
+        23.658899997826666,
+        23.719200005871244
+      ],
+      "max_abs_output_delta": 0.0,
+      "allclose_rtol_1e-6_atol_1e-7": true
+    }
+  ]
+}
