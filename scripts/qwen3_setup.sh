@@ -4,26 +4,33 @@
 set -euo pipefail
 
 QWEN3_SCRIPTS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-export VDRA_HOME="${VDRA_HOME:-$(cd "${QWEN3_SCRIPTS_DIR}/.." && pwd)}"
+export VDRA_HOME="${QWEN3_HOME:-$(cd "${QWEN3_SCRIPTS_DIR}/.." && pwd)}"
 export VDRA_BUNDLE_ROOT="${VDRA_BUNDLE_ROOT:-/workspace/storage-shared/nlp/thanhpv43/vdra-new}"
-export WORK="${WORK:-${VDRA_HOME}/work}"
-export IGPO_DIR="${IGPO_DIR:-${WORK}/igpo}"
-export IGPO_REMOTE="${IGPO_REMOTE:-https://github.com/Thanh124pav/igpo.git}"
+export WORK="${QWEN3_WORK:-${VDRA_BUNDLE_ROOT}}"
+export IGPO_DIR="${QWEN3_IGPO_DIR:-${VDRA_BUNDLE_ROOT}/work/igpo}"
+export VDRA_QWEN3_MODE=1
 
-export DATA_DIR="${DATA_DIR:-${VDRA_BUNDLE_ROOT}/data_vdra}"
-export MATH_DICT="${MATH_DICT:-${VDRA_BUNDLE_ROOT}/source_data/math}"
-export MODEL_PATH="${MODEL_PATH:-/workspace/storage-shared/models/Qwen3-1.7B}"
-QWEN3_MODEL_PATH="${MODEL_PATH}"
-export EVAL_SETS="${EVAL_SETS:-math500=${MATH_DICT}:test aime24=${VDRA_BUNDLE_ROOT}/source_data/aime24 aime25=${VDRA_BUNDLE_ROOT}/source_data/aime25 amc23=${VDRA_BUNDLE_ROOT}/source_data/amc23 olympiadbench=${VDRA_BUNDLE_ROOT}/source_data/olympiadbench_hf}"
+export DATA_DIR="${QWEN3_DATA_DIR:-${VDRA_BUNDLE_ROOT}/data_vdra}"
+export MATH_DICT="${QWEN3_MATH_DICT:-${VDRA_BUNDLE_ROOT}/source_data/math}"
+QWEN3_MODEL_PATH_EFFECTIVE="${QWEN3_MODEL_PATH:-/workspace/storage-shared/models/Qwen3-1.7B}"
+export MODEL_PATH="${QWEN3_MODEL_PATH_EFFECTIVE}"
+export EVAL_SETS="${QWEN3_EVAL_SETS:-math500=${MATH_DICT}:test aime24=${VDRA_BUNDLE_ROOT}/source_data/aime24 aime25=${VDRA_BUNDLE_ROOT}/source_data/aime25 amc23=${VDRA_BUNDLE_ROOT}/source_data/amc23 olympiadbench=${VDRA_BUNDLE_ROOT}/source_data/olympiadbench_hf}"
 
-export RUNS_DIR="${RUNS_DIR:-${VDRA_HOME}/runs_qwen3}"
-export RESULTS_DIR="${RESULTS_DIR:-${VDRA_HOME}/results_qwen3}"
-export BANKS_DIR="${BANKS_DIR:-${VDRA_HOME}/banks_qwen3}"
+export RUNS_DIR="${QWEN3_RUNS_DIR:-${VDRA_HOME}/runs_qwen3}"
+export RESULTS_DIR="${QWEN3_RESULTS_DIR:-${VDRA_HOME}/results_qwen3}"
+export BANKS_DIR="${QWEN3_BANKS_DIR:-${VDRA_HOME}/banks_qwen3}"
+export VDRA_B200=0
+export HF_HOME="${VDRA_BUNDLE_ROOT}/hf_cache"
+export HF_HUB_CACHE="${HF_HOME}/hub"
+export HF_DATASETS_CACHE="${HF_HOME}/datasets"
 export HF_HUB_OFFLINE=1 HF_DATASETS_OFFLINE=1 TRANSFORMERS_OFFLINE=1
 export WANDB_MODE=offline TOKENIZERS_PARALLELISM=false
+export VLLM_USE_V1=0
+export TORCH_CUDA_ARCH_LIST=10.0
+export TORCH_EXTENSIONS_DIR="${VDRA_BUNDLE_ROOT}/torch_extensions"
 
-# The IGPO source is in the code checkout; reuse the separately installed B200 venv.
-QWEN3_VENV="${QWEN3_VENV:-${VDRA_BUNDLE_ROOT}/project/.venv-igpo2}"
+# Reuse the IGPO source and venv already present in the offline bundle.
+QWEN3_VENV="${QWEN3_VENV:-${VDRA_BUNDLE_ROOT}/project/.venv-igpo-2}"
 if [[ ! -f "${QWEN3_VENV}/bin/activate" ]]; then
   echo "[qwen3] missing IGPO venv: ${QWEN3_VENV}/bin/activate" >&2
   exit 2
@@ -33,11 +40,11 @@ if [[ "${VIRTUAL_ENV:-}" != "${QWEN3_VENV}" ]]; then
   source "${QWEN3_VENV}/bin/activate"
 fi
 
-# Load the project's standard defaults, then keep this runner on the venv above.
-# An env.local.sh can still override data/model/run paths when needed.
+# Load standard settings. Qwen3 mode skips env.local.sh so stale paths from an
+# older checkout cannot redirect these two runs; QWEN3_* variables are overrides.
 source "${VDRA_HOME}/scripts/env.sh"
 export CONDA_IGPO=""
-export MODEL_PATH="${QWEN3_MODEL_PATH}"
+export MODEL_PATH="${QWEN3_MODEL_PATH_EFFECTIVE}"
 
 for required in \
   "${DATA_DIR}/train.parquet" \
@@ -50,24 +57,16 @@ for required in \
   fi
 done
 
-# Serialize the first-time IGPO clone/patch because SPO and VDRA may start together.
-mkdir -p "$(dirname "${IGPO_DIR}")"
+# The bundle contains an unpacked IGPO checkout, so prepare it entirely offline.
+if [[ ! -d "${IGPO_DIR}/treetune" || ! -d "${IGPO_DIR}/vdra_core" ]]; then
+  echo "[qwen3] expected bundled IGPO source at ${IGPO_DIR}" >&2
+  exit 2
+fi
+
+# Serialize preparation because SPO and VDRA may start at nearly the same time.
 exec 9>"${TMPDIR:-/tmp}/vdra-qwen3-igpo-install.lock"
 flock 9
-if [[ ! -d "${IGPO_DIR}/.git" ]]; then
-  if [[ -e "${IGPO_DIR}" ]]; then
-    echo "[qwen3] ${IGPO_DIR} exists but is not a git checkout; set IGPO_DIR to a fresh path" >&2
-    exit 2
-  fi
-  git clone "${IGPO_REMOTE}" "${IGPO_DIR}"
-fi
-QWEN3_CODE_REV="$(git -C "${VDRA_HOME}" rev-parse HEAD)"
-QWEN3_INSTALL_STAMP="${IGPO_DIR}/.vdra_qwen3_source_revision"
-INSTALLED_REV="$(cat "${QWEN3_INSTALL_STAMP}" 2>/dev/null || true)"
-if [[ "${INSTALLED_REV}" != "${QWEN3_CODE_REV}" ]]; then
-  bash "${VDRA_HOME}/integrations/igpo/install.sh" "${IGPO_DIR}"
-  printf '%s\n' "${QWEN3_CODE_REV}" > "${QWEN3_INSTALL_STAMP}"
-fi
+python "${VDRA_HOME}/scripts/qwen3_prepare_offline_igpo.py" "${IGPO_DIR}" "${VDRA_HOME}"
 flock -u 9
 exec 9>&-
 

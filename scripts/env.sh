@@ -68,5 +68,7 @@ if [[ -z "${VDRA_CONFIG_JSON:-}" ]]; then VDRA_CONFIG_JSON='{}'; fi
 export VDRA_CONFIG_JSON
 
 export DRY_RUN="${DRY_RUN:-0}"
-[[ -f "${VDRA_HOME}/scripts/env.local.sh" ]] && source "${VDRA_HOME}/scripts/env.local.sh"
+if [[ -f "${VDRA_HOME}/scripts/env.local.sh" && "${VDRA_QWEN3_MODE:-0}" != "1" ]]; then
+  source "${VDRA_HOME}/scripts/env.local.sh"
+fi
 true
