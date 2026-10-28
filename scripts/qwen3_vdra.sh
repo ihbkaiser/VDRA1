@@ -3,7 +3,7 @@
 # Usage: SEED=42 STOP_STEP=220 GPUS=1 bash scripts/qwen3_vdra.sh
 set -euo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "${HERE}/env.sh"
+source "${HERE}/qwen3_setup.sh"
 
 SEED="${SEED:-42}"
 TARGET="${STOP_STEP:-220}"
