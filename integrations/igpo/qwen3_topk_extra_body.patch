@@ -1,0 +1,29 @@
+diff --git a/guidance/llms/_openai_vllm.py b/guidance/llms/_openai_vllm.py
+index 8b29cf8..ebe59eb 100644
+--- a/guidance/llms/_openai_vllm.py
++++ b/guidance/llms/_openai_vllm.py
+@@ -481,6 +481,15 @@ class OpenAIVLLM(LLM):
+         _ = kwargs.pop("deployment_id", None)
+         _ = kwargs.pop("request_timeout", None)
+ 
++        # vLLM accepts top_k as a sampling extension in the JSON body, but
++        # the OpenAI Python SDK rejects it as a top-level keyword. Keep it in
++        # extra_body so the request remains OpenAI-SDK compatible.
++        top_k = kwargs.pop("top_k", None)
++        if top_k is not None:
++            extra_body = dict(kwargs.get("extra_body") or {})
++            extra_body["top_k"] = top_k
++            kwargs["extra_body"] = extra_body
++
+         if self.chat_mode:
+             kwargs["messages"] = prompt_to_messages(kwargs["prompt"])
+             del kwargs["prompt"]
+@@ -518,6 +527,8 @@ class OpenAIVLLM(LLM):
+             "stop": kwargs.get("stop", None),
+             "echo": kwargs.get("echo", False),
+         }
++        if kwargs.get("top_k") is not None:
++            data["top_k"] = kwargs["top_k"]
+         if self.chat_mode:
+             data["messages"] = prompt_to_messages(data["prompt"])
+             del data["prompt"]

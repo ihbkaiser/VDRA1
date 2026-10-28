@@ -1,0 +1,17 @@
+--- a/treetune/trainers/ppo_trainer.py
++++ b/treetune/trainers/ppo_trainer.py
+@@ -1056,7 +1056,13 @@
+ 
+         if self.ppo_hparams.use_prob_mask:
+             prob_mask = torch.exp(old_logprobs) < 0.9
+-            action_mask = action_mask & prob_mask
++            prob_filtered_mask = action_mask & prob_mask
++            # A high-confidence policy can have no response tokens below the
++            # probability threshold. Keep the PPO loss finite in that case,
++            # matching the existing masked_whiten fallback to the label mask.
++            action_mask = torch.where(
++                prob_filtered_mask.any(), prob_filtered_mask, action_mask
++            )
+ 
+         # Compute the log probabilities of the actor
+         outputs = self._forward_pass_actor(

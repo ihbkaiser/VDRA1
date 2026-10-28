@@ -1,0 +1,44 @@
+diff --git a/treetune/trainers/utils.py b/treetune/trainers/utils.py
+index 3cd4bb8..c56be11 100644
+--- a/treetune/trainers/utils.py
++++ b/treetune/trainers/utils.py
+@@ -342,18 +342,19 @@ def skip_first_batches(dataloader_iter: Iterator[DataLoader], num_batches: int)
+ def monitor_tensor_anomalies(
+     tensor: torch.Tensor, mask: torch.Tensor, z_threshold: float = 3
+ ) -> Dict[str, int]:
++    mask_bool = mask.to(dtype=torch.bool)
+     nan_mask = torch.isnan(tensor)
+     inf_mask = torch.isinf(tensor)
+ 
+     # Mask NaN and Inf values to compute mean and std of the finite values only
+-    finite_tensor = tensor[~nan_mask & ~inf_mask & mask]
++    finite_tensor = tensor[~nan_mask & ~inf_mask & mask_bool]
+ 
+     # Compute the mean and standard deviation of the finite values
+     if finite_tensor.numel() == 0:
+         mean = torch.tensor(float("nan"), device=tensor.device)
+         std = torch.tensor(float("nan"), device=tensor.device)
+     else:
+-        mean, std = masked_mean(tensor, mask), masked_var(tensor, mask, unbiased=False)
++        mean, std = masked_mean(tensor, mask_bool), masked_var(tensor, mask_bool, unbiased=False)
+ 
+     # Handle case where std is 0
+     if std == 0 or std.isnan():
+@@ -364,14 +365,14 @@ def monitor_tensor_anomalies(
+         z_scores = (tensor - mean) / std
+ 
+     # Check for NaN values
+-    num_nan = (nan_mask * mask).sum().item()
++    num_nan = (nan_mask & mask_bool).sum().item()
+ 
+     # Check for infinity values
+-    num_inf = (inf_mask * mask).sum().item()
++    num_inf = (inf_mask & mask_bool).sum().item()
+ 
+     # Check for values with high z-scores (anomalies)
+     high_z_mask = z_scores.abs() > z_threshold
+-    num_high_z = (high_z_mask * mask).sum().item()
++    num_high_z = (high_z_mask & mask_bool).sum().item()
+ 
+     # Total anomalies
+     total_anomalies = num_nan + num_inf + num_high_z

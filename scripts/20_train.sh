@@ -18,6 +18,9 @@
 #     (lock held) is skipped.
 # Extra knobs (env):
 #   VDRA_VARIANT_JSON='{"proxy":"constant"}'   VDRA overrides (null test, ablations)
+#   IGPO_R1_CONFIG / IGPO_R2_CONFIG              override the IGPO arm's base Jsonnet config
+#   IGPO_BRANCH_FACTOR_CONFIG                    override the IGPO tree-shape Jsonnet config
+#   IGPO_EXTRA_CONFIGS                           extra comma-separated IGPO Jsonnet overlays
 #   KEEP_EVERY=<n> RESUME_EVERY=<n> MAX_RESTARTS=<n>
 #   EVAL_EVERY_N=<n>   pause training every n updates, evaluate the new checkpoints on
 #                      this run's GPUs (shared evaluator, one benchmark set per GPU),
@@ -55,8 +58,8 @@ fi
 train_igpo() {
   local cfg
   case "${RUN}" in
-    R1) cfg="${IGPO_DIR}/configs/polIter_deepseekR1Qwen_spo_logged_MATH.jsonnet" ;;
-    R2) cfg="${IGPO_DIR}/configs/polIter_deepseekR1Qwen_vdra_MATH.jsonnet" ;;
+    R1) cfg="${IGPO_R1_CONFIG:-${IGPO_DIR}/configs/polIter_deepseekR1Qwen_spo_logged_MATH.jsonnet}" ;;
+    R2) cfg="${IGPO_R2_CONFIG:-${IGPO_DIR}/configs/polIter_deepseekR1Qwen_vdra_MATH.jsonnet}" ;;
   esac
   use_env "${CONDA_IGPO}"
   record_provenance "${RUN_DIR}" "${IGPO_DIR}"
@@ -81,7 +84,8 @@ train_igpo() {
   # one GPU works natively (DeepSpeed world size 1; the per-rank vLLM server shares the GPU,
   # its memory share is set automatically from free memory); override with IGPO_VLLM_MEM
   if [[ -n "${IGPO_VLLM_MEM:-}" ]]; then export INGPO_VLLM_GPU_MEMORY_UTILIZATION="${IGPO_VLLM_MEM}"; fi
-  local cfgs="${cfg},${IGPO_DIR}/configs/episode_generators/branch_factor_666.jsonnet"
+  local branch_config="${IGPO_BRANCH_FACTOR_CONFIG:-${IGPO_DIR}/configs/episode_generators/branch_factor_666.jsonnet}"
+  local cfgs="${cfg},${branch_config}"
   cfgs+=",${IGPO_DIR}/configs/episode_generators/no_prefix_caching.jsonnet"
   cfgs+=",${IGPO_DIR}/configs/vdra/data_nodiag.jsonnet,${IGPO_DIR}/configs/vdra/model_path.jsonnet"
   cfgs+=",${IGPO_DIR}/configs/vdra/stop.jsonnet"
@@ -89,6 +93,7 @@ train_igpo() {
     cfgs+=",${IGPO_DIR}/configs/vdra/no_internal_eval.jsonnet"
   fi
   [[ "${RUN}" == "R2" ]] && cfgs+=",${IGPO_DIR}/configs/vdra/variant.jsonnet"
+  [[ -n "${IGPO_EXTRA_CONFIGS:-}" ]] && cfgs+=",${IGPO_EXTRA_CONFIGS}"
   (
     cd "${IGPO_DIR}"
     export INGPO_ROOT="${IGPO_DIR}"
@@ -251,6 +256,11 @@ train_treepo() {
 # ------------------------------------------------------------------ OpenRLHF / TreeRL (R5, R6)
 train_treerl() {
   use_env "${CONDA_TREERL}"
+  local gcc_compat_dir="${VDRA_HOME}/../runtime/libstdcxx_gcc13/lib"
+  if [[ -f "${gcc_compat_dir}/libstdc++.so.6" && -f "${gcc_compat_dir}/libgcc_s.so.1" ]]; then
+    export LD_LIBRARY_PATH="${gcc_compat_dir}${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
+    log "TreeRL GCC 13 runtime enabled from ${gcc_compat_dir}"
+  fi
   record_provenance "${RUN_DIR}" "${TREERL_DIR}"
   local -a extra=()
   if [[ "${RUN}" == "R6" ]]; then

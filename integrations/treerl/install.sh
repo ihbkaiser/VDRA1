@@ -14,7 +14,10 @@ STATUS_PATCH="${HERE}/reinforce_status_sync.patch"
 UPDATE_SPEED_PATCH="${HERE}/reinforce_update_speed.patch"
 REPLAY_PATCH="${HERE}/replay_info_staging.patch"
 TRANSFORMERS_PATCH="${HERE}/transformers_451.patch"
+TRANSFORMERS_EMPTY_INIT_PATCH="${HERE}/transformers_451_empty_init.patch"
 API_CONFIG_PATCH="${HERE}/api_config_optional.patch"
+PROMPT_JSON_PATCH="${HERE}/prompt_json_shape.patch"
+MCTS_REMAINDER_PATCH="${HERE}/mcts_inference_remainder.patch"
 if [[ ! -e "${DEST}/.git" ]]; then
   git clone https://github.com/THUDM/TreeRL.git "${DEST}"
 fi
@@ -107,6 +110,14 @@ elif git apply -R --check "${TRANSFORMERS_PATCH}"; then
 else
   echo "[treerl] Transformers 4.51 DeepSpeed import patch does not apply at ${COMMIT} + VDRA patch stack" >&2; exit 1
 fi
+if git apply --check "${TRANSFORMERS_EMPTY_INIT_PATCH}"; then
+  git apply "${TRANSFORMERS_EMPTY_INIT_PATCH}"
+  echo "[treerl] Transformers 4.51 empty_init compatibility patch applied"
+elif git apply -R --check "${TRANSFORMERS_EMPTY_INIT_PATCH}"; then
+  echo "[treerl] Transformers 4.51 empty_init compatibility patch already applied"
+else
+  echo "[treerl] Transformers 4.51 empty_init compatibility patch does not apply at ${COMMIT} + VDRA patch stack" >&2; exit 1
+fi
 if git apply --check "${API_CONFIG_PATCH}"; then
   git apply "${API_CONFIG_PATCH}"
   echo "[treerl] optional API configuration and pure-binary MCTS patch applied"
@@ -115,5 +126,21 @@ elif git apply -R --check "${API_CONFIG_PATCH}"; then
 else
   echo "[treerl] optional API configuration patch does not apply at ${COMMIT} + VDRA patch stack" >&2; exit 1
 fi
+if git apply --check "${PROMPT_JSON_PATCH}"; then
+  git apply "${PROMPT_JSON_PATCH}"
+  echo "[treerl] prompt JSON shape patch applied"
+elif git apply -R --check "${PROMPT_JSON_PATCH}"; then
+  echo "[treerl] prompt JSON shape patch already applied"
+else
+  echo "[treerl] prompt JSON shape patch does not apply at ${COMMIT} + VDRA patch stack" >&2; exit 1
+fi
+if git apply --check "${MCTS_REMAINDER_PATCH}"; then
+  git apply "${MCTS_REMAINDER_PATCH}"
+  echo "[treerl] MCTS final partial-batch patch applied"
+elif git apply -R --check "${MCTS_REMAINDER_PATCH}"; then
+  echo "[treerl] MCTS final partial-batch patch already applied"
+else
+  echo "[treerl] MCTS final partial-batch patch does not apply at ${COMMIT} + VDRA patch stack" >&2; exit 1
+fi
 rm -rf "${DEST}/vdra_core" && cp -r "${PKG_ROOT}/vdra_core" "${DEST}/vdra_core"
-echo "[treerl] ready at ${DEST} ($(git rev-parse --short HEAD) + VDRA + speed + repeat-detector + status + update-speed + replay-info + Transformers + optional API configuration patches)"
+echo "[treerl] ready at ${DEST} ($(git rev-parse --short HEAD) + VDRA + speed + repeat-detector + status + update-speed + replay-info + Transformers + empty_init compatibility + optional API configuration + prompt JSON shape + MCTS remainder patches)"

@@ -1,0 +1,21 @@
+diff --git a/openrlhf/trainer/ppo_utils/experience_maker.py b/openrlhf/trainer/ppo_utils/experience_maker.py
+--- a/openrlhf/trainer/ppo_utils/experience_maker.py
++++ b/openrlhf/trainer/ppo_utils/experience_maker.py
+@@ -2151,7 +2151,7 @@
+                 action_mask.to("cpu"),
+             )
+ 
+-            batch_size_multiplier = len(sequences) // forward_batch_size
++            batch_size_multiplier = (len(sequences) + forward_batch_size - 1) // forward_batch_size
+             _treerl_debug_print("batch_size_multiplier", batch_size_multiplier)
+ 
+             for micro_i in range(batch_size_multiplier):
+@@ -2499,7 +2499,7 @@
+                 action_mask.to("cpu"),
+             )
+ 
+-            batch_size_multiplier = len(sequences) // forward_batch_size
++            batch_size_multiplier = (len(sequences) + forward_batch_size - 1) // forward_batch_size
+             print("batch_size_multiplier",batch_size_multiplier)
+ 
+             for micro_i in range(batch_size_multiplier):

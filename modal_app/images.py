@@ -21,6 +21,7 @@ ROOT = Path(__file__).resolve().parent.parent
 _PROJECT_IGNORE = [
     "work",
     "remote_artifacts",
+    "**/FETCH_HEAD",
     ".pytest_cache",
     "**/__pycache__",
     "*.pyc",
@@ -184,11 +185,18 @@ def framework_images() -> dict[str, modal.Image]:
         "pygtrie==2.5.0",
     ).run_commands(
         "cp /opt/vdra/integrations/igpo/configs/vdra/*.jsonnet /opt/work/igpo/configs/vdra/ "
+        "&& mkdir -p /opt/work/igpo/configs/model_overrides /opt/work/igpo/configs/qwen3 "
+        "&& cp /opt/vdra/integrations/igpo/configs/model_overrides/qwen3_1_7b.jsonnet /opt/work/igpo/configs/model_overrides/ "
+        "&& cp /opt/vdra/integrations/igpo/configs/qwen3/*.jsonnet /opt/work/igpo/configs/qwen3/ "
+        "&& cp /opt/vdra/integrations/igpo/configs/polIter_qwen3_1_7b_*.jsonnet /opt/work/igpo/configs/ "
         "&& python -c \"from pathlib import Path; from modal_app.script_utils import normalize_shell_script; "
         "normalize_shell_script(Path('/opt/work/igpo/scripts/_common.sh')); "
         "normalize_shell_script(Path('/opt/work/igpo/scripts/start_vllm_server_named_params.sh'))\" "
         "&& bash -n /opt/work/igpo/scripts/_common.sh "
         "&& bash -n /opt/work/igpo/scripts/start_vllm_server_named_params.sh "
+        "&& bash -n /opt/vdra/scripts/20_train.sh "
+        "&& bash -n /opt/vdra/scripts/qwen3_spo.sh "
+        "&& bash -n /opt/vdra/scripts/qwen3_vdra.sh "
         "&& python -c \"from pathlib import Path; "
         "g=Path('/opt/work/igpo/treetune/episode_generators/on_policy_episode_generator.py').read_text(); "
         "h=Path('/opt/work/igpo/treetune/episode_generators/hybrid_episode_generator.py').read_text(); "

@@ -1,0 +1,47 @@
+diff --git a/openrlhf/datasets/prompts_dataset.py b/openrlhf/datasets/prompts_dataset.py
+index 4b726e7..d443a5a 100644
+--- a/openrlhf/datasets/prompts_dataset.py
++++ b/openrlhf/datasets/prompts_dataset.py
+@@ -121,24 +121,20 @@ class PromptDataset(Dataset):
+     #         return self.prompts[idx]
+ 
+     def __getitem__(self, idx):
+-        print("current model",self.current_model)
+-        if "glm" in self.current_model.lower() or "llama" in self.current_model.lower() or "qwen" in self.current_model.lower():
+-            history = self.history[idx]
+-            prompt = self.prompts[idx]
+-            label = self.labels[idx]
+-            source = self.sources[idx]
+-            if history is None:
+-                history = []
+-            
+-            if label is not None:
+-                output = history + [{"prompt": prompt, self.strategy.args.label_key: label}]
+-            else:
+-                output = history + [{"prompt": prompt}]
+-
+-            if source is not None:
+-                output[-1][self.strategy.args.source_key] = source
+-
+-            return json.dumps(output)
+-            # return self.prompts[idx], json.dumps(self.history[idx], ensure_ascii=False)
+-        else:
+-            return self.prompts[idx]
+\ No newline at end of file
++        print("current model", self.current_model)
++        # Always serialize TreeRL prompt records for MCTS rollouts.
++        # The model can be loaded from a generic local path such as /model/model.
++        history = self.history[idx]
++        if history is None:
++            history = []
++
++        output = history + [{"prompt": self.prompts[idx]}]
++        label = self.labels[idx]
++        if label is not None:
++            output[-1][self.strategy.args.label_key] = label
++
++        source = self.sources[idx]
++        if source is not None:
++            output[-1][self.strategy.args.source_key] = source
++
++        return json.dumps(output)

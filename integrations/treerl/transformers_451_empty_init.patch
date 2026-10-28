@@ -1,0 +1,13 @@
+diff --git a/openrlhf/models/actor.py b/openrlhf/models/actor.py
+--- a/openrlhf/models/actor.py
++++ b/openrlhf/models/actor.py
+@@ -67,9 +67,8 @@
+             else:
+                 self.model = AutoModelForCausalLM.from_pretrained(
+                     pretrain_or_model,
+                     trust_remote_code=True,
+                     attn_implementation=attn_implementation,
+                     quantization_config=nf4_config,
+                     torch_dtype="auto",
+-                    empty_init=False,
+                 )

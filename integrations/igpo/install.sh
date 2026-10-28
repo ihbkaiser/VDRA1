@@ -145,6 +145,33 @@ else
   exit 1
 fi
 
+if git apply --check "${HERE}/qwen3_topk_extra_body.patch" 2>/dev/null; then
+  git apply "${HERE}/qwen3_topk_extra_body.patch"
+elif git apply -R --check "${HERE}/qwen3_topk_extra_body.patch" 2>/dev/null; then
+  echo "[install] Qwen3/vLLM top_k compatibility patch already applied"
+else
+  echo "[install] Qwen3/vLLM top_k compatibility patch does not apply at ${BASE}" >&2
+  exit 1
+fi
+
+if git apply --check "${HERE}/anomaly_mask_bool.patch" 2>/dev/null; then
+  git apply "${HERE}/anomaly_mask_bool.patch"
+elif git apply -R --check "${HERE}/anomaly_mask_bool.patch" 2>/dev/null; then
+  echo "[install] PPO anomaly-monitor boolean-mask fix already applied"
+else
+  echo "[install] PPO anomaly-monitor boolean-mask fix does not apply at ${BASE}" >&2
+  exit 1
+fi
+
+if git apply --check "${HERE}/ppo_probability_mask_fallback.patch" 2>/dev/null; then
+  git apply "${HERE}/ppo_probability_mask_fallback.patch"
+elif git apply -R --check "${HERE}/ppo_probability_mask_fallback.patch" 2>/dev/null; then
+  echo "[install] PPO empty probability-mask fallback already applied"
+else
+  echo "[install] PPO empty probability-mask fallback does not apply at ${BASE}" >&2
+  exit 1
+fi
+
 append_line() {
   # append_line <file> <line>: add once, with a newline first if the file lacks one
   local f="$1" line="$2"
@@ -170,12 +197,20 @@ mkdir -p "${IGPO}/configs/vdra"
 cp "${HERE}"/configs/vdra/* "${IGPO}/configs/vdra/"
 cp "${HERE}"/configs/polIter_deepseekR1Qwen_vdra_MATH.jsonnet "${IGPO}/configs/"
 cp "${HERE}"/configs/polIter_deepseekR1Qwen_spo_logged_MATH.jsonnet "${IGPO}/configs/"
+mkdir -p "${IGPO}/configs/model_overrides" "${IGPO}/configs/qwen3"
+cp "${HERE}/configs/model_overrides/qwen3_1_7b.jsonnet" "${IGPO}/configs/model_overrides/"
+cp "${HERE}"/configs/qwen3/*.jsonnet "${IGPO}/configs/qwen3/"
+cp "${HERE}"/configs/polIter_qwen3_1_7b_{spo_logged,vdra}_MATH.jsonnet "${IGPO}/configs/"
 
 git add -A vdra_core treetune/inference_strategies treetune/episode_generators configs/vdra \
   configs/polIter_deepseekR1Qwen_vdra_MATH.jsonnet configs/polIter_deepseekR1Qwen_spo_logged_MATH.jsonnet \
+  configs/model_overrides/qwen3_1_7b.jsonnet configs/qwen3 \
+  configs/polIter_qwen3_1_7b_spo_logged_MATH.jsonnet configs/polIter_qwen3_1_7b_vdra_MATH.jsonnet \
   treetune/main.py treetune/common/vllm_server.py \
   treetune/inference_strategies/tree_inference/expansion.py \
-  treetune/trainers/restem_trainer.py treetune/trainers/ppo_trainer.py
+  treetune/trainers/restem_trainer.py treetune/trainers/ppo_trainer.py \
+  treetune/trainers/utils.py \
+  guidance/llms/_openai_vllm.py
 if ! git diff --cached --quiet; then
   git -c user.name="${GIT_AUTHOR_NAME:-vdra}" -c user.email="${GIT_AUTHOR_EMAIL:-vdra@localhost}" \
     commit -q -m "Add paper-faithful VDRA strategy (vdra_core, configs, spo_logged)"
