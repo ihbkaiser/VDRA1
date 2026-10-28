@@ -45,8 +45,12 @@ record_provenance() {
   [[ "${DRY_RUN}" == "1" ]] && return 0
   {
     echo "code_dir=${code}"
-    (cd "${code}" && echo "commit=$(git rev-parse HEAD)" && git status --porcelain | head -50) || true
-    echo "vdra_home_commit=$(cd "${VDRA_HOME}" && git rev-parse HEAD 2>/dev/null || echo none)"
+    local code_commit home_commit
+    code_commit="$(git -C "${code}" rev-parse HEAD 2>/dev/null || echo none)"
+    home_commit="$(git -C "${VDRA_HOME}" rev-parse HEAD 2>/dev/null || echo none)"
+    echo "commit=${code_commit}"
+    git -C "${code}" status --porcelain 2>/dev/null | head -50 || true
+    echo "vdra_home_commit=${home_commit}"
     nvidia-smi --query-gpu=name,memory.total --format=csv,noheader 2>/dev/null || true
   } > "${dir}/provenance.txt"
   pip freeze > "${dir}/pip_freeze.txt" 2>/dev/null || true

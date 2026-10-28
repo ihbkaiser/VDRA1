@@ -13,6 +13,20 @@ def fail(message: str) -> None:
     raise SystemExit(f"[qwen3] {message}")
 
 
+def normalize_shell_scripts(root: Path) -> int:
+    """Normalize shell scripts shipped in the offline bundle to Unix LF."""
+    changed = 0
+    for path in root.rglob("*"):
+        if not path.is_file() or path.suffix not in {".sh", ".bash"}:
+            continue
+        raw = path.read_bytes()
+        normalized = raw.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+        if normalized != raw:
+            path.write_bytes(normalized)
+            changed += 1
+    return changed
+
+
 def copy_file(source: Path, destination: Path) -> None:
     if not source.is_file():
         fail(f"required source file is missing: {source}")
@@ -154,6 +168,9 @@ def source_digest(repo: Path) -> str:
 def sync(igpo: Path, repo: Path) -> None:
     if not (igpo / "treetune").is_dir() or not (igpo / "vdra_core").is_dir():
         fail(f"expected the unpacked IGPO source tree at {igpo}")
+    normalized_scripts = normalize_shell_scripts(igpo)
+    if normalized_scripts:
+        print(f"[qwen3] normalized {normalized_scripts} bundled IGPO shell scripts to LF")
 
     stamp = igpo / ".vdra_qwen3_setup.sha256"
     current_digest = source_digest(repo)
