@@ -50,7 +50,7 @@ def probe_protocol(
         "segment_tokens": segment_tokens,
         "mc_per_half": mc_per_half,
         "child_mc": child_mc,
-        "source_reward": "GEAR snapshot MATH answer extraction and grading; answer_prefix=None; unfinished response reward=0",
+        "source_reward": "GEAR snapshot treetune.tasks.math.MATH answer extraction and grading; answer_prefix=None; unfinished response reward=0",
         "tokenizer_fix_mistral_regex": True,
     }
 

@@ -66,7 +66,7 @@ Running — A0, CPU helpers, synthetic T checks, the vLLM smoke, A3, and A2/A4/A
 | A5 | Completed | 27 allocation summaries, 432 prompt-strategy rows and 448 held-out edges; interpretations are descriptive MC proxies |
 | A2 | Completed | Five proxy-noise levels × 50 repetitions over 16 prompt clusters; compact outputs published |
 | A4 | Completed | 672 candidate pairs; published calibration output; child samples are reused, so this is descriptive |
-| A7 | Running | Timed smokes project 3,399.5 s (~57 min) for the full matched evaluation with 1.5× margin. The first full run (VDRA235/AIME24) started at 2026-10-30 23:42 UTC; six policy-by-dataset runs proceed sequentially. |
+| A7 | Running, 4/6 complete | VDRA235/SPO235 completed on AIME24 and AIME25. Four runs took 128.13, 122.14, 132.17 and 123.46 seconds; current unit: VDRA235/AMC23. |
 | X | Ready after A7; smoke gate required | Iterations 50 and 150 checkpoints are present. Their tokenizer JSON/config hashes match iteration 100. Timed smokes and a measured 1.5× projection are required before either bank. |
 
 ## Publication
@@ -89,7 +89,7 @@ Running — A0, CPU helpers, synthetic T checks, the vLLM smoke, A3, and A2/A4/A
 - SPO235: same smoke protocol, 115.316 s, 160,875 visible answer tokens, 1,395 tokens/s, projected 100-prompt time with 1.5× margin 1,729.7 s.
 - Combined projection: 3,399.5 s (~57 min), which fits with more than 24 hours before the hard cutoff. The six full policy-by-dataset evaluations began at 2026-10-30 23:42 UTC, sequentially over AIME24/AIME25/AMC23. Debug-only smoke metrics are excluded from accuracy analysis.
 
-- A7 full evaluation started in a detached logged process (PID 41374) at 2026-10-30 23:42 UTC after the timed-smoke gate. Current unit: VDRA235 × AIME24. Outputs and logs remain under `/workspace/rebuttal_out/a7_iter235/`; no raw predictions are staged.
+- A7 full evaluation started in a detached logged process (PID 41374) at 2026-10-30 23:42 UTC after the timed-smoke gate. As of 2026-10-30 23:51 UTC, VDRA235 and SPO235 have both completed AIME24 and AIME25; their four run times are 128.13, 122.14, 132.17 and 123.46 seconds. VDRA235/AMC23 is running. Outputs and logs remain under `/workspace/rebuttal_out/a7_iter235/`; no raw predictions are staged.
 
 ## X preflight (2026-10-30 23:47 UTC)
 
