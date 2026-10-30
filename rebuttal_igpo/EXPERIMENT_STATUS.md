@@ -2,7 +2,7 @@
 
 ## Status
 
-Running — A0, the CPU analysis helpers, synthetic T checks, and the vLLM smoke are complete. The source GEAR estimator passes a one-parent GPU integration check. A3's pre-registered 16-prompt/112-parent bank is collecting in the tracked foreground session (PID 23238, started 2026-10-30 21:50 UTC); at 2026-10-30 22:11 UTC, 27/112 parent records are durable outside Git at `/workspace/rebuttal_out/a3_iter100/`.
+Running — A0, the CPU analysis helpers, synthetic T checks, and the vLLM smoke are complete. The source GEAR estimator passes a one-parent GPU integration check. A3's pre-registered 16-prompt/112-parent bank is collecting in the tracked foreground session (PID 23238, started 2026-10-30 21:50 UTC); at 2026-10-30 22:19 UTC, 36/112 parent records are durable outside Git at `/workspace/rebuttal_out/a3_iter100/`.
 
 ## Decisions
 
@@ -58,7 +58,7 @@ Running — A0, the CPU analysis helpers, synthetic T checks, and the vLLM smoke
 | A1 | Blocked | No saved trees, demos, queue records or merged edges |
 | T | Completed | Synthetic result plus derivation/assumption note |
 | S | Completed | 826.93 tokens/s; 20,218 MiB peak sampled GPU memory |
-| A3 | Running | 27/112 parents at the 22:11 UTC checkpoint; first-27-record pace is about 45 s/parent (naive ~64 min remaining); tracked PID 23238 |
+| A3 | Running | 36/112 parents at the 22:19 UTC checkpoint; first-36-record pace is about 45 s/parent (naive ~57 min remaining); tracked PID 23238 |
 | A5 | Ready after A3 | CPU command implemented; uses A3's held-out MC and candidate child values |
 | A2 | Ready after A3 | CPU noise-sensitivity command implemented |
 | A4 | Ready after A3 | CPU TV/value calibration command implemented |
