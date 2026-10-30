@@ -55,7 +55,7 @@ Running — A0, the CPU analysis helpers, synthetic T checks, and the vLLM smoke
 | A1 | Blocked | No saved trees, demos, queue records or merged edges |
 | T | Completed | Synthetic result plus derivation/assumption note |
 | S | Completed | 826.93 tokens/s; 20,218 MiB peak sampled GPU memory |
-| A3 | Running | 18/112 parents at the 22:05 UTC checkpoint; first-five-node preliminary 2,189 output tokens/s; tracked PID 23238 |
+| A3 | Running | 19/112 parents at the 22:06 UTC checkpoint; first-five-node preliminary 2,189 output tokens/s; tracked PID 23238 |
 | A5 | Ready after A3 | CPU command implemented; uses A3's held-out MC and candidate child values |
 | A2 | Ready after A3 | CPU noise-sensitivity command implemented |
 | A4 | Ready after A3 | CPU TV/value calibration command implemented |
@@ -65,5 +65,5 @@ Running — A0, the CPU analysis helpers, synthetic T checks, and the vLLM smoke
 ## Publication
 
 - The destination repository is public; publishing rebuttal code/results can compromise double-blind anonymity. Repository visibility was not changed.
-- Local commits `f8e28ee625fc1c1c759702c83246dc8743018f37` and `5c16176` contain the audit, CPU helpers, configs, smoke summary, tests, and A2/A4/A5 analyses. Push attempts to `origin/rebuttal` were rejected with HTTP 403: `Permission to ihbkaiser/VDRA1.git denied to ihbkaiser`; the branch remains absent and no remote commit was created. Continue locally and retry at the next publication checkpoint.
+- Local commits `f8e28ee625fc1c1c759702c83246dc8743018f37`, `5c16176`, and `b0cdec9` contain the audit, CPU helpers, configs, smoke summary, tests, A2/A4/A5 analyses and A7 preflight wrapper. Three push attempts to `origin/rebuttal` were rejected with HTTP 403: `Permission to ihbkaiser/VDRA1.git denied to ihbkaiser`; the branch remains absent and no remote commit was created. Continue locally and retry at the next publication checkpoint.
 - `gh_token` and `hf_token` are ignored, mode 600, untracked and absent from `git log --all -p`; the documented history scan returns no matches. Before each push, staged files are checked for credentials, files over 20 MiB and raw listings/tree dumps. No credential was printed or staged.
