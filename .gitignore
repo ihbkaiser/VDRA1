@@ -12,3 +12,6 @@ venv/
 
 # Do not publish downloaded model weights/cache
 remote_artifacts/**/hf_cache/
+gh_token
+hf_token
+.worktrees/
