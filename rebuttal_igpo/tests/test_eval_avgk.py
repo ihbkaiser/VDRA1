@@ -21,5 +21,11 @@ def test_eval_wrapper_uses_supported_source_cli_and_fixed_protocol():
     assert "--tokenizer" in command and "/checkpoint/tokenizer" in command
     assert "--context-length" in command and "4096" in command
     assert command[-3:] == [
+        "APP_MINIMIZE_STORED_FILES=False",
+        "WANDB_MODE=disabled",
+        "WANDB_DISABLE_UPLOAD_FILES_TO_CLOUD=True",
+    ]
+    assert command[-6:-3] == [
         "APP_DIRECTORY=/tmp/eval", "APP_EXPERIMENT_NAME=avgk16", "APP_SEED=42"
     ]
+    assert "APP_MINIMIZE_STORED_FILES=False" in command

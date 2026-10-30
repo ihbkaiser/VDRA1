@@ -42,7 +42,19 @@ def build_command(
         *extra_args,
     ]
     # The source evaluator reads these settings from its environment.
-    command.extend(["--", f"APP_DIRECTORY={output_dir}", f"APP_EXPERIMENT_NAME=avgk{samples}", f"APP_SEED={seed}"])
+    command.extend([
+        "--",
+        f"APP_DIRECTORY={output_dir}",
+        f"APP_EXPERIMENT_NAME=avgk{samples}",
+        f"APP_SEED={seed}",
+        # evaluate.sh defaults to minimizing files, which moves result datasets
+        # to temporary storage. Keep per-prompt answers so A7 can bootstrap them.
+        "APP_MINIMIZE_STORED_FILES=False",
+        # The evaluator calls wandb.save() with the raw inference dataset.
+        # Disabled mode makes that call a no-op with respect to remote services.
+        "WANDB_MODE=disabled",
+        "WANDB_DISABLE_UPLOAD_FILES_TO_CLOUD=True",
+    ])
     return command
 
 

@@ -2,7 +2,7 @@
 
 ## Status
 
-Running — A0, the CPU analysis helpers, synthetic T checks, and the vLLM smoke are complete. The source GEAR estimator passes a one-parent GPU integration check. A3's pre-registered 16-prompt/112-parent bank is collecting in the tracked foreground session (PID 23238, started 2026-10-30 21:50 UTC); output is outside Git at `/workspace/rebuttal_out/a3_iter100/`.
+Running — A0, the CPU analysis helpers, synthetic T checks, and the vLLM smoke are complete. The source GEAR estimator passes a one-parent GPU integration check. A3's pre-registered 16-prompt/112-parent bank is collecting in the tracked foreground session (PID 23238, started 2026-10-30 21:50 UTC); at 2026-10-30 22:11 UTC, 27/112 parent records are durable outside Git at `/workspace/rebuttal_out/a3_iter100/`.
 
 ## Decisions
 
@@ -15,6 +15,7 @@ Running — A0, the CPU analysis helpers, synthetic T checks, and the vLLM smoke
 - Source MATH reward extraction/grading is used with the snapshot's `math_inplace_no_answer_prefix` task behavior. Unfinished responses receive 0, matching the Qwen config. The full `MATHRewardFunction` module cannot import without the training-only DeepSpeed dependency; its wrapper behavior was reproduced around the imported source `MATH` task methods and checked on a known answer.
 - A3/A5 uses 16 prompts, 112 parents (root plus six depth-1 nodes per prompt), disjoint `R_a=32` / `R_b=32` seed streams per parent, and 16 continuations per TV candidate. Scope was reduced from 32 prompts using compute only: the end-to-end integration smoke ran at about 333 generated tokens/s for small n=2 batches; 32 prompts project to roughly 25 hours before safety margin and over 37 hours with a 1.5× margin, beyond the cutoff. Sixteen prompts project to roughly 12.9 hours before margin and 19.3 hours with margin. This reduces prompt-level power; no subset was selected by outcomes.
 - A7 protocol remains fixed: archived VDRA235 and matched SPO235; AIME24/AIME25/AMC23; 16 samples; temperature 0.6; top-p 0.95; seed 42; source verifier. Run it only if evaluator compatibility is confirmed and measured time fits before 2026-11-01 01:00 UTC.
+- A7 will use six separate invocations (one model × one benchmark each) because the source runtime stores selected pipelines under the same `inference_results/test__0__1` path. Each wrapper run explicitly keeps result datasets under its requested local output directory and sets `WANDB_MODE=disabled`; this allows paired prompt-level bootstrap while avoiding remote generation uploads. `eval_bootstrap.py` reuses the evaluator's MATH parser/grader, hashes prompt/reference identity, checks the paired rows match, and computes 1,000-replicate prompt-cluster intervals for avg@16, Pass@16 and their VDRA-minus-SPO differences.
 
 ## Setup and A0 audit — complete
 
@@ -28,9 +29,9 @@ Running — A0, the CPU analysis helpers, synthetic T checks, and the vLLM smoke
 
 ## CPU implementation and verification — complete
 
-- Added `rebuttal/` helpers for streaming artifact reads, allocation replay, A1 summaries, cost accounting, metrics and prompt-clustered bootstrap, resumable node banks, evaluation wrapping, CLI and synthetic Eq. (5)/(7) checks.
+- Added `rebuttal/` helpers for streaming artifact reads, allocation replay, A1 summaries, cost accounting, metrics and prompt-clustered bootstrap, resumable node banks, paired A7 evaluation/bootstrap, CLI and synthetic Eq. (5)/(7) checks.
 - `allocate_gear_as_trained` matches the supplied snapshot allocator on synthetic queues for floor-only, remainder and fallback paths. No stored-tree allocation match rate is computable because the archives contain no trees.
-- `pytest -q rebuttal_igpo/tests`: **27 passed** on 2026-10-30.
+- `pytest -q rebuttal_igpo/tests`: **32 passed** on 2026-10-30 22:10 UTC. A7's paired bootstrap and the wrapper's persistence/offline settings are covered; a CPU fixture loaded the exact source MATH verifier and exercised the saved-result scoring path.
 - A0 is complete as an evidence inventory. A1 is **Blocked: no stored trees/demos/edges**. A6 is **Blocked: no paper/supplement or matching run logs/timings**. Details are in `docs/COMPUTE_AND_CONSISTENCY_AUDIT.md`.
 - T synthetic checks and `DERIVATION_EQ5_EQ7.md` are complete. The simulation values are labelled synthetic and are saved at `/workspace/rebuttal_out/eq5_eq7_simulation.json`.
 
@@ -45,6 +46,7 @@ Running — A0, the CPU analysis helpers, synthetic T checks, and the vLLM smoke
 - The first detached shell launch exited before producing a bank and left an empty log; it was not treated as completed work. The same deterministic command is now running as a tracked tool session, with stdout/stderr in `/workspace/rebuttal_out/a3_iter100.log`.
 - First measured A3 checkpoint at 2026-10-30 21:55 UTC: 5/112 parents in 268.8 seconds, 581,277 MC/child output tokens plus 7,200 proxy-pilot tokens, and 578,756 prompt-logprob scored tokens. Preliminary end-to-end generated throughput is about 2,189 tokens/s (includes proxy pilots; five-node sample only); current sampled GPU memory was 20,908 MiB. At this pace the remaining bank projects to about 1.6 hours plus setup; retain the original 19.3-hour 1.5× conservative bound until more nodes confirm the rate.
 - CPU analysis commands for A2/A4/A5 are implemented and targeted tests pass (30 passed). A2 uses prompt-cluster bootstrap and independent R_b variance; A4 reports child-pair TV/value calibration and approximate MC noise bands; A5 emits equal-budget allocation comparisons and documents the MC split-half limits.
+- A7 CPU preflight: the wrapper dry-run includes per-run local persistence and disabled W&B; the detached source evaluator's result format and MATH verifier were checked on a synthetic row built from the archived AIME24 dataset. This checks integration only and is not an A7 score.
 
 ## Experiment queue
 
@@ -55,11 +57,11 @@ Running — A0, the CPU analysis helpers, synthetic T checks, and the vLLM smoke
 | A1 | Blocked | No saved trees, demos, queue records or merged edges |
 | T | Completed | Synthetic result plus derivation/assumption note |
 | S | Completed | 826.93 tokens/s; 20,218 MiB peak sampled GPU memory |
-| A3 | Running | 19/112 parents at the 22:06 UTC checkpoint; first-five-node preliminary 2,189 output tokens/s; tracked PID 23238 |
+| A3 | Running | 27/112 parents at the 22:11 UTC checkpoint; first-27-record pace is about 45 s/parent (naive ~64 min remaining); tracked PID 23238 |
 | A5 | Ready after A3 | CPU command implemented; uses A3's held-out MC and candidate child values |
 | A2 | Ready after A3 | CPU noise-sensitivity command implemented |
 | A4 | Ready after A3 | CPU TV/value calibration command implemented |
-| A7 | Ready after A3/A5 | Detached evaluator ref, dataset aliases, dual-env runtime path and 16-sample override pass CPU-only preflight; SPO tokenizer absent, use shared VDRA235 tokenizer and report limitation; source pipeline seed is 2746318213 |
+| A7 | Ready after A3/A5 | Detached evaluator ref, dataset aliases, dual-env runtime path, 16-sample override, local saved results and paired bootstrap pass CPU-only preflight; SPO tokenizer absent, use shared VDRA235 tokenizer and report limitation; effective source pipeline seed is 2746318213 |
 | X | Deferred pending A7 | Iteration 150 only if time remains; otherwise camera-ready |
 
 ## Publication
