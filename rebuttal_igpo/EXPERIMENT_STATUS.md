@@ -2,7 +2,7 @@
 
 ## Status
 
-Running — A0, the CPU analysis helpers, synthetic T checks, and the vLLM smoke are complete. The source GEAR estimator passes a one-parent GPU integration check. A3's pre-registered 16-prompt/112-parent bank is collecting in the tracked foreground session (PID 23238, started 2026-10-30 21:50 UTC); at 2026-10-30 22:58 UTC, 80/112 parent records are durable outside Git at `/workspace/rebuttal_out/a3_iter100/`.
+Running — A0, the CPU analysis helpers, synthetic T checks, and the vLLM smoke are complete. The source GEAR estimator passes a one-parent GPU integration check. A3's pre-registered 16-prompt/112-parent bank is collecting in the tracked foreground session (PID 23238, started 2026-10-30 21:50 UTC); at 2026-10-30 23:06 UTC, 90/112 parent records are durable outside Git at `/workspace/rebuttal_out/a3_iter100/`.
 
 ## Decisions
 
@@ -48,7 +48,7 @@ Running — A0, the CPU analysis helpers, synthetic T checks, and the vLLM smoke
 - The first detached shell launch exited before producing a bank and left an empty log; it was not treated as completed work. The same deterministic command is now running as a tracked tool session, with stdout/stderr in `/workspace/rebuttal_out/a3_iter100.log`.
 - First measured A3 checkpoint at 2026-10-30 21:55 UTC: 5/112 parents in 268.8 seconds, 581,277 MC/child output tokens plus 7,200 proxy-pilot tokens, and 578,756 prompt-logprob scored tokens. Preliminary end-to-end generated throughput is about 2,189 tokens/s (includes proxy pilots; five-node sample only); current sampled GPU memory was 20,908 MiB. At this pace the remaining bank projects to about 1.6 hours plus setup; retain the original 19.3-hour 1.5× conservative bound until more nodes confirm the rate.
 - CPU analysis commands for A2/A4/A5 are implemented. A2 uses prompt-cluster bootstrap and independent R_b variance; A4 reports child-pair TV/value calibration and approximate MC noise bands; A5 emits equal-budget allocation comparisons and documents the MC split-half limits.
-- A7 CPU preflight: the wrapper dry-run includes the shared-tokenizer server overlay, per-run local persistence, disabled W&B and the `--debug_mode=true` pass-through; the custom launcher's tokenizer/loopback arguments were confirmed with a mocked `python3`. The detached source evaluator's result format and MATH verifier were checked on a synthetic row built from the archived AIME24 dataset. The smoke-rate helper summarizes token counts and projects 100 prompts with a 1.5× margin. These checks are implementation preflight only, not an A7 score or GPU timing.
+- A7 CPU preflight: the wrapper dry-run includes the shared-tokenizer server overlay, per-run local persistence, disabled W&B and the `--debug_mode=true` pass-through; the merged source config resolves the launcher path, 4,096 context, 1,024 max-new-tokens and 16 samples. The custom launcher's tokenizer/loopback arguments were confirmed with a mocked `python3`. The detached source evaluator's result format and MATH verifier were checked on a synthetic row built from the archived AIME24 dataset. The smoke-rate helper summarizes token counts and projects 100 prompts with a 1.5× margin. These checks are implementation preflight only, not an A7 score or GPU timing.
 
 ## Experiment queue
 
@@ -59,7 +59,7 @@ Running — A0, the CPU analysis helpers, synthetic T checks, and the vLLM smoke
 | A1 | Blocked | No saved trees, demos, queue records or merged edges |
 | T | Completed | Synthetic result plus derivation/assumption note |
 | S | Completed | 826.93 tokens/s; 20,218 MiB peak sampled GPU memory |
-| A3 | Running | 80/112 parents at the 22:58 UTC checkpoint; first-80-record pace is about 50 s/parent (naive ~27 min remaining); tracked PID 23238 |
+| A3 | Running | 90/112 parents at the 23:06 UTC checkpoint; first-90-record pace is about 50 s/parent (naive ~18 min remaining); tracked PID 23238 |
 | A5 | Ready after A3 | CPU command implemented; uses A3's held-out MC and candidate child values |
 | A2 | Ready after A3 | CPU noise-sensitivity command implemented |
 | A4 | Ready after A3 | CPU TV/value calibration command implemented |
