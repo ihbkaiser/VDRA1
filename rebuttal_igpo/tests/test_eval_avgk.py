@@ -12,6 +12,7 @@ def test_eval_wrapper_uses_supported_source_cli_and_fixed_protocol():
         seed=42,
         tokenizer="/checkpoint/tokenizer",
         context_length=4096,
+        max_new_tokens=1024,
         generation_overlay="/configs/eval_generation_0.6_0.95.jsonnet",
     )
     assert command[:3] == ["bash", "/src/scripts/evaluate.sh", "gear_config"]
@@ -20,6 +21,7 @@ def test_eval_wrapper_uses_supported_source_cli_and_fixed_protocol():
     assert "--num-samples" in command and "16" in command
     assert "--tokenizer" in command and "/checkpoint/tokenizer" in command
     assert "--context-length" in command and "4096" in command
+    assert "--max-new-tokens" in command and "1024" in command
     assert command[-3:] == [
         "APP_MINIMIZE_STORED_FILES=False",
         "WANDB_MODE=disabled",

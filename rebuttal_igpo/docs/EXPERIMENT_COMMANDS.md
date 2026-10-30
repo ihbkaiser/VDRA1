@@ -71,7 +71,7 @@ The job saves a durable `.offset` sidecar, an atomically replaced `.progress.jso
 
 The wrapper is `rebuttal_igpo/rebuttal/eval_avgk.py`. IGPO `main` does not accept a sample-count override; use a detached worktree at `origin/agent/checkpoint-sweep-evals` commit `5431bc6` (`/workspace/igpo-eval-compat`), which adds `--num-samples` and its Jsonnet override. The selected config's task metrics return `pass@16` and `avg@16`; no unsupported `--metrics` flag is passed. The 30 AIME24, 30 AIME25 and 40 AMC23 rows exist under the read-only archive. Their `data/` links in the detached worktree point to those saved datasets. The SPO235 checkpoint has no tokenizer files; use the VDRA235 tokenizer directory for both policies so the pair shares one tokenizer. VDRA iteration 100 and VDRA235 have identical 151,665-entry tokenizer vocabularies, and SPO235's model config matches the VDRA235 Qwen2 config, but SPO tokenizer identity is unverified. This is a documented comparison limitation, not a recovered training setting. The wrapper sets its working directory to the evaluator checkout, writes to the requested output directory, explicitly disables W&B, and keeps the saved per-prompt dataset local for bootstrap analysis.
 
-Run each benchmark separately: the source runtime otherwise writes all selected pipelines to the same `inference_results/test__0__1` directory. Separate invocations keep their per-prompt datasets distinct. The fixed pipeline seed is the same for each policy and dataset.
+Run each benchmark separately: the source runtime otherwise writes all selected pipelines to the same `inference_results/test__0__1` directory. Separate invocations keep their per-prompt datasets distinct. The fixed pipeline seed is the same for each policy and dataset. The 1,024-token continuation cap matches the A3 smoke protocol and leaves room for the prompt inside the 4,096-token vLLM context.
 
 Run only after A3/A5 and if measured time fits before the GPU cutoff:
 
@@ -89,13 +89,13 @@ for dataset in aime24 aime25 amc23; do
     --script "$EVAL_SCRIPT" --config "$EVAL_CONFIG" \
     --model "$VDRA235" --datasets "$dataset" \
     --output-dir "$OUT/a7_iter235/vdra/$dataset" \
-    --samples 16 --seed 42 --tokenizer "$SHARED_TOKENIZER" --context-length 4096 \
+    --samples 16 --seed 42 --tokenizer "$SHARED_TOKENIZER" --context-length 4096 --max-new-tokens 1024 \
     --generation-overlay "$REPO/rebuttal_igpo/configs/eval_generation_0.6_0.95.jsonnet"
   /venv/main/bin/python -m rebuttal_igpo.rebuttal.eval_avgk \
     --script "$EVAL_SCRIPT" --config "$EVAL_CONFIG" \
     --model "$SPO235" --datasets "$dataset" \
     --output-dir "$OUT/a7_iter235/spo/$dataset" \
-    --samples 16 --seed 42 --tokenizer "$SHARED_TOKENIZER" --context-length 4096 \
+    --samples 16 --seed 42 --tokenizer "$SHARED_TOKENIZER" --context-length 4096 --max-new-tokens 1024 \
     --generation-overlay "$REPO/rebuttal_igpo/configs/eval_generation_0.6_0.95.jsonnet"
 done
 
