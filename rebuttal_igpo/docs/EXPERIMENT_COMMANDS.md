@@ -51,18 +51,18 @@ Measured rates and the estimated full-bank wall time must be entered in `EXPERIM
 
 Target checkpoint: `$CKPT`; prompt data: `$MATH`; prompt and generation configuration: `rebuttal/configs/eval_generation_0.6_0.95.jsonnet` plus the fixed prompt manifest. Output root: `$OUT/a3_iter100/`. The bank writer uses gzip members and an offset sidecar for restart. The records must keep independent `R_a` and `R_b` seeds, child sample seeds, prompt IDs, verifier version and allocator/bound configuration.
 
-The integrated collector uses the archived GEAR `ConditionalTVEstimator`, the source MATH task answer extractor/grader and a resumable gzip bank. A one-parent run with `--mc-per-half 2 --child-mc 2 --root-only` verified the writer and reward callback; it is an integration check, not a result. The measured low-batch output rate gives a conservative 19.3-hour projection for the fixed 16-prompt scope including 1.5× margin. Start with `nohup` and monitor at least hourly:
+The integrated collector uses the archived GEAR `ConditionalTVEstimator`, the source MATH task answer extractor/grader and a resumable gzip bank. A one-parent run with `--mc-per-half 2 --child-mc 2 --root-only` verified the writer and reward callback; it is an integration check, not a result. The measured low-batch output rate gives a conservative 19.3-hour projection for the fixed 16-prompt scope including 1.5× margin. Run in a persistent foreground session and monitor at least hourly. The first detached-shell attempt in this environment exited without output; the tracked foreground session is the active run.
 
 ```bash
 cd "$REPO"
-nohup env PYTHONPATH="$GEAR" /venv/main/bin/python -m rebuttal_igpo.rebuttal.gear_probe \
+env PYTHONUNBUFFERED=1 PYTHONPATH="$GEAR" /venv/main/bin/python -m rebuttal_igpo.rebuttal.gear_probe \
   --dataset-dir "$MATH" \
   --manifest "$OUT/controlled_prompt_manifest.json" \
   --output "$OUT/a3_iter100/bank.jsonl.gz" \
   --tokenizer /workspace/rebuttal_out/tokenizer_iter100_fixed \
   --seed 42 --prompt-count 16 --segment-tokens 100 --max-new-tokens 1024 \
   --mc-per-half 32 --child-mc 16 \
-  > "$OUT/a3_iter100.log" 2>&1 < /dev/null &
+  > "$OUT/a3_iter100.log" 2>&1
 ```
 
 The job saves a durable `.offset` sidecar, an atomically replaced `.progress.json` checkpoint, a JSON progress line after each completed parent, and deterministic per-node seeds; rerunning the same command resumes completed nodes. Keep the bank local and record its final size and SHA-256 in `results/MANIFEST.md`.

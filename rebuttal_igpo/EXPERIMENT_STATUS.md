@@ -2,7 +2,7 @@
 
 ## Status
 
-Running — A0, the CPU analysis helpers, synthetic T checks, and the vLLM smoke are complete. The source GEAR estimator now passes a one-parent GPU integration check. The resumable A3/A5 bank is being finalized at the pre-registered 16-prompt scope; no large bank generation has started.
+Running — A0, the CPU analysis helpers, synthetic T checks, and the vLLM smoke are complete. The source GEAR estimator passes a one-parent GPU integration check. A3's pre-registered 16-prompt/112-parent bank is now collecting in the tracked foreground session (PID 23238, started 2026-10-30 21:50 UTC); output is outside Git at `/workspace/rebuttal_out/a3_iter100/`.
 
 ## Decisions
 
@@ -42,6 +42,7 @@ Running — A0, the CPU analysis helpers, synthetic T checks, and the vLLM smoke
 - S completed: 8 prompts × 6 completions = 48 completions, 40,571 output tokens, 49.06 seconds, **826.93 output tokens/s**, peak sampled GPU memory **20,218 MiB** (93 memory samples). Full per-prompt measurements are in `results/smoke/smoke_iter100.json`; the 32-prompt ID/hash/seed manifest is in `results/smoke/controlled_prompt_manifest.json`.
 - One-parent source GEAR proxy integration completed: the snapshot `ConditionalTVEstimator` returned 16 pilot pairs and 4 candidates; it generated 1,440 pilot tokens, scored 94,048 prompt tokens over 256 prompt-logprob requests, and completed in about 14 seconds wall time. A one-root bank smoke with 2 samples per MC half and 2 child continuations completed in 44.54 seconds: 6 generation requests and 12,288 output tokens. All 4 MC rewards in this tiny smoke were zero; this is an integration check only and is not an A3 outcome.
 - Conservative A3/A5 projection: 112 parents × 128 full continuations (64 MC references + 4 × 16 candidate continuations), capped at 1,024 tokens each, plus TV pilots. At the measured low-batch rate of about 333 tokens/s, this is ~12.4 hours generation; 112 measured proxy calls add ~0.45 hours. A 1.5× safety margin gives **about 19.3 hours**, within the remaining time before the hard cutoff. Track hourly; stop or shrink if observed progress diverges materially and resume through the gzip bank offset.
+- The first detached shell launch exited before producing a bank and left an empty log; it was not treated as completed work. The same deterministic command is now running as a tracked tool session, with stdout/stderr in `/workspace/rebuttal_out/a3_iter100.log`.
 
 ## Experiment queue
 
@@ -52,7 +53,7 @@ Running — A0, the CPU analysis helpers, synthetic T checks, and the vLLM smoke
 | A1 | Blocked | No saved trees, demos, queue records or merged edges |
 | T | Completed | Synthetic result plus derivation/assumption note |
 | S | Completed | 826.93 tokens/s; 20,218 MiB peak sampled GPU memory |
-| A3 | Ready to launch | 16 prompts/112 parents; source proxy, source verifier and resumable bank integration smoke passed; measured projection ~19.3h with margin |
+| A3 | Running | 16 prompts/112 parents; tracked PID 23238; source proxy, source verifier and resumable bank integration smoke passed; measured projection ~19.3h with margin |
 | A5 | Pending | Uses the A3 bank's held-out MC and candidate child values |
 | A2 | Pending | CPU noise sensitivity after A3 |
 | A4 | Pending | CPU calibration after A5 |
@@ -62,4 +63,5 @@ Running — A0, the CPU analysis helpers, synthetic T checks, and the vLLM smoke
 ## Publication
 
 - The destination repository is public; publishing rebuttal code/results can compromise double-blind anonymity. Repository visibility was not changed.
-- `gh_token` and `hf_token` are ignored, mode 600 and outside commit history. Before each push, staged files are checked for tokens, files over 20 MiB and raw listings/tree dumps. No token has been printed or staged.
+- Local commit `f8e28ee625fc1c1c759702c83246dc8743018f37` contains the audit, CPU helpers, configs, smoke summary and tests. The initial push to `origin/rebuttal` was rejected with HTTP 403: `Permission to ihbkaiser/VDRA1.git denied to ihbkaiser`. The remote branch was absent before this attempt; no remote commit was created. Continue locally and retry at the next publication checkpoint.
+- `gh_token` and `hf_token` are ignored, mode 600, untracked and absent from `git log --all -p`; the documented history scan returns no matches. Before each push, staged files are checked for credentials, files over 20 MiB and raw listings/tree dumps. No credential was printed or staged.
