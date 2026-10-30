@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 
 from . import alloc_stats, io
+from .bank_analysis import run_a2, run_a4, run_a5
 from .sim_eq5_eq7 import main as sim_main
 
 
@@ -21,10 +22,29 @@ def main(argv: list[str] | None = None) -> int:
     alloc_cmd.add_argument("run_dir")
     alloc_cmd.add_argument("output_dir")
     alloc_cmd.add_argument("--max-per-iteration", type=int)
+    a2_cmd = sub.add_parser("bank-a2", help="run A2 proxy-noise sensitivity on a completed bank")
+    a2_cmd.add_argument("bank")
+    a2_cmd.add_argument("output_dir")
+    a2_cmd.add_argument("--seed", type=int, default=42)
+    a4_cmd = sub.add_parser("bank-a4", help="run A4 TV/value-gap calibration on a completed bank")
+    a4_cmd.add_argument("bank")
+    a4_cmd.add_argument("output_dir")
+    a5_cmd = sub.add_parser("bank-a5", help="run A5 allocation/error diagnostics on a completed bank")
+    a5_cmd.add_argument("bank")
+    a5_cmd.add_argument("output_dir")
     sub.add_parser("sim-eq5-eq7", help="run seeded synthetic identity checks")
     args = parser.parse_args(argv)
     if args.command == "sim-eq5-eq7":
         return sim_main()
+    if args.command == "bank-a2":
+        print(json.dumps(run_a2(args.bank, args.output_dir, seed=args.seed), sort_keys=True))
+        return 0
+    if args.command == "bank-a4":
+        print(json.dumps(run_a4(args.bank, args.output_dir), sort_keys=True))
+        return 0
+    if args.command == "bank-a5":
+        print(json.dumps(run_a5(args.bank, args.output_dir), sort_keys=True))
+        return 0
     if args.command == "walk":
         for iteration, shard, index, tree in io.iter_trees(
             args.run_dir, iters=args.iteration, max_per_iter=args.max_per_iteration

@@ -2,7 +2,7 @@
 
 ## Status
 
-Running — A0, the CPU analysis helpers, synthetic T checks, and the vLLM smoke are complete. The source GEAR estimator passes a one-parent GPU integration check. A3's pre-registered 16-prompt/112-parent bank is now collecting in the tracked foreground session (PID 23238, started 2026-10-30 21:50 UTC); output is outside Git at `/workspace/rebuttal_out/a3_iter100/`.
+Running — A0, the CPU analysis helpers, synthetic T checks, and the vLLM smoke are complete. The source GEAR estimator passes a one-parent GPU integration check. A3's pre-registered 16-prompt/112-parent bank is collecting in the tracked foreground session (PID 23238, started 2026-10-30 21:50 UTC); output is outside Git at `/workspace/rebuttal_out/a3_iter100/`.
 
 ## Decisions
 
@@ -43,6 +43,8 @@ Running — A0, the CPU analysis helpers, synthetic T checks, and the vLLM smoke
 - One-parent source GEAR proxy integration completed: the snapshot `ConditionalTVEstimator` returned 16 pilot pairs and 4 candidates; it generated 1,440 pilot tokens, scored 94,048 prompt tokens over 256 prompt-logprob requests, and completed in about 14 seconds wall time. A one-root bank smoke with 2 samples per MC half and 2 child continuations completed in 44.54 seconds: 6 generation requests and 12,288 output tokens. All 4 MC rewards in this tiny smoke were zero; this is an integration check only and is not an A3 outcome.
 - Conservative A3/A5 projection: 112 parents × 128 full continuations (64 MC references + 4 × 16 candidate continuations), capped at 1,024 tokens each, plus TV pilots. At the measured low-batch rate of about 333 tokens/s, this is ~12.4 hours generation; 112 measured proxy calls add ~0.45 hours. A 1.5× safety margin gives **about 19.3 hours**, within the remaining time before the hard cutoff. Track hourly; stop or shrink if observed progress diverges materially and resume through the gzip bank offset.
 - The first detached shell launch exited before producing a bank and left an empty log; it was not treated as completed work. The same deterministic command is now running as a tracked tool session, with stdout/stderr in `/workspace/rebuttal_out/a3_iter100.log`.
+- First measured A3 checkpoint at 2026-10-30 21:55 UTC: 5/112 parents in 268.8 seconds, 581,277 MC/child output tokens plus 7,200 proxy-pilot tokens, and 578,756 prompt-logprob scored tokens. Preliminary end-to-end generated throughput is about 2,189 tokens/s (includes proxy pilots; five-node sample only); current sampled GPU memory was 20,908 MiB. At this pace the remaining bank projects to about 1.6 hours plus setup; retain the original 19.3-hour 1.5× conservative bound until more nodes confirm the rate.
+- CPU analysis commands for A2/A4/A5 are implemented and targeted tests pass (30 passed). A2 uses prompt-cluster bootstrap and independent R_b variance; A4 reports child-pair TV/value calibration and approximate MC noise bands; A5 emits equal-budget allocation comparisons and documents the MC split-half limits.
 
 ## Experiment queue
 
@@ -53,10 +55,10 @@ Running — A0, the CPU analysis helpers, synthetic T checks, and the vLLM smoke
 | A1 | Blocked | No saved trees, demos, queue records or merged edges |
 | T | Completed | Synthetic result plus derivation/assumption note |
 | S | Completed | 826.93 tokens/s; 20,218 MiB peak sampled GPU memory |
-| A3 | Running | 16 prompts/112 parents; tracked PID 23238; source proxy, source verifier and resumable bank integration smoke passed; measured projection ~19.3h with margin |
-| A5 | Pending | Uses the A3 bank's held-out MC and candidate child values |
-| A2 | Pending | CPU noise sensitivity after A3 |
-| A4 | Pending | CPU calibration after A5 |
+| A3 | Running | 6/112 parents at the 21:57 UTC checkpoint; first-five-node preliminary 2,189 output tokens/s; tracked PID 23238 |
+| A5 | Ready after A3 | CPU command implemented; uses A3's held-out MC and candidate child values |
+| A2 | Ready after A3 | CPU noise-sensitivity command implemented |
+| A4 | Ready after A3 | CPU TV/value calibration command implemented |
 | A7 | Pending compatibility check | Evaluator protocol fixed; run only if dependencies and cutoff allow |
 | X | Deferred pending A7 | Iteration 150 only if time remains; otherwise camera-ready |
 

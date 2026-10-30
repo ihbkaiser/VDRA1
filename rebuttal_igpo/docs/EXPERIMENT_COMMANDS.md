@@ -70,3 +70,17 @@ The job saves a durable `.offset` sidecar, an atomically replaced `.progress.jso
 ## A7 evaluation wrapper
 
 The wrapper is `rebuttal/rebuttal/eval_avgk.py`. Before using it, confirm the source evaluator accepts the emitted sample-count and dataset overrides and that the matching SPO checkpoint has a usable tokenizer. It writes only to the specified output directory. Fixed protocol: 16 samples, temperature 0.6, top-p 0.95, seed 42, source MATH verifier. Do not treat the wrapper's command construction test as evidence the evaluation itself ran.
+
+## A2/A4 bank analyses
+
+Run only after the A3 bank has completed and its `.summary.json` exists. A2 groups the 112 parent rows by prompt, allocates `6 × parent_count` samples with `eq7_exact`, lower bound 1 and no cap, perturbs proxy `C` by lognormal noise, and evaluates each allocation using unbiased sample variances from the disjoint `R_b` half. The reported 95% intervals bootstrap 16 prompt clusters. A4 compares each recorded pair TV with the absolute gap between the corresponding fixed candidate-child reward means and reports normal-approximation reference-noise bands; child samples are reused for this descriptive calibration, not an independent test set. A5 compares allocation rules under the same per-prompt feasible budget across `trained`, `capped`, and `capped_k` bounds. Its source-default GEAR comparator uses λ=0.005, `n_min=2`, largest remainder and uniform fallback from the snapshot; these are not recovered training settings. `L_node`/`L_edge` are MC-half value-error proxies, while `L_heldout` is a fixed candidate-edge split-half disagreement (identical across allocation rules), not ground truth. The candidate-bounded regime can reduce the common budget below 6 per parent.
+
+```bash
+cd "$REPO"
+/venv/main/bin/python -m rebuttal_igpo.rebuttal.cli bank-a2 \
+  "$OUT/a3_iter100/bank.jsonl.gz" "$OUT/a3_iter100/analysis" --seed 42
+/venv/main/bin/python -m rebuttal_igpo.rebuttal.cli bank-a4 \
+  "$OUT/a3_iter100/bank.jsonl.gz" "$OUT/a3_iter100/analysis"
+/venv/main/bin/python -m rebuttal_igpo.rebuttal.cli bank-a5 \
+  "$OUT/a3_iter100/bank.jsonl.gz" "$OUT/a3_iter100/analysis"
+```
