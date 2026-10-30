@@ -2,7 +2,7 @@
 
 ## Status
 
-Running — A0, the CPU analysis helpers, synthetic T checks, and the vLLM smoke are complete. The source GEAR estimator passes a one-parent GPU integration check. A3's pre-registered 16-prompt/112-parent bank is collecting in the tracked foreground session (PID 23238, started 2026-10-30 21:50 UTC); at 2026-10-30 22:36 UTC, 57/112 parent records are durable outside Git at `/workspace/rebuttal_out/a3_iter100/`.
+Running — A0, the CPU analysis helpers, synthetic T checks, and the vLLM smoke are complete. The source GEAR estimator passes a one-parent GPU integration check. A3's pre-registered 16-prompt/112-parent bank is collecting in the tracked foreground session (PID 23238, started 2026-10-30 21:50 UTC); at 2026-10-30 22:51 UTC, 71/112 parent records are durable outside Git at `/workspace/rebuttal_out/a3_iter100/`.
 
 ## Decisions
 
@@ -33,7 +33,7 @@ Running — A0, the CPU analysis helpers, synthetic T checks, and the vLLM smoke
 
 - Added `rebuttal/` helpers for streaming artifact reads, allocation replay, A1 summaries, cost accounting, metrics and prompt-clustered bootstrap, resumable node banks, paired A7 evaluation/bootstrap, CLI and synthetic Eq. (5)/(7) checks.
 - `allocate_gear_as_trained` matches the supplied snapshot allocator on synthetic queues for floor-only, remainder and fallback paths. No stored-tree allocation match rate is computable because the archives contain no trees.
-- `pytest -q rebuttal_igpo/tests`: **34 passed** on 2026-10-30. A7's paired bootstrap, measured token-rate summary, wrapper persistence/offline settings and pass-through of evaluator-specific options are covered; a CPU fixture loaded the exact source MATH verifier and exercised the saved-result scoring path.
+- `pytest -q rebuttal_igpo/tests`: **35 passed** on 2026-10-30. A7's paired bootstrap, measured token-rate summary, wrapper persistence/offline settings, evaluator-specific options and tokenizer-aware server launcher are covered; a CPU fixture loaded the exact source MATH verifier and exercised the saved-result scoring path.
 - A0 is complete as an evidence inventory. A1 is **Blocked: no stored trees/demos/edges**. A6 is **Blocked: no paper/supplement or matching run logs/timings**. Details are in `docs/COMPUTE_AND_CONSISTENCY_AUDIT.md`.
 - T synthetic checks and `DERIVATION_EQ5_EQ7.md` are complete. The simulation values are labelled synthetic and are saved at `/workspace/rebuttal_out/eq5_eq7_simulation.json`.
 
@@ -59,7 +59,7 @@ Running — A0, the CPU analysis helpers, synthetic T checks, and the vLLM smoke
 | A1 | Blocked | No saved trees, demos, queue records or merged edges |
 | T | Completed | Synthetic result plus derivation/assumption note |
 | S | Completed | 826.93 tokens/s; 20,218 MiB peak sampled GPU memory |
-| A3 | Running | 57/112 parents at the 22:36 UTC checkpoint; first-57-record pace is about 47 s/parent (naive ~43 min remaining); tracked PID 23238 |
+| A3 | Running | 71/112 parents at the 22:51 UTC checkpoint; first-71-record pace is about 50 s/parent (naive ~34 min remaining); tracked PID 23238 |
 | A5 | Ready after A3 | CPU command implemented; uses A3's held-out MC and candidate child values |
 | A2 | Ready after A3 | CPU noise-sensitivity command implemented |
 | A4 | Ready after A3 | CPU TV/value calibration command implemented |

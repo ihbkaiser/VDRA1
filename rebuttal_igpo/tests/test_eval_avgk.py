@@ -1,3 +1,7 @@
+import os
+import subprocess
+from pathlib import Path
+
 from rebuttal_igpo.rebuttal.eval_avgk import build_command, main
 
 
@@ -52,3 +56,35 @@ def test_eval_wrapper_forwards_source_runtime_options(capsys):
     output = capsys.readouterr().out
     assert "--debug_mode=true" in output
     assert "--config /configs/eval_shared_tokenizer_server.jsonnet" in output
+
+
+def test_shared_tokenizer_vllm_launcher_passes_tokenizer_and_loopback(tmp_path):
+    fake_bin = tmp_path / "bin"
+    fake_bin.mkdir()
+    capture = tmp_path / "captured_args.txt"
+    fake_python = fake_bin / "python3"
+    fake_python.write_text(
+        '#!/bin/sh\nprintf "%s\\n" "$@" > "$CAPTURE_ARGS"\n', encoding="utf-8"
+    )
+    fake_python.chmod(0o755)
+    env = os.environ.copy()
+    env.update({
+        "PATH": f"{fake_bin}:{env['PATH']}",
+        "APP_EVAL_TOKENIZER": "/shared/tokenizer",
+        "CAPTURE_ARGS": str(capture),
+    })
+    script = Path(__file__).parents[1] / "rebuttal" / "start_vllm_server_shared_tokenizer.sh"
+    subprocess.run(
+        [str(script), "--model", "/spo/checkpoint", "--port", "12345",
+         "--seed", "42", "--gpu-memory-utilization", "0.7",
+         "--max-num-seqs", "16", "--max-model-len", "4096"],
+        env=env,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    args = capture.read_text(encoding="utf-8").splitlines()
+    assert args[args.index("--model") + 1] == "/spo/checkpoint"
+    assert args[args.index("--tokenizer") + 1] == "/shared/tokenizer"
+    assert args[args.index("--host") + 1] == "127.0.0.1"
+    assert args[args.index("--max-model-len") + 1] == "4096"

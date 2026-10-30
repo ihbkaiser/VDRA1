@@ -12,6 +12,6 @@ Large generated artifacts stay under `/workspace/rebuttal_out` or the read-only 
 | Fixed tokenizer metadata overlay | `/workspace/rebuttal_out/tokenizer_iter100_fixed/` | Two tokenizer files; symlinked tokenizer JSON and a separate config with `fix_mistral_regex=true`; checkpoint remains unchanged. |
 | One-root integration smoke bank | `/workspace/rebuttal_out/probe_integration_smoke.jsonl.gz`; SHA-256 `956d38b8e4f266866feff45cb310af076c7710ec7afe595674b8a3fa45541ecd`; 14,491 bytes | One root; `R_a=R_b=2`, child MC=2; all four observed rewards were zero. Integration evidence only; not a statistical result and not published. |
 | One-root integration summary | `/workspace/rebuttal_out/probe_integration_smoke.jsonl.gz.summary.json`; 935 bytes | Wall time, token count, prompt ID and reduced smoke protocol; local only. |
-| A3 frozen-policy bank | `/workspace/rebuttal_out/a3_iter100/bank.jsonl.gz` plus `.offset` and `.progress.json` | Running at 57/112 durable parent records as of 2026-10-30 22:36 UTC. Raw bank remains outside Git; final SHA-256 and size will be recorded after completion. |
+| A3 frozen-policy bank | `/workspace/rebuttal_out/a3_iter100/bank.jsonl.gz` plus `.offset` and `.progress.json` | Running at 71/112 durable parent records as of 2026-10-30 22:51 UTC. Raw bank remains outside Git; final SHA-256 and size will be recorded after completion. |
 
 No bank or scaled generations are currently staged for publication.
