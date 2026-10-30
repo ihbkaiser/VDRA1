@@ -25,6 +25,34 @@ from .smoke_vllm import QUESTION_TEMPLATE
 
 SOURCE_ROOT = Path("/workspace/src/gear_source_rebuttal/gear")
 DEFAULT_TOKENIZER = Path("/workspace/rebuttal_out/tokenizer_iter100_fixed")
+DEFAULT_CHECKPOINT = Path(
+    "/workspace/src/vdra_iter_0100/checkpoints/ckpt--iter_0100--epoch_1.00--step_0400/hf_pretrained"
+)
+
+
+def probe_protocol(
+    *,
+    checkpoint_path: str | Path = DEFAULT_CHECKPOINT,
+    temperature: float = 0.6,
+    top_p: float = 0.95,
+    max_new_tokens: int = 1024,
+    segment_tokens: int = 100,
+    mc_per_half: int = 32,
+    child_mc: int = 16,
+) -> dict[str, Any]:
+    """Return the complete, checkpoint-specific protocol saved with a bank."""
+    return {
+        "checkpoint": str(checkpoint_path),
+        "temperature": temperature,
+        "top_p": top_p,
+        "max_new_tokens": max_new_tokens,
+        "branch_factor": 6,
+        "segment_tokens": segment_tokens,
+        "mc_per_half": mc_per_half,
+        "child_mc": child_mc,
+        "source_reward": "GEAR snapshot MATH answer extraction and grading; answer_prefix=None; unfinished response reward=0",
+        "tokenizer_fix_mistral_regex": True,
+    }
 
 
 def _stable_seed(base: int, label: str) -> int:
@@ -284,6 +312,7 @@ def run_probe(
     dataset_dir: str | Path,
     manifest_path: str | Path,
     output_path: str | Path,
+    checkpoint_path: str | Path = DEFAULT_CHECKPOINT,
     tokenizer_path: str | Path = DEFAULT_TOKENIZER,
     base_url: str = "http://127.0.0.1:18000/v1",
     model: str = "iter100",
@@ -464,18 +493,13 @@ def run_probe(
         "continuation_requests": len(generation_calls),
         "continuation_completion_tokens": sum(int(row.get("completion_tokens") or 0) for row in generation_calls),
         "continuation_seconds": sum(float(row["seconds"]) for row in generation_calls),
-        "protocol": {
-            "checkpoint": "/workspace/src/vdra_iter_0100/checkpoints/ckpt--iter_0100--epoch_1.00--step_0400/hf_pretrained",
-            "temperature": 0.6,
-            "top_p": 0.95,
-            "max_new_tokens": max_new_tokens,
-            "branch_factor": 6,
-            "segment_tokens": segment_tokens,
-            "mc_per_half": mc_per_half,
-            "child_mc": child_mc,
-            "source_reward": "GEAR snapshot treetune.tasks.math.MATH answer extraction and grading; answer_prefix=None; unfinished response reward=0",
-            "tokenizer_fix_mistral_regex": True,
-        },
+        "protocol": probe_protocol(
+            checkpoint_path=checkpoint_path,
+            max_new_tokens=max_new_tokens,
+            segment_tokens=segment_tokens,
+            mc_per_half=mc_per_half,
+            child_mc=child_mc,
+        ),
     }
     summary_path = Path(output_path).with_suffix(Path(output_path).suffix + ".summary.json")
     summary_path.write_text(json.dumps(summary, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
@@ -487,6 +511,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--dataset-dir", required=True)
     parser.add_argument("--manifest", required=True)
     parser.add_argument("--output", required=True)
+    parser.add_argument("--checkpoint-path", default=str(DEFAULT_CHECKPOINT))
     parser.add_argument("--tokenizer", default=str(DEFAULT_TOKENIZER))
     parser.add_argument("--base-url", default="http://127.0.0.1:18000/v1")
     parser.add_argument("--model", default="iter100")
@@ -502,6 +527,7 @@ def main(argv: list[str] | None = None) -> int:
         dataset_dir=args.dataset_dir,
         manifest_path=args.manifest,
         output_path=args.output,
+        checkpoint_path=args.checkpoint_path,
         tokenizer_path=args.tokenizer,
         base_url=args.base_url,
         model=args.model,

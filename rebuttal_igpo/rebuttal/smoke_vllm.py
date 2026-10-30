@@ -18,6 +18,7 @@ from .node_bank import VLLMClient
 
 
 DEFAULT_TOKENIZER = "/workspace/rebuttal_out/tokenizer_iter100_fixed"
+DEFAULT_CHECKPOINT = "/workspace/src/vdra_iter_0100/checkpoints/ckpt--iter_0100--epoch_1.00--step_0400/hf_pretrained"
 
 
 QUESTION_TEMPLATE = (
@@ -27,6 +28,10 @@ QUESTION_TEMPLATE = (
     "or expression that solves the problem. Think step by step before answering.\n\n"
     "{query}<｜Assistant｜><think>\n"
 )
+
+
+def checkpoint_description(*, checkpoint_path: str, model: str) -> dict[str, str]:
+    return {"checkpoint": str(checkpoint_path), "served_model": str(model)}
 
 
 def _gpu_memory_mib() -> int | None:
@@ -53,6 +58,7 @@ def run_smoke(
     seed: int = 42, prompts_total: int = 32, smoke_prompts: int = 8,
     samples_per_prompt: int = 6, max_tokens: int = 1024,
     tokenizer_path: str | Path = DEFAULT_TOKENIZER,
+    checkpoint_path: str = DEFAULT_CHECKPOINT, model: str = "iter100",
 ) -> dict[str, Any]:
     if prompts_total < smoke_prompts or smoke_prompts < 1:
         raise ValueError("prompt sample must contain at least the smoke subset")
@@ -105,7 +111,7 @@ def run_smoke(
             response = client.complete(
                 prompt,
                 n=samples_per_prompt,
-                model="iter100",
+                model=model,
                 max_tokens=max_tokens,
                 temperature=0.6,
                 top_p=0.95,
@@ -126,7 +132,7 @@ def run_smoke(
     wall_seconds = time.perf_counter() - wall_started
     completion_tokens = sum(int(row.get("completion_tokens") or 0) for row in call_rows)
     result = {
-        "checkpoint": "/workspace/src/vdra_iter_0100/checkpoints/ckpt--iter_0100--epoch_1.00--step_0400/hf_pretrained",
+        **checkpoint_description(checkpoint_path=checkpoint_path, model=model),
         "model": "Qwen2 causal LM from checkpoint config.json",
         "base_url": base_url,
         "gpu": "NVIDIA GeForce RTX 3090",
@@ -159,6 +165,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--samples-per-prompt", type=int, default=6)
     parser.add_argument("--max-tokens", type=int, default=1024)
     parser.add_argument("--tokenizer", default=DEFAULT_TOKENIZER)
+    parser.add_argument("--checkpoint-path", default=DEFAULT_CHECKPOINT)
+    parser.add_argument("--model", default="iter100", help="vLLM served-model alias")
     args = parser.parse_args(argv)
     result = run_smoke(
         dataset_dir=args.dataset_dir,
@@ -170,6 +178,8 @@ def main(argv: list[str] | None = None) -> int:
         samples_per_prompt=args.samples_per_prompt,
         max_tokens=args.max_tokens,
         tokenizer_path=args.tokenizer,
+        checkpoint_path=args.checkpoint_path,
+        model=args.model,
     )
     print(json.dumps({key: result[key] for key in (
         "wall_seconds", "requests_completed", "completions_requested", "completion_tokens",

@@ -67,7 +67,7 @@ Running — A0, CPU helpers, synthetic T checks, the vLLM smoke, A3, and A2/A4/A
 | A2 | Completed | Five proxy-noise levels × 50 repetitions over 16 prompt clusters; compact outputs published |
 | A4 | Completed | 672 candidate pairs; published calibration output; child samples are reused, so this is descriptive |
 | A7 | Running | Timed smokes project 3,399.5 s (~57 min) for the full matched evaluation with 1.5× margin. The first full run (VDRA235/AIME24) started at 2026-10-30 23:42 UTC; six policy-by-dataset runs proceed sequentially. |
-| X | Deferred pending A7 | Iteration 150 only if time remains; otherwise camera-ready |
+| X | Ready after A7; smoke gate required | Iterations 50 and 150 checkpoints are present. Their tokenizer JSON/config hashes match iteration 100. Timed smokes and a measured 1.5× projection are required before either bank. |
 
 ## Publication
 
@@ -90,3 +90,9 @@ Running — A0, CPU helpers, synthetic T checks, the vLLM smoke, A3, and A2/A4/A
 - Combined projection: 3,399.5 s (~57 min), which fits with more than 24 hours before the hard cutoff. The six full policy-by-dataset evaluations began at 2026-10-30 23:42 UTC, sequentially over AIME24/AIME25/AMC23. Debug-only smoke metrics are excluded from accuracy analysis.
 
 - A7 full evaluation started in a detached logged process (PID 41374) at 2026-10-30 23:42 UTC after the timed-smoke gate. Current unit: VDRA235 × AIME24. Outputs and logs remain under `/workspace/rebuttal_out/a7_iter235/`; no raw predictions are staged.
+
+## X preflight (2026-10-30 23:47 UTC)
+
+- Confirmed iteration-50 and iteration-150 HF checkpoints exist at the paths in `docs/EXPERIMENT_COMMANDS.md`. Their `tokenizer.json` SHA-256 is `88145e3c3249adc2546ede277e9819d6e405e19072456e4b521cbc724bd60773` and `tokenizer_config.json` SHA-256 is `8ac8c85fb242563c2260baec0909debd69d718af6a0b3d90e6cab62b4d341cd5`; both match iteration 100 byte-for-byte. Continue using the regex-fixed iteration-100 tokenizer copy.
+- Added checkpoint-specific metadata to the smoke and probe CLIs so iterations 50/150 cannot be mislabeled as iteration 100. CPU tests pass: `pytest -q rebuttal_igpo/tests` → 40 passed.
+- X remains queued behind the six A7 runs. Before each full bank, run the checkpoint-specific 8-prompt × 6-completion smoke and project `ceil(12,029,177 / measured_tok_s + 112 × 14) × 1.5` seconds; launch only if the sum of remaining A7 time and both checkpoint margins fits before 2026-11-01 01:00 UTC. Run iteration 150 alone if both do not fit but its own projection does; otherwise defer.

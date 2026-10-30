@@ -142,6 +142,71 @@ done
 
 The bootstrap writes hashed per-prompt paired rows to `a7_per_prompt.csv`, the full arm and VDRA-minus-SPO intervals to `a7_paired_bootstrap.csv`, and a compact machine-readable summary to `a7_summary.json`. It does not copy generated text into the repository.
 
+## X: iteration-50 and iteration-150 frozen probes
+
+Run after A7, and only if the measured smoke projections (including a 1.5× margin) fit before the 2026-11-01 01:00 UTC GPU cutoff. Both checkpoints' tokenizer JSON/config hashes match iteration 100, so use the existing regex-fixed iteration-100 tokenizer. The checkpoint path is recorded in both the smoke and bank metadata; the vLLM served-model alias is iteration-specific. Each smoke is a timing gate only and its responses are excluded from all results. The full collectors reuse the same first 16 pre-registered prompts, seed 42, 100-token depth-1 segment, six-way branching, temperature 0.6/top-p 0.95, 1024-token continuation cap, and disjoint 32-sample `R_a`/`R_b` halves plus 16 child continuations per candidate. Run the two checkpoints sequentially; never overlap vLLM processes.
+
+For each iteration (`050` then `150`), set the exact checkpoint and alias below. First start the checkpoint-specific timed smoke:
+
+```bash
+cd "$REPO"
+ITER=050 # next, repeat with 150
+if [ "$ITER" = 050 ]; then
+  CKPT=/workspace/src/vdra_iter_0050/checkpoints/ckpt--iter_0050--epoch_1.00--step_0200/hf_pretrained
+else
+  CKPT=/workspace/src/vdra_iter_0150/checkpoints/ckpt--iter_0150--epoch_1.00--step_0600/hf_pretrained
+fi
+MODEL="iter${ITER}"
+mkdir -p "$OUT/x_iter${ITER}/smoke"
+/workspace/vllm-venv/bin/vllm serve "$CKPT" \
+  --tokenizer "$OUT/tokenizer_iter100_fixed" --served-model-name "$MODEL" \
+  --host 127.0.0.1 --port 18000 --dtype bfloat16 --max-model-len 4096 \
+  --gpu-memory-utilization 0.82 --max-num-seqs 32 --seed 42 \
+  --generation-config vllm --no-enable-log-requests --disable-uvicorn-access-log \
+  > "$OUT/x_iter${ITER}/smoke/vllm.log" 2>&1 &
+VLLM_PID=$!
+trap 'kill -INT "$VLLM_PID" 2>/dev/null || true; wait "$VLLM_PID" 2>/dev/null || true' EXIT
+until curl -fsS http://127.0.0.1:18000/health >/dev/null; do sleep 2; done
+/venv/main/bin/python -m rebuttal_igpo.rebuttal.smoke_vllm \
+  --dataset-dir "$MATH" --output "$OUT/x_iter${ITER}/smoke/rate.json" \
+  --base-url http://127.0.0.1:18000/v1 --seed 42 --prompts-total 32 \
+  --smoke-prompts 8 --samples-per-prompt 6 --max-tokens 1024 \
+  --tokenizer "$OUT/tokenizer_iter100_fixed" --checkpoint-path "$CKPT" --model "$MODEL"
+kill -INT "$VLLM_PID"; wait "$VLLM_PID" || true
+trap - EXIT
+```
+
+Before proceeding, compute a conservative projection from measured completion-token throughput: `ceil(12,029,177 / completion_tokens_per_second + 112 × 14) × 1.5` seconds per checkpoint. The 12,029,177 token target is the observed full iteration-100 continuation count; 14 seconds per parent is the measured source proxy integration cost. Include A7's actual remaining time and both checkpoints' margins against the hard cutoff. If either checkpoint fails its smoke or the combined budget no longer fits, record the exact issue and run iteration 150 only if its smoke projection still fits; otherwise defer X.
+
+After the gate passes, restart vLLM on the same checkpoint/alias and settings, then collect the resumable bank. Run this for `050` then `150`, updating the checkpoint path and alias each time:
+
+```bash
+ITER=050 # repeat only after 050 finishes, using 150
+CKPT=/workspace/src/vdra_iter_0050/checkpoints/ckpt--iter_0050--epoch_1.00--step_0200/hf_pretrained
+MODEL="iter${ITER}"
+mkdir -p "$OUT/a3_iter${ITER}"
+/workspace/vllm-venv/bin/vllm serve "$CKPT" \
+  --tokenizer "$OUT/tokenizer_iter100_fixed" --served-model-name "$MODEL" \
+  --host 127.0.0.1 --port 18000 --dtype bfloat16 --max-model-len 4096 \
+  --gpu-memory-utilization 0.82 --max-num-seqs 32 --seed 42 \
+  --generation-config vllm --no-enable-log-requests --disable-uvicorn-access-log \
+  > "$OUT/a3_iter${ITER}/vllm.log" 2>&1 &
+VLLM_PID=$!
+trap 'kill -INT "$VLLM_PID" 2>/dev/null || true; wait "$VLLM_PID" 2>/dev/null || true' EXIT
+until curl -fsS http://127.0.0.1:18000/health >/dev/null; do sleep 2; done
+env PYTHONUNBUFFERED=1 PYTHONPATH="$GEAR" /venv/main/bin/python -m rebuttal_igpo.rebuttal.gear_probe \
+  --dataset-dir "$MATH" --manifest "$OUT/controlled_prompt_manifest.json" \
+  --output "$OUT/a3_iter${ITER}/bank.jsonl.gz" --checkpoint-path "$CKPT" \
+  --tokenizer "$OUT/tokenizer_iter100_fixed" --base-url http://127.0.0.1:18000/v1 \
+  --model "$MODEL" --seed 42 --prompt-count 16 --segment-tokens 100 \
+  --max-new-tokens 1024 --mc-per-half 32 --child-mc 16 \
+  > "$OUT/a3_iter${ITER}.log" 2>&1
+kill -INT "$VLLM_PID"; wait "$VLLM_PID" || true
+trap - EXIT
+```
+
+Run `bank-a2`, `bank-a4`, and `bank-a5` with that bank and an iteration-specific analysis directory; A4 remains descriptive and A5 losses remain finite-MC proxies as described below. Publish only compact summaries and hashes, never bank/generation content. If the projected total exceeds cutoff, follow the measured decision above, not a wishful estimate.
+
 The process environment uses `/venv/main` for the DeepSpeed evaluator (Torch 2.11.0+cu128) and `/workspace/vllm-venv` for the VLLM subprocess (Torch 2.11.0+cu129). `deepspeed==0.19.9` is installed with optional ops disabled; the PATH order below selects its executable from the main venv while `python3` in the custom VLLM server script resolves to `/workspace/vllm-venv/bin/python3`. CPU-only DeepSpeed launch, VLLM server help, dataset loading, wrapper dry-run, Jsonnet server override and mocked tokenizer-aware launcher passed. The source runtime hard-codes inference pipeline seed `2746318213` in `PolicyIterationRuntime.run_evaluation`; `--seed 42` sets the server/global seed but does not replace that pipeline seed. Both policies use the same fixed pipeline seed, which must be reported as the effective generation seed. Do not treat the wrapper's command construction test as evidence the evaluation ran.
 
 ## A2/A4 bank analyses
