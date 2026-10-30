@@ -106,6 +106,8 @@ done
   --datasets aime24,aime25,amc23 --samples 16 --replicates 1000 --seed 42
 ```
 
+The bootstrap writes hashed per-prompt paired rows to `a7_per_prompt.csv`, the full arm and VDRA-minus-SPO intervals to `a7_paired_bootstrap.csv`, and a compact machine-readable summary to `a7_summary.json`. It does not copy generated text into the repository.
+
 The process environment uses `/venv/main` for the DeepSpeed evaluator (Torch 2.11.0+cu128) and `/workspace/vllm-venv` for the VLLM subprocess (Torch 2.11.0+cu129). `deepspeed==0.19.9` is installed with optional ops disabled; the PATH order below selects its executable from the main venv while `python3` in the VLLM server script resolves to `/workspace/vllm-venv/bin/python3`. CPU-only DeepSpeed launch, VLLM server help, dataset loading and wrapper dry-run passed. The source runtime hard-codes inference pipeline seed `2746318213` in `PolicyIterationRuntime.run_evaluation`; `--seed 42` sets the server/global seed but does not replace that pipeline seed. Both policies use the same fixed pipeline seed, which must be reported as the effective generation seed. Do not treat the wrapper's command construction test as evidence the evaluation ran.
 
 ## A2/A4 bank analyses

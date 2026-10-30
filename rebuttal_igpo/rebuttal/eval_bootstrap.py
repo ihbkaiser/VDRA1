@@ -205,6 +205,25 @@ def run(
         all_summaries.extend(summaries)
     _write_csv(output_dir / "a7_per_prompt.csv", all_rows)
     _write_csv(output_dir / "a7_paired_bootstrap.csv", all_summaries)
+    json_path = output_dir / "a7_summary.json"
+    json_path.write_text(
+        json.dumps(
+            {
+                "datasets": list(datasets),
+                "prompt_count": len(all_rows),
+                "samples": samples,
+                "bootstrap_replicates": replicates,
+                "seed": seed,
+                "interval_method": "paired prompt-cluster percentile bootstrap",
+                "policy_difference": "vdra minus spo",
+                "metrics": all_summaries,
+            },
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
     return {
         "datasets": list(datasets),
         "prompt_count": len(all_rows),
@@ -213,6 +232,7 @@ def run(
         "seed": seed,
         "per_prompt_csv": str(output_dir / "a7_per_prompt.csv"),
         "summary_csv": str(output_dir / "a7_paired_bootstrap.csv"),
+        "summary_json": str(json_path),
     }
 
 
