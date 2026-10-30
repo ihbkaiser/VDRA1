@@ -21,6 +21,7 @@ def build_command(
     context_length: int | None = None,
     max_new_tokens: int | None = None,
     generation_overlay: str | Path | None = None,
+    server_overlay: str | Path | None = None,
     extra_args: Sequence[str] = (),
 ) -> list[str]:
     if samples < 1:
@@ -36,14 +37,15 @@ def build_command(
         command += ["--max-new-tokens", str(max_new_tokens)]
     if generation_overlay is not None:
         command += ["--config", str(generation_overlay)]
+    if server_overlay is not None:
+        command += ["--config", str(server_overlay)]
     command += [
         "--datasets", ",".join(datasets),
         "--num-samples", str(samples),
         *extra_args,
     ]
     # The source evaluator reads these settings from its environment.
-    command.extend([
-        "--",
+    assignments = [
         f"APP_DIRECTORY={output_dir}",
         f"APP_EXPERIMENT_NAME=avgk{samples}",
         f"APP_SEED={seed}",
@@ -54,6 +56,13 @@ def build_command(
         # Disabled mode makes that call a no-op with respect to remote services.
         "WANDB_MODE=disabled",
         "WANDB_DISABLE_UPLOAD_FILES_TO_CLOUD=True",
+    ]
+    if server_overlay is not None:
+        server_script = Path(__file__).with_name("start_vllm_server_shared_tokenizer.sh").resolve()
+        assignments.append(f"APP_VLLM_SHARED_TOKENIZER_SERVER={server_script}")
+    command.extend([
+        "--",
+        *assignments,
     ])
     return command
 
@@ -97,6 +106,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--context-length", type=int)
     parser.add_argument("--max-new-tokens", type=int)
     parser.add_argument("--generation-overlay")
+    parser.add_argument("--server-overlay")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("extra_args", nargs=argparse.REMAINDER)
     args, passthrough = parser.parse_known_args(argv)
@@ -106,7 +116,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         output_dir=args.output_dir, samples=args.samples, seed=args.seed,
         tokenizer=args.tokenizer, context_length=args.context_length,
         max_new_tokens=args.max_new_tokens,
-        generation_overlay=args.generation_overlay, extra_args=extra_args,
+        generation_overlay=args.generation_overlay, server_overlay=args.server_overlay,
+        extra_args=extra_args,
     )
     repository_root = Path(args.script).resolve().parent.parent
     return run(command, dry_run=args.dry_run, working_directory=repository_root)

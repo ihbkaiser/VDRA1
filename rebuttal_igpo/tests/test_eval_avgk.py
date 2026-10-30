@@ -14,6 +14,7 @@ def test_eval_wrapper_uses_supported_source_cli_and_fixed_protocol():
         context_length=4096,
         max_new_tokens=1024,
         generation_overlay="/configs/eval_generation_0.6_0.95.jsonnet",
+        server_overlay="/configs/eval_shared_tokenizer_server.jsonnet",
     )
     assert command[:3] == ["bash", "/src/scripts/evaluate.sh", "gear_config"]
     assert "--datasets" in command and "aime24,aime25,amc23" in command
@@ -22,15 +23,18 @@ def test_eval_wrapper_uses_supported_source_cli_and_fixed_protocol():
     assert "--tokenizer" in command and "/checkpoint/tokenizer" in command
     assert "--context-length" in command and "4096" in command
     assert "--max-new-tokens" in command and "1024" in command
-    assert command[-3:] == [
+    assert command[-4:-1] == [
         "APP_MINIMIZE_STORED_FILES=False",
         "WANDB_MODE=disabled",
         "WANDB_DISABLE_UPLOAD_FILES_TO_CLOUD=True",
     ]
-    assert command[-6:-3] == [
+    assert command[-7:-4] == [
         "APP_DIRECTORY=/tmp/eval", "APP_EXPERIMENT_NAME=avgk16", "APP_SEED=42"
     ]
     assert "APP_MINIMIZE_STORED_FILES=False" in command
+    assert command[-1].startswith("APP_VLLM_SHARED_TOKENIZER_SERVER=")
+    assert "--config" in command and "/configs/eval_shared_tokenizer_server.jsonnet" in command
+    assert any(arg.startswith("APP_VLLM_SHARED_TOKENIZER_SERVER=") for arg in command)
 
 
 def test_eval_wrapper_forwards_source_runtime_options(capsys):
@@ -40,8 +44,11 @@ def test_eval_wrapper_forwards_source_runtime_options(capsys):
         "--config", "gear_config",
         "--datasets", "aime24",
         "--output-dir", "/tmp/eval",
+        "--server-overlay", "/configs/eval_shared_tokenizer_server.jsonnet",
         "--debug_mode=true",
         "--dry-run",
     ])
     assert result == 0
-    assert "--debug_mode=true" in capsys.readouterr().out
+    output = capsys.readouterr().out
+    assert "--debug_mode=true" in output
+    assert "--config /configs/eval_shared_tokenizer_server.jsonnet" in output
