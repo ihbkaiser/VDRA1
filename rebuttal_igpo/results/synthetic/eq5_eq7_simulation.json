@@ -1,0 +1,35 @@
+{
+  "adaptive_plugin_selection": {
+    "budget": 20,
+    "predicted_objective": 2.8063786657182535,
+    "replicates": 20000,
+    "true_objective": 3.4261169696970364
+  },
+  "eq5_fixed_allocation": {
+    "empirical": 2.310880806612254,
+    "expected": 2.325,
+    "n_parent": 4,
+    "replicates": 20000
+  },
+  "n_parent_1_root": {
+    "empirical": 0.0,
+    "expected": 0.0,
+    "n_parent": 1,
+    "replicates": 20000
+  },
+  "tau_iid": {
+    "empirical": 0.21348372618516814,
+    "expected": 0.21151999999999999,
+    "n_children": 5,
+    "replicates": 20000,
+    "sigma2": 0.6976,
+    "tau_bar2": 0.36
+  },
+  "top_logprob_reuse": {
+    "all_mean": 0.0020792788083181754,
+    "candidate_count": 32,
+    "replicates": 20000,
+    "selected_count": 8,
+    "top_mean": 0.8152691691948495
+  }
+}

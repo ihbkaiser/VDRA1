@@ -14,4 +14,9 @@ venv/
 remote_artifacts/**/hf_cache/
 gh_token
 hf_token
+rebuttal_igpo/docs/listing_*.txt
+rebuttal_igpo/docs/tree_*.txt
+rebuttal_igpo/results/**/*.jsonl.gz
+rebuttal_igpo/results/**/*.offset
+rebuttal_igpo/results/**/*.log
 .worktrees/

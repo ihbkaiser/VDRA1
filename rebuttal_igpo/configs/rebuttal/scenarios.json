@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "status": "protocol_specification_requires_fix_branch_adapter",
+  "igpo_reference_commit": "87e4061c998ebb3a348074a6f70b4599fb9f373e",
+  "seed_list": [42],
+  "equal_budget": {
+    "tree_shape": "666",
+    "per_depth_budget_source": "same resolved branch-factor and queue budget in every scenario",
+    "log_per_update": ["requested_rollouts", "allocated_rollouts", "built_rollouts", "generated_tokens", "scored_tokens"]
+  },
+  "factorial": [
+    {"id": "uniform_no_cap", "allocator": "uniform", "cap": null},
+    {"id": "uniform_cap", "allocator": "uniform", "cap": 6, "cap_budget_policy": "redistribute_and_preserve_total"},
+    {"id": "vdra_no_cap", "allocator": "vdra", "cap": null},
+    {"id": "vdra_cap", "allocator": "vdra", "cap": 6, "cap_budget_policy": "redistribute_and_preserve_total"}
+  ],
+  "diagnostics": [
+    {"id": "eq7_exact", "allocator": "eq7_exact", "integer_rounding": "largest_remainder", "cap": null},
+    {"id": "random_candidate", "allocator": "vdra", "candidate_selection": "random", "paired_with": "top_logprob_candidate"},
+    {"id": "leave_one_out_advantage", "advantage_baseline": "leave_one_out"}
+  ],
+  "common": {
+    "temperature": 0.6,
+    "top_p": 0.95,
+    "max_new_tokens": 1024,
+    "verifier": "source task verifier",
+    "prompt_manifest": "freeze before generation and share across every cell"
+  }
+}

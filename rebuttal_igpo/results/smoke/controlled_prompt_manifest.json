@@ -1,0 +1,271 @@
+{
+  "dataset_dir": "/workspace/src/gear_source_rebuttal/gear/data/math/validation",
+  "dataset_rows": 500,
+  "selection": "Python random.Random(seed).sample without replacement",
+  "seed": 42,
+  "prompts_total": 32,
+  "smoke_prompts": 8,
+  "samples_per_prompt": 6,
+  "temperature": 0.6,
+  "top_p": 0.95,
+  "max_tokens": 1024,
+  "prompt_template": "gear/configs/prompt_library/qwen_MATH.jsonnet tree.question_template",
+  "prompts": [
+    {
+      "ordinal": 0,
+      "row_index": 327,
+      "prompt_id": "train/intermediate_algebra/1206.json",
+      "prompt_sha256": "669641ed884a2a69fed922ba3d28de3b6e013ec5a34a605612144710656b9592",
+      "prompt_chars": 717,
+      "request_seed": 42
+    },
+    {
+      "ordinal": 1,
+      "row_index": 57,
+      "prompt_id": "test/algebra/2662.json",
+      "prompt_sha256": "066bf1f52ef1e77c258ef12a1739ddddfba0b98762768962ec31b7b6c48afae6",
+      "prompt_chars": 416,
+      "request_seed": 43
+    },
+    {
+      "ordinal": 2,
+      "row_index": 12,
+      "prompt_id": "train/intermediate_algebra/83.json",
+      "prompt_sha256": "899c78abc6e92fe06360c164db3cba7a7a21835caf8742f87c6f148a342bd7cc",
+      "prompt_chars": 453,
+      "request_seed": 44
+    },
+    {
+      "ordinal": 3,
+      "row_index": 379,
+      "prompt_id": "test/algebra/1623.json",
+      "prompt_sha256": "8398d014f8ce3da2698dc672e0187fc4ed1b15c891bac4c407200fa8a8a0c25c",
+      "prompt_chars": 432,
+      "request_seed": 45
+    },
+    {
+      "ordinal": 4,
+      "row_index": 140,
+      "prompt_id": "test/counting_and_probability/789.json",
+      "prompt_sha256": "161729978539e85bb426ba390caa125b77f8fee8589295e0920ebd4502f20e6c",
+      "prompt_chars": 880,
+      "request_seed": 46
+    },
+    {
+      "ordinal": 5,
+      "row_index": 125,
+      "prompt_id": "test/algebra/1621.json",
+      "prompt_sha256": "40fc518efa7c79cc8b8373c1c10428de9d27dbde63c7963ac8a235149f96e7db",
+      "prompt_chars": 544,
+      "request_seed": 47
+    },
+    {
+      "ordinal": 6,
+      "row_index": 114,
+      "prompt_id": "train/geometry/721.json",
+      "prompt_sha256": "20649b8358fce5f24e658ab7e8e39c2354bdd88ccd54cea76458d974abbca3d0",
+      "prompt_chars": 966,
+      "request_seed": 48
+    },
+    {
+      "ordinal": 7,
+      "row_index": 71,
+      "prompt_id": "train/algebra/878.json",
+      "prompt_sha256": "57426095c9bec57ce5ea030bf995f89eeba7e5b22d3ef6e3a673812d9802ad2e",
+      "prompt_chars": 522,
+      "request_seed": 49
+    },
+    {
+      "ordinal": 8,
+      "row_index": 377,
+      "prompt_id": "test/precalculus/958.json",
+      "prompt_sha256": "b4605b56331335e3ed653fa098cf0470e6cd176525d289fe02a13f85d54ee6e2",
+      "prompt_chars": 606,
+      "request_seed": 50
+    },
+    {
+      "ordinal": 9,
+      "row_index": 52,
+      "prompt_id": "train/algebra/1853.json",
+      "prompt_sha256": "f806cfa776b1f2b8e83ef9bfe97bc4eddfa794b4eca0c7195793ff458969660e",
+      "prompt_chars": 2621,
+      "request_seed": 51
+    },
+    {
+      "ordinal": 10,
+      "row_index": 346,
+      "prompt_id": "train/algebra/703.json",
+      "prompt_sha256": "97e8ac83d2b8430405c93fa94917851022c39c54d447347ca881968330e2e9f1",
+      "prompt_chars": 646,
+      "request_seed": 52
+    },
+    {
+      "ordinal": 11,
+      "row_index": 456,
+      "prompt_id": "train/algebra/457.json",
+      "prompt_sha256": "be151fd592ec1a52e3dd52812291d9b68c580d082176f683376aae5dd7cbb0b3",
+      "prompt_chars": 942,
+      "request_seed": 53
+    },
+    {
+      "ordinal": 12,
+      "row_index": 279,
+      "prompt_id": "test/intermediate_algebra/165.json",
+      "prompt_sha256": "212c6e8934ccdda595741e2b3fce530bb1089800dd144fff464d0d157c877f67",
+      "prompt_chars": 508,
+      "request_seed": 54
+    },
+    {
+      "ordinal": 13,
+      "row_index": 44,
+      "prompt_id": "test/algebra/611.json",
+      "prompt_sha256": "87049c6a99d8edb3473b15abfb1167d1981451e20a4ae3e78e59c804edc09276",
+      "prompt_chars": 500,
+      "request_seed": 55
+    },
+    {
+      "ordinal": 14,
+      "row_index": 302,
+      "prompt_id": "test/geometry/1103.json",
+      "prompt_sha256": "5beb764eb2262c4ac3b3746bdf34564c56e840bbdb93fa10042ecc9a741aeccf",
+      "prompt_chars": 616,
+      "request_seed": 56
+    },
+    {
+      "ordinal": 15,
+      "row_index": 216,
+      "prompt_id": "test/precalculus/650.json",
+      "prompt_sha256": "bb408036e8f0e8df72f171eababfa2b726f706aa0a9f4ecaa1d76520684251a1",
+      "prompt_chars": 528,
+      "request_seed": 57
+    },
+    {
+      "ordinal": 16,
+      "row_index": 16,
+      "prompt_id": "train/prealgebra/599.json",
+      "prompt_sha256": "09846c2c779981fdf7c1ef04ad4ae680c609e02f41ed79c97fcf1ff287e74f31",
+      "prompt_chars": 462,
+      "request_seed": 58
+    },
+    {
+      "ordinal": 17,
+      "row_index": 15,
+      "prompt_id": "test/prealgebra/1748.json",
+      "prompt_sha256": "e15d0555305e1c192e40e021f944af44ae98411dd32a92bab8dc2d08283d4c54",
+      "prompt_chars": 427,
+      "request_seed": 59
+    },
+    {
+      "ordinal": 18,
+      "row_index": 47,
+      "prompt_id": "train/counting_and_probability/122.json",
+      "prompt_sha256": "35042bf9628a53955f90fafe2b168b873725d3009bd7802504a2fa0ef87a3217",
+      "prompt_chars": 771,
+      "request_seed": 60
+    },
+    {
+      "ordinal": 19,
+      "row_index": 111,
+      "prompt_id": "test/algebra/412.json",
+      "prompt_sha256": "6d9e3f3c0a4ad3e7ad2e40a681319e76a0fc84a3ef7f2844af9de813ba93debe",
+      "prompt_chars": 475,
+      "request_seed": 61
+    },
+    {
+      "ordinal": 20,
+      "row_index": 119,
+      "prompt_id": "train/algebra/2461.json",
+      "prompt_sha256": "22d2cddf4f4e30a2c9dfb0c7e91b4b62f320ccf8e475fc93634cea8af6ac0e1b",
+      "prompt_chars": 491,
+      "request_seed": 62
+    },
+    {
+      "ordinal": 21,
+      "row_index": 258,
+      "prompt_id": "train/number_theory/781.json",
+      "prompt_sha256": "2252dab6100e95a2f0258b355f8b8d59721b2965dceeabe445a3c467e9a40635",
+      "prompt_chars": 535,
+      "request_seed": 63
+    },
+    {
+      "ordinal": 22,
+      "row_index": 308,
+      "prompt_id": "train/geometry/655.json",
+      "prompt_sha256": "884941dfb0b624cf7552c955411cc05ca63e57f37d557bc6f329d68ce4e99309",
+      "prompt_chars": 561,
+      "request_seed": 64
+    },
+    {
+      "ordinal": 23,
+      "row_index": 13,
+      "prompt_id": "train/intermediate_algebra/33.json",
+      "prompt_sha256": "0ecc1526d7ce68c715d03df28ebb0ea844dfa381b394b4f5275a2cc672f4aff3",
+      "prompt_chars": 496,
+      "request_seed": 65
+    },
+    {
+      "ordinal": 24,
+      "row_index": 287,
+      "prompt_id": "test/geometry/603.json",
+      "prompt_sha256": "50da7d021ded0102106daf3d6674782912acfce6d5a5d8891d69b10785ee1eb2",
+      "prompt_chars": 673,
+      "request_seed": 66
+    },
+    {
+      "ordinal": 25,
+      "row_index": 101,
+      "prompt_id": "train/intermediate_algebra/1236.json",
+      "prompt_sha256": "d2d4aa1ec733c1cbc61b5c3ff8d0bf29dc49f82a8e1d9cfd24a60e74da9c76ca",
+      "prompt_chars": 654,
+      "request_seed": 67
+    },
+    {
+      "ordinal": 26,
+      "row_index": 366,
+      "prompt_id": "train/algebra/1654.json",
+      "prompt_sha256": "5b13da3d5bab6c855a3aa023d4da25ac643857af416cee6f9de5e27153a7bccd",
+      "prompt_chars": 1457,
+      "request_seed": 68
+    },
+    {
+      "ordinal": 27,
+      "row_index": 332,
+      "prompt_id": "train/algebra/2233.json",
+      "prompt_sha256": "0ca84b8f19982d28451e07af93c42c9aa8a6bde345e88079ec329ff14bedc8fa",
+      "prompt_chars": 586,
+      "request_seed": 69
+    },
+    {
+      "ordinal": 28,
+      "row_index": 359,
+      "prompt_id": "train/geometry/6145.json",
+      "prompt_sha256": "14e7905c27c1126c04106f5fc68121f483f9e4d2ae2f9640007453eada478654",
+      "prompt_chars": 845,
+      "request_seed": 70
+    },
+    {
+      "ordinal": 29,
+      "row_index": 214,
+      "prompt_id": "train/algebra/165.json",
+      "prompt_sha256": "f695336aaa7c92d898151983c25c13ba2f4242331b046ddd47c4300b915f7a90",
+      "prompt_chars": 454,
+      "request_seed": 71
+    },
+    {
+      "ordinal": 30,
+      "row_index": 112,
+      "prompt_id": "train/number_theory/952.json",
+      "prompt_sha256": "f284adc2ed6e87b532d173ad36b2e3a522b6d4e0e370eceb12b5b6355a3aa390",
+      "prompt_chars": 463,
+      "request_seed": 72
+    },
+    {
+      "ordinal": 31,
+      "row_index": 229,
+      "prompt_id": "test/intermediate_algebra/1423.json",
+      "prompt_sha256": "0bc5e39b701eeeaffcbf32a8af416410a16ca53633d946aedae0b618e10671dd",
+      "prompt_chars": 490,
+      "request_seed": 73
+    }
+  ]
+}
