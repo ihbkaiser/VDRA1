@@ -1,4 +1,4 @@
-from rebuttal_igpo.rebuttal.eval_avgk import build_command
+from rebuttal_igpo.rebuttal.eval_avgk import build_command, main
 
 
 def test_eval_wrapper_uses_supported_source_cli_and_fixed_protocol():
@@ -31,3 +31,17 @@ def test_eval_wrapper_uses_supported_source_cli_and_fixed_protocol():
         "APP_DIRECTORY=/tmp/eval", "APP_EXPERIMENT_NAME=avgk16", "APP_SEED=42"
     ]
     assert "APP_MINIMIZE_STORED_FILES=False" in command
+
+
+def test_eval_wrapper_forwards_source_runtime_options(capsys):
+    result = main([
+        "--script", "/src/scripts/evaluate.sh",
+        "--model", "/checkpoint",
+        "--config", "gear_config",
+        "--datasets", "aime24",
+        "--output-dir", "/tmp/eval",
+        "--debug_mode=true",
+        "--dry-run",
+    ])
+    assert result == 0
+    assert "--debug_mode=true" in capsys.readouterr().out

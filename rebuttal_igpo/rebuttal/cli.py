@@ -8,7 +8,7 @@ from pathlib import Path
 
 from . import alloc_stats, io
 from .bank_analysis import run_a2, run_a4, run_a5
-from .eval_bootstrap import run as run_eval_bootstrap
+from .eval_bootstrap import run as run_eval_bootstrap, summarize_saved_smoke
 from .sim_eq5_eq7 import main as sim_main
 
 
@@ -43,6 +43,12 @@ def main(argv: list[str] | None = None) -> int:
     eval_cmd.add_argument("--samples", type=int, default=16)
     eval_cmd.add_argument("--replicates", type=int, default=1000)
     eval_cmd.add_argument("--seed", type=int, default=42)
+    rate_cmd = sub.add_parser("eval-smoke-rate", help="summarize A7 smoke throughput and projected time")
+    rate_cmd.add_argument("--result-root", required=True)
+    rate_cmd.add_argument("--elapsed-file", required=True)
+    rate_cmd.add_argument("--output", required=True)
+    rate_cmd.add_argument("--prompts-in-full-eval", type=int, default=100)
+    rate_cmd.add_argument("--safety-margin", type=float, default=1.5)
     args = parser.parse_args(argv)
     if args.command == "sim-eq5-eq7":
         return sim_main()
@@ -56,6 +62,16 @@ def main(argv: list[str] | None = None) -> int:
             samples=args.samples,
             replicates=args.replicates,
             seed=args.seed,
+        )
+        print(json.dumps(result, sort_keys=True))
+        return 0
+    if args.command == "eval-smoke-rate":
+        result = summarize_saved_smoke(
+            args.result_root,
+            elapsed_file=args.elapsed_file,
+            output_file=args.output,
+            prompts_in_full_eval=args.prompts_in_full_eval,
+            safety_margin=args.safety_margin,
         )
         print(json.dumps(result, sort_keys=True))
         return 0

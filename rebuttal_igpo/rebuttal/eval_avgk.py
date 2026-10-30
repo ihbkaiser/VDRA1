@@ -99,13 +99,14 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--generation-overlay")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("extra_args", nargs=argparse.REMAINDER)
-    args = parser.parse_args(argv)
+    args, passthrough = parser.parse_known_args(argv)
+    extra_args = [*args.extra_args, *passthrough]
     command = build_command(
         args.script, config=args.config, model=args.model, datasets=args.datasets.split(","),
         output_dir=args.output_dir, samples=args.samples, seed=args.seed,
         tokenizer=args.tokenizer, context_length=args.context_length,
         max_new_tokens=args.max_new_tokens,
-        generation_overlay=args.generation_overlay, extra_args=args.extra_args,
+        generation_overlay=args.generation_overlay, extra_args=extra_args,
     )
     repository_root = Path(args.script).resolve().parent.parent
     return run(command, dry_run=args.dry_run, working_directory=repository_root)

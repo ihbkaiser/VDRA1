@@ -1,6 +1,6 @@
 import pytest
 
-from rebuttal_igpo.rebuttal.eval_bootstrap import paired_bootstrap
+from rebuttal_igpo.rebuttal.eval_bootstrap import paired_bootstrap, summarize_smoke_token_rate
 
 
 def test_paired_eval_bootstrap_matches_prompts_and_reports_difference():
@@ -32,3 +32,14 @@ def test_paired_eval_bootstrap_rejects_prompt_mismatch():
     right = [{"prompt_id": "b", "avg": 1.0, "pass": 1.0}]
     with pytest.raises(ValueError, match="same nonempty prompt identities"):
         paired_bootstrap(left, right, dataset_name="fixture")
+
+
+def test_eval_smoke_rate_uses_recorded_tokens_and_projects_with_margin():
+    result = summarize_smoke_token_rate(
+        [[10, 20], [30, 40]], elapsed_seconds=10.0, prompts_in_full_eval=100,
+        safety_margin=1.5,
+    )
+    assert result["output_tokens"] == 100
+    assert result["smoke_completions"] == 4
+    assert result["output_tokens_per_second"] == pytest.approx(10.0)
+    assert result["projected_full_eval_seconds_with_margin"] == pytest.approx(750.0)

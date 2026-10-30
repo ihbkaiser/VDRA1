@@ -87,6 +87,62 @@ def score_dataset(dataset, *, evaluator_root: str | Path, samples: int = 16) -> 
     return output
 
 
+def summarize_smoke_token_rate(
+    token_counts: Sequence[Sequence[int]],
+    *,
+    elapsed_seconds: float,
+    prompts_in_full_eval: int = 100,
+    safety_margin: float = 1.5,
+) -> dict[str, float | int]:
+    if not token_counts or elapsed_seconds <= 0 or prompts_in_full_eval < 1 or safety_margin < 1:
+        raise ValueError("smoke rows, positive duration/prompt count and margin >= 1 are required")
+    completion_counts = [len(row) for row in token_counts]
+    if not completion_counts or any(count == 0 for count in completion_counts):
+        raise ValueError("every smoke prompt must have at least one completion")
+    outputs = [int(count) for row in token_counts for count in row]
+    if any(count < 0 for count in outputs):
+        raise ValueError("token counts must be nonnegative")
+    total_tokens = sum(outputs)
+    total_completions = len(outputs)
+    return {
+        "smoke_prompts": len(token_counts),
+        "smoke_completions": total_completions,
+        "output_tokens": total_tokens,
+        "elapsed_seconds": float(elapsed_seconds),
+        "output_tokens_per_second": total_tokens / float(elapsed_seconds),
+        "mean_output_tokens_per_completion": total_tokens / total_completions,
+        "projected_full_eval_seconds_with_margin": (
+            float(elapsed_seconds) / len(token_counts) * prompts_in_full_eval * safety_margin
+        ),
+        "prompts_in_full_eval": prompts_in_full_eval,
+        "safety_margin": safety_margin,
+    }
+
+
+def summarize_saved_smoke(
+    result_root: str | Path,
+    *,
+    elapsed_file: str | Path,
+    output_file: str | Path,
+    prompts_in_full_eval: int = 100,
+    safety_margin: float = 1.5,
+) -> dict[str, float | int]:
+    dataset = _load_prediction_dataset(result_root)
+    if "_treetune__candidate_num_tokens" not in dataset.column_names:
+        raise ValueError("saved results lack _treetune__candidate_num_tokens")
+    elapsed_seconds = float(Path(elapsed_file).read_text(encoding="utf-8").strip())
+    result = summarize_smoke_token_rate(
+        dataset["_treetune__candidate_num_tokens"],
+        elapsed_seconds=elapsed_seconds,
+        prompts_in_full_eval=prompts_in_full_eval,
+        safety_margin=safety_margin,
+    )
+    output_file = Path(output_file)
+    output_file.parent.mkdir(parents=True, exist_ok=True)
+    output_file.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return result
+
+
 def paired_bootstrap(
     policy_a: Sequence[Mapping[str, Any]],
     policy_b: Sequence[Mapping[str, Any]],

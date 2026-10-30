@@ -84,6 +84,35 @@ EVAL_CONFIG=/workspace/igpo-eval-compat/configs/qwen1_5b_base_for_MATH_eval.json
 SHARED_TOKENIZER=/workspace/src/vdra_iter_0235_final/checkpoints/ckpt--iter_0235--epoch_1.00--step_0940/hf_pretrained
 VDRA235=/workspace/src/vdra_iter_0235_final/checkpoints/ckpt--iter_0235--epoch_1.00--step_0940/hf_pretrained
 SPO235=/workspace/src/spo_iter_0235_matched/checkpoints/ckpt--iter_0235--epoch_1.00--step_0940/hf_pretrained
+
+# Timed preflight: debug mode uses the first 10 AIME24 rows; these answers are
+# discarded from accuracy analysis. Both policies use the final 16-sample,
+# temperature, top-p, context and token-cap settings.
+mkdir -p "$OUT/a7_smoke"
+/usr/bin/time -f '%e' -o "$OUT/a7_smoke/vdra_elapsed.txt" \
+  /venv/main/bin/python -m rebuttal_igpo.rebuttal.eval_avgk \
+    --script "$EVAL_SCRIPT" --config "$EVAL_CONFIG" --model "$VDRA235" \
+    --datasets aime24 --output-dir "$OUT/a7_smoke/vdra" \
+    --samples 16 --seed 42 --tokenizer "$SHARED_TOKENIZER" \
+    --context-length 4096 --max-new-tokens 1024 \
+    --generation-overlay "$REPO/rebuttal_igpo/configs/eval_generation_0.6_0.95.jsonnet" \
+    --debug_mode=true
+/usr/bin/time -f '%e' -o "$OUT/a7_smoke/spo_elapsed.txt" \
+  /venv/main/bin/python -m rebuttal_igpo.rebuttal.eval_avgk \
+    --script "$EVAL_SCRIPT" --config "$EVAL_CONFIG" --model "$SPO235" \
+    --datasets aime24 --output-dir "$OUT/a7_smoke/spo" \
+    --samples 16 --seed 42 --tokenizer "$SHARED_TOKENIZER" \
+    --context-length 4096 --max-new-tokens 1024 \
+    --generation-overlay "$REPO/rebuttal_igpo/configs/eval_generation_0.6_0.95.jsonnet" \
+    --debug_mode=true
+/venv/main/bin/python -m rebuttal_igpo.rebuttal.cli eval-smoke-rate \
+  --result-root "$OUT/a7_smoke/vdra" --elapsed-file "$OUT/a7_smoke/vdra_elapsed.txt" \
+  --output "$OUT/a7_smoke/vdra_rate.json" --prompts-in-full-eval 100 --safety-margin 1.5
+/venv/main/bin/python -m rebuttal_igpo.rebuttal.cli eval-smoke-rate \
+  --result-root "$OUT/a7_smoke/spo" --elapsed-file "$OUT/a7_smoke/spo_elapsed.txt" \
+  --output "$OUT/a7_smoke/spo_rate.json" --prompts-in-full-eval 100 --safety-margin 1.5
+# Add projected_full_eval_seconds_with_margin from both files before proceeding.
+
 for dataset in aime24 aime25 amc23; do
   /venv/main/bin/python -m rebuttal_igpo.rebuttal.eval_avgk \
     --script "$EVAL_SCRIPT" --config "$EVAL_CONFIG" \
