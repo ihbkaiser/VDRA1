@@ -69,7 +69,32 @@ The job saves a durable `.offset` sidecar, an atomically replaced `.progress.jso
 
 ## A7 evaluation wrapper
 
-The wrapper is `rebuttal/rebuttal/eval_avgk.py`. Before using it, confirm the source evaluator accepts the emitted sample-count and dataset overrides and that the matching SPO checkpoint has a usable tokenizer. It writes only to the specified output directory. Fixed protocol: 16 samples, temperature 0.6, top-p 0.95, seed 42, source MATH verifier. Do not treat the wrapper's command construction test as evidence the evaluation itself ran.
+The wrapper is `rebuttal_igpo/rebuttal/eval_avgk.py`. IGPO `main` does not accept a sample-count override; use a detached worktree at `origin/agent/checkpoint-sweep-evals` commit `5431bc6` (`/workspace/igpo-eval-compat`), which adds `--num-samples` and its Jsonnet override. The selected config's task metrics return `pass@16` and `avg@16`; no unsupported `--metrics` flag is passed. The 30 AIME24, 30 AIME25 and 40 AMC23 rows exist under the read-only archive. Their `data/` links in the detached worktree point to those saved datasets. The SPO235 checkpoint has no tokenizer files; use the VDRA235 tokenizer directory for both policies so the pair shares one tokenizer. VDRA iteration 100 and VDRA235 have identical 151,665-entry tokenizer vocabularies, and SPO235's model config matches the VDRA235 Qwen2 config, but SPO tokenizer identity is unverified. This is a documented comparison limitation, not a recovered training setting. The wrapper sets its working directory to the evaluator checkout and writes to the requested output directory.
+
+Run only after A3/A5 and if measured time fits before the GPU cutoff:
+
+```bash
+cd "$REPO"
+export PYTHONPATH="$REPO"
+export PATH=/workspace/vllm-venv/bin:/venv/main/bin:$PATH
+EVAL_SCRIPT=/workspace/igpo-eval-compat/scripts/evaluate.sh
+EVAL_CONFIG=/workspace/igpo-eval-compat/configs/qwen1_5b_base_for_MATH_eval.jsonnet
+SHARED_TOKENIZER=/workspace/src/vdra_iter_0235_final/checkpoints/ckpt--iter_0235--epoch_1.00--step_0940/hf_pretrained
+/venv/main/bin/python -m rebuttal_igpo.rebuttal.eval_avgk \
+  --script "$EVAL_SCRIPT" --config "$EVAL_CONFIG" \
+  --model /workspace/src/vdra_iter_0235_final/checkpoints/ckpt--iter_0235--epoch_1.00--step_0940/hf_pretrained \
+  --datasets aime24,aime25,amc23 --output-dir "$OUT/a7_iter235/vdra" \
+  --samples 16 --seed 42 --tokenizer "$SHARED_TOKENIZER" --context-length 4096 \
+  --generation-overlay "$REPO/rebuttal_igpo/configs/eval_generation_0.6_0.95.jsonnet"
+/venv/main/bin/python -m rebuttal_igpo.rebuttal.eval_avgk \
+  --script "$EVAL_SCRIPT" --config "$EVAL_CONFIG" \
+  --model /workspace/src/spo_iter_0235_matched/checkpoints/ckpt--iter_0235--epoch_1.00--step_0940/hf_pretrained \
+  --datasets aime24,aime25,amc23 --output-dir "$OUT/a7_iter235/spo" \
+  --samples 16 --seed 42 --tokenizer "$SHARED_TOKENIZER" --context-length 4096 \
+  --generation-overlay "$REPO/rebuttal_igpo/configs/eval_generation_0.6_0.95.jsonnet"
+```
+
+The process environment uses `/venv/main` for the DeepSpeed evaluator (Torch 2.11.0+cu128) and `/workspace/vllm-venv` for the VLLM subprocess (Torch 2.11.0+cu129). `deepspeed==0.19.9` is installed with optional ops disabled; the PATH order below selects its executable from the main venv while `python3` in the VLLM server script resolves to `/workspace/vllm-venv/bin/python3`. CPU-only DeepSpeed launch, VLLM server help, dataset loading and wrapper dry-run passed. The source runtime hard-codes inference pipeline seed `2746318213` in `PolicyIterationRuntime.run_evaluation`; `--seed 42` sets the server/global seed but does not replace that pipeline seed. Both policies use the same fixed pipeline seed, which must be reported as the effective generation seed. Do not treat the wrapper's command construction test as evidence the evaluation ran.
 
 ## A2/A4 bank analyses
 

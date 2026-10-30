@@ -17,6 +17,9 @@ def build_command(
     output_dir: str | Path,
     samples: int = 16,
     seed: int = 0,
+    tokenizer: str | Path | None = None,
+    context_length: int | None = None,
+    max_new_tokens: int | None = None,
     generation_overlay: str | Path | None = None,
     extra_args: Sequence[str] = (),
 ) -> list[str]:
@@ -25,11 +28,16 @@ def build_command(
     if not datasets:
         raise ValueError("at least one evaluation dataset is required")
     command = ["bash", str(script), str(config), model]
+    if tokenizer is not None:
+        command += ["--tokenizer", str(tokenizer)]
+    if context_length is not None:
+        command += ["--context-length", str(context_length)]
+    if max_new_tokens is not None:
+        command += ["--max-new-tokens", str(max_new_tokens)]
     if generation_overlay is not None:
         command += ["--config", str(generation_overlay)]
     command += [
         "--datasets", ",".join(datasets),
-        "--metrics", "once_hit,correct_frac",
         "--num-samples", str(samples),
         *extra_args,
     ]
@@ -38,7 +46,12 @@ def build_command(
     return command
 
 
-def run(command: Sequence[str], *, dry_run: bool = False) -> int:
+def run(
+    command: Sequence[str],
+    *,
+    dry_run: bool = False,
+    working_directory: str | Path | None = None,
+) -> int:
     if dry_run:
         print(" ".join(command))
         return 0
@@ -53,18 +66,24 @@ def run(command: Sequence[str], *, dry_run: bool = False) -> int:
         for assignment in assignments:
             key, value = assignment.split("=", 1)
             env[key] = value
-    return subprocess.run(list(command), check=False, env=env).returncode
+    return subprocess.run(
+        list(command), check=False, env=env,
+        cwd=str(working_directory) if working_directory is not None else None,
+    ).returncode
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("script")
+    parser.add_argument("--script", required=True)
     parser.add_argument("--model", required=True)
     parser.add_argument("--config", required=True)
     parser.add_argument("--datasets", default="aime24,aime25,amc23")
     parser.add_argument("--output-dir", required=True)
     parser.add_argument("--samples", type=int, default=16)
     parser.add_argument("--seed", type=int, default=0)
+    parser.add_argument("--tokenizer")
+    parser.add_argument("--context-length", type=int)
+    parser.add_argument("--max-new-tokens", type=int)
     parser.add_argument("--generation-overlay")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("extra_args", nargs=argparse.REMAINDER)
@@ -72,9 +91,12 @@ def main(argv: Sequence[str] | None = None) -> int:
     command = build_command(
         args.script, config=args.config, model=args.model, datasets=args.datasets.split(","),
         output_dir=args.output_dir, samples=args.samples, seed=args.seed,
+        tokenizer=args.tokenizer, context_length=args.context_length,
+        max_new_tokens=args.max_new_tokens,
         generation_overlay=args.generation_overlay, extra_args=args.extra_args,
     )
-    return run(command, dry_run=args.dry_run)
+    repository_root = Path(args.script).resolve().parent.parent
+    return run(command, dry_run=args.dry_run, working_directory=repository_root)
 
 
 if __name__ == "__main__":

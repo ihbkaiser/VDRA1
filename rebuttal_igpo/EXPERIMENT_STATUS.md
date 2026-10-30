@@ -55,11 +55,11 @@ Running — A0, the CPU analysis helpers, synthetic T checks, and the vLLM smoke
 | A1 | Blocked | No saved trees, demos, queue records or merged edges |
 | T | Completed | Synthetic result plus derivation/assumption note |
 | S | Completed | 826.93 tokens/s; 20,218 MiB peak sampled GPU memory |
-| A3 | Running | 7/112 parents at the 21:57 UTC checkpoint; first-five-node preliminary 2,189 output tokens/s; tracked PID 23238 |
+| A3 | Running | 18/112 parents at the 22:05 UTC checkpoint; first-five-node preliminary 2,189 output tokens/s; tracked PID 23238 |
 | A5 | Ready after A3 | CPU command implemented; uses A3's held-out MC and candidate child values |
 | A2 | Ready after A3 | CPU noise-sensitivity command implemented |
 | A4 | Ready after A3 | CPU TV/value calibration command implemented |
-| A7 | Pending compatibility check | Evaluator protocol fixed; run only if dependencies and cutoff allow |
+| A7 | Ready after A3/A5 | Detached evaluator ref, dataset aliases, dual-env runtime path and 16-sample override pass CPU-only preflight; SPO tokenizer absent, use shared VDRA235 tokenizer and report limitation; source pipeline seed is 2746318213 |
 | X | Deferred pending A7 | Iteration 150 only if time remains; otherwise camera-ready |
 
 ## Publication
