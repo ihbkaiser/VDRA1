@@ -69,7 +69,7 @@ The job saves a durable `.offset` sidecar, an atomically replaced `.progress.jso
 
 ## A7 evaluation wrapper
 
-The wrapper is `rebuttal_igpo/rebuttal/eval_avgk.py`. IGPO `main` does not accept a sample-count override; use a detached worktree at `origin/agent/checkpoint-sweep-evals` commit `5431bc6` (`/workspace/igpo-eval-compat`), which adds `--num-samples` and its Jsonnet override. The selected config's task metrics return `pass@16` and `avg@16`; no unsupported `--metrics` flag is passed. The 30 AIME24, 30 AIME25 and 40 AMC23 rows exist under the read-only archive. Their `data/` links in the detached worktree point to those saved datasets. The SPO235 checkpoint has no tokenizer files. Pass the VDRA235 tokenizer to both the evaluator and a custom vLLM server launcher (`rebuttal_igpo/rebuttal/start_vllm_server_shared_tokenizer.sh`); the upstream server launcher otherwise ignores the tokenizer override and would fail on SPO235. VDRA iteration 100 and VDRA235 have identical 151,665-entry tokenizer vocabularies, and SPO235's model config matches the VDRA235 Qwen2 config, but SPO tokenizer identity is unverified. This is a documented comparison limitation, not a recovered training setting. The wrapper sets its working directory to the evaluator checkout, writes to the requested output directory, explicitly disables W&B, and keeps the saved per-prompt dataset local for bootstrap analysis.
+The wrapper is `rebuttal_igpo/rebuttal/eval_avgk.py`. IGPO `main` does not accept a sample-count override; use a detached worktree at `origin/agent/checkpoint-sweep-evals` commit `5431bc6` (`/workspace/igpo-eval-compat`), which adds `--num-samples` and its Jsonnet override. The selected config's task metrics return `pass@16` and `avg@16`; no unsupported `--metrics` flag is passed. The 30 AIME24, 30 AIME25 and 40 AMC23 rows exist under the read-only archive. Their `data/` links in the detached worktree point to those saved datasets. The SPO235 checkpoint has no tokenizer files. Pass the VDRA235 tokenizer to both the evaluator and a custom vLLM server launcher (`rebuttal_igpo/rebuttal/start_vllm_server_shared_tokenizer.sh`); the upstream server launcher otherwise ignores the tokenizer override and would fail on SPO235. VDRA iteration 100 and VDRA235 have identical 151,665-entry tokenizer vocabularies, and SPO235's model config matches the VDRA235 Qwen2 config, but SPO tokenizer identity is unverified. This is a documented comparison limitation, not a recovered training setting. The wrapper sets its working directory to the evaluator checkout, writes to the requested output directory, explicitly disables W&B, and keeps the saved per-prompt dataset local for bootstrap analysis. The pipeline-only evaluation config must be layered on the source `polIter_qwen1_5b_base_spo_chain_MATH.jsonnet` runtime config so the source entrypoint receives its required runtime, lazy trainer and episode-generator schema. The archived AIME24 split uses `Problem`/`Solution` columns; `eval_aime24_field_names.jsonnet` maps those names into the unchanged source MATH task. Evaluation calls `PolicyIterationRuntime.evaluate` directly; it uses the supplied checkpoint and does not start training. The container has no `/usr/bin/time`, so the timed smoke uses the local monotonic-clock wrapper at `$OUT/time_command.py`.
 
 Run each benchmark separately: the source runtime otherwise writes all selected pipelines to the same `inference_results/test__0__1` directory. Separate invocations keep their per-prompt datasets distinct. The fixed pipeline seed is the same for each policy and dataset. The 1,024-token continuation cap matches the A3 smoke protocol and leaves room for the prompt inside the 4,096-token vLLM context.
 
@@ -77,10 +77,10 @@ Run only after A3/A5 and if measured time fits before the GPU cutoff:
 
 ```bash
 cd "$REPO"
-export PYTHONPATH="$REPO"
+export PYTHONPATH=/workspace/rebuttal_out/peft082:/workspace/rebuttal_out/evaldeps:/workspace/igpo-eval-compat:"$REPO"
 export PATH=/workspace/vllm-venv/bin:/venv/main/bin:$PATH
 EVAL_SCRIPT=/workspace/igpo-eval-compat/scripts/evaluate.sh
-EVAL_CONFIG=/workspace/igpo-eval-compat/configs/qwen1_5b_base_for_MATH_eval.jsonnet
+EVAL_CONFIG=/workspace/igpo-eval-compat/configs/polIter_qwen1_5b_base_spo_chain_MATH.jsonnet,/workspace/igpo-eval-compat/configs/qwen1_5b_base_for_MATH_eval.jsonnet,/workspace/VDRA1/.worktrees/rebuttal/rebuttal_igpo/configs/eval_aime24_field_names.jsonnet
 SHARED_TOKENIZER=/workspace/src/vdra_iter_0235_final/checkpoints/ckpt--iter_0235--epoch_1.00--step_0940/hf_pretrained
 SERVER_OVERLAY="$REPO/rebuttal_igpo/configs/eval_shared_tokenizer_server.jsonnet"
 VDRA235=/workspace/src/vdra_iter_0235_final/checkpoints/ckpt--iter_0235--epoch_1.00--step_0940/hf_pretrained
@@ -90,7 +90,7 @@ SPO235=/workspace/src/spo_iter_0235_matched/checkpoints/ckpt--iter_0235--epoch_1
 # discarded from accuracy analysis. Both policies use the final 16-sample,
 # temperature, top-p, context and token-cap settings.
 mkdir -p "$OUT/a7_smoke"
-/usr/bin/time -f '%e' -o "$OUT/a7_smoke/vdra_elapsed.txt" \
+/venv/main/bin/python "$OUT/time_command.py" "$OUT/a7_smoke/vdra_elapsed.txt" \
   /venv/main/bin/python -m rebuttal_igpo.rebuttal.eval_avgk \
     --script "$EVAL_SCRIPT" --config "$EVAL_CONFIG" --model "$VDRA235" \
     --datasets aime24 --output-dir "$OUT/a7_smoke/vdra" \
@@ -99,7 +99,7 @@ mkdir -p "$OUT/a7_smoke"
     --generation-overlay "$REPO/rebuttal_igpo/configs/eval_generation_0.6_0.95.jsonnet" \
     --server-overlay "$SERVER_OVERLAY" \
     --debug_mode=true
-/usr/bin/time -f '%e' -o "$OUT/a7_smoke/spo_elapsed.txt" \
+/venv/main/bin/python "$OUT/time_command.py" "$OUT/a7_smoke/spo_elapsed.txt" \
   /venv/main/bin/python -m rebuttal_igpo.rebuttal.eval_avgk \
     --script "$EVAL_SCRIPT" --config "$EVAL_CONFIG" --model "$SPO235" \
     --datasets aime24 --output-dir "$OUT/a7_smoke/spo" \
@@ -110,10 +110,10 @@ mkdir -p "$OUT/a7_smoke"
     --debug_mode=true
 /venv/main/bin/python -m rebuttal_igpo.rebuttal.cli eval-smoke-rate \
   --result-root "$OUT/a7_smoke/vdra" --elapsed-file "$OUT/a7_smoke/vdra_elapsed.txt" \
-  --output "$OUT/a7_smoke/vdra_rate.json" --prompts-in-full-eval 100 --safety-margin 1.5
+  --output "$OUT/a7_smoke/vdra_rate.json" --prompts-in-full-eval 100 --safety-margin 1.5 --tokenizer "$SHARED_TOKENIZER"
 /venv/main/bin/python -m rebuttal_igpo.rebuttal.cli eval-smoke-rate \
   --result-root "$OUT/a7_smoke/spo" --elapsed-file "$OUT/a7_smoke/spo_elapsed.txt" \
-  --output "$OUT/a7_smoke/spo_rate.json" --prompts-in-full-eval 100 --safety-margin 1.5
+  --output "$OUT/a7_smoke/spo_rate.json" --prompts-in-full-eval 100 --safety-margin 1.5 --tokenizer "$SHARED_TOKENIZER"
 # Add projected_full_eval_seconds_with_margin from both files before proceeding.
 
 for dataset in aime24 aime25 amc23; do

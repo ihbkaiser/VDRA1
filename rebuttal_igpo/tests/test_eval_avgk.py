@@ -1,8 +1,40 @@
 import os
+import json
 import subprocess
 from pathlib import Path
 
 from rebuttal_igpo.rebuttal.eval_avgk import build_command, main
+
+
+def test_shared_tokenizer_overlay_selects_evaluation_runtime():
+    import _jsonnet
+
+    overlay = Path(__file__).parents[1] / "configs" / "eval_shared_tokenizer_server.jsonnet"
+    config = json.loads(_jsonnet.evaluate_file(
+        str(overlay),
+        ext_vars={"APP_VLLM_SHARED_TOKENIZER_SERVER": "/tmp/shared-tokenizer-server.sh"},
+    ))
+    assert config["runtime_type"] == "policy_iteration"
+    assert config["evaluation_vllm_server"]["script_path"] == "/tmp/shared-tokenizer-server.sh"
+
+
+def test_aime24_overlay_maps_archived_column_names():
+    import _jsonnet
+    import json
+
+    overlay = Path(__file__).parents[1] / "configs" / "eval_aime24_field_names.jsonnet"
+    snippet = f"""
+      local base = {{ inference_pipelines: [
+        {{ inference_name: 'aime24_test', task: {{ problem_field: 'problem', solution_field: 'solution' }} }},
+        {{ inference_name: 'aime25_test', task: {{ problem_field: 'problem', answer_field: 'answer' }} }},
+      ] }};
+      base + (import {json.dumps(str(overlay))})
+    """
+    config = json.loads(_jsonnet.evaluate_snippet("aime24_fields_test", snippet))
+    pipelines = {row["inference_name"]: row for row in config["inference_pipelines"]}
+    assert pipelines["aime24_test"]["task"]["problem_field"] == "Problem"
+    assert pipelines["aime24_test"]["task"]["solution_field"] == "Solution"
+    assert pipelines["aime25_test"]["task"]["problem_field"] == "problem"
 
 
 def test_eval_wrapper_uses_supported_source_cli_and_fixed_protocol():

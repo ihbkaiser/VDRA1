@@ -2,7 +2,7 @@
 
 ## Status
 
-Running — A0, the CPU analysis helpers, synthetic T checks, and the vLLM smoke are complete. The source GEAR estimator passes a one-parent GPU integration check. A3's pre-registered 16-prompt/112-parent bank is collecting in the tracked foreground session (PID 23238, started 2026-10-30 21:50 UTC); at 2026-10-30 23:06 UTC, 90/112 parent records are durable outside Git at `/workspace/rebuttal_out/a3_iter100/`.
+Running — A0, CPU helpers, synthetic T checks, the vLLM smoke, A3, and A2/A4/A5 are complete. A7 matched timed smokes are complete; the full paired 4K evaluation fits the remaining GPU window. The source GEAR estimator passed its one-parent GPU integration check.
 
 ## Decisions
 
@@ -17,6 +17,9 @@ Running — A0, the CPU analysis helpers, synthetic T checks, and the vLLM smoke
 - A7 protocol remains fixed: archived VDRA235 and matched SPO235; AIME24/AIME25/AMC23; 16 samples; temperature 0.6; top-p 0.95; seed 42; 1,024-token continuation cap in a 4,096-token context; source verifier. Run it only if evaluator compatibility is confirmed and measured time fits before 2026-11-01 01:00 UTC.
 - The stock evaluator's vLLM launcher only passed `--model`, so SPO235's missing tokenizer would still have failed despite the task/tokenizer override. Added a `script_path` Jsonnet overlay and a local launcher that passes `APP_EVAL_TOKENIZER` directly to vLLM and binds to loopback. Overlay resolution, mocked server argument construction, the evaluator dry-run and targeted tests pass; neither `treetune/` nor the detached source worktree was modified.
 - A7 will use six separate invocations (one model × one benchmark each) because the source runtime stores selected pipelines under the same `inference_results/test__0__1` path. Each wrapper run explicitly keeps result datasets under its requested local output directory and sets `WANDB_MODE=disabled`; this allows paired prompt-level bootstrap while avoiding remote generation uploads. `eval_bootstrap.py` reuses the evaluator's MATH parser/grader, hashes prompt/reference identity, checks the paired rows match, and computes 1,000-replicate prompt-cluster intervals for avg@16, Pass@16 and their VDRA-minus-SPO differences.
+- Ruling: the plan's standalone `qwen1_5b_base_for_MATH_eval.jsonnet` is pipeline-only and fails `Runtime.from_params` without `runtime_type`, `trainer`, and `episode_generator`. Compose it after the source `polIter_qwen1_5b_base_spo_chain_MATH.jsonnet`, whose required trainer/episode-generator entries are lazy; the evaluation method directly evaluates the provided checkpoint. This costs a config-level deviation from the plan; if the lazy components are unexpectedly instantiated, the source runtime config may have evaluation-side effects that need a bounded audit.
+- Ruling: archived AIME24 columns are `Problem`/`Solution`, while its source task config expects lowercase names. Apply the local field-name overlay only to AIME24; AIME25 and AMC23 schemas already match. This adds a config adaptation; if the archive schema was misread, task prompts or extracted references could change. CPU normalization now succeeds for all three archived datasets.
+- Ruling: the source tree strategy writes candidate answers but leaves `num_tokens` absent, so `_treetune__candidate_num_tokens` is empty. Count visible answer text with the shared checkpoint tokenizer for the smoke throughput estimate; use measured wall time for the projection. This approximates actual generated tokens because EOS/stop tokens may not appear in visible text; if tokenization differs, reported tokens/s is biased, though elapsed-time projection is unchanged.
 - Before the full A7 run, run matched 10-prompt debug smokes (16 samples, temperature 0.6, top-p 0.95, 1,024 max new tokens, 4,096 context) on both iteration-235 policies. The CLI reads saved candidate-token counts and `/usr/bin/time` wall seconds, then estimates the 100-prompt-per-policy workload with a 1.5× margin. Use the measured sum to confirm the deadline fit before launching all six benchmark-policy runs.
 
 ## Setup and A0 audit — complete
@@ -33,7 +36,7 @@ Running — A0, the CPU analysis helpers, synthetic T checks, and the vLLM smoke
 
 - Added `rebuttal/` helpers for streaming artifact reads, allocation replay, A1 summaries, cost accounting, metrics and prompt-clustered bootstrap, resumable node banks, paired A7 evaluation/bootstrap, CLI and synthetic Eq. (5)/(7) checks.
 - `allocate_gear_as_trained` matches the supplied snapshot allocator on synthetic queues for floor-only, remainder and fallback paths. No stored-tree allocation match rate is computable because the archives contain no trees.
-- `pytest -q rebuttal_igpo/tests`: **35 passed** on 2026-10-30. A7's paired bootstrap, measured token-rate summary, wrapper persistence/offline settings, evaluator-specific options and tokenizer-aware server launcher are covered; a CPU fixture loaded the exact source MATH verifier and exercised the saved-result scoring path.
+- `pytest -q rebuttal_igpo/tests`: **37 passed** on 2026-10-30. A7's paired bootstrap, measured token-rate summary, wrapper persistence/offline settings, evaluator-specific options and tokenizer-aware server launcher are covered; a CPU fixture loaded the exact source MATH verifier and exercised the saved-result scoring path.
 - A0 is complete as an evidence inventory. A1 is **Blocked: no stored trees/demos/edges**. A6 is **Blocked: no paper/supplement or matching run logs/timings**. Details are in `docs/COMPUTE_AND_CONSISTENCY_AUDIT.md`.
 - T synthetic checks and `DERIVATION_EQ5_EQ7.md` are complete. The simulation values are labelled synthetic and are saved at `/workspace/rebuttal_out/eq5_eq7_simulation.json`.
 
@@ -48,7 +51,7 @@ Running — A0, the CPU analysis helpers, synthetic T checks, and the vLLM smoke
 - The first detached shell launch exited before producing a bank and left an empty log; it was not treated as completed work. The same deterministic command is now running as a tracked tool session, with stdout/stderr in `/workspace/rebuttal_out/a3_iter100.log`.
 - First measured A3 checkpoint at 2026-10-30 21:55 UTC: 5/112 parents in 268.8 seconds, 581,277 MC/child output tokens plus 7,200 proxy-pilot tokens, and 578,756 prompt-logprob scored tokens. Preliminary end-to-end generated throughput is about 2,189 tokens/s (includes proxy pilots; five-node sample only); current sampled GPU memory was 20,908 MiB. At this pace the remaining bank projects to about 1.6 hours plus setup; retain the original 19.3-hour 1.5× conservative bound until more nodes confirm the rate.
 - CPU analysis commands for A2/A4/A5 are implemented. A2 uses prompt-cluster bootstrap and independent R_b variance; A4 reports child-pair TV/value calibration and approximate MC noise bands; A5 emits equal-budget allocation comparisons and documents the MC split-half limits.
-- A7 CPU preflight: the wrapper dry-run includes the shared-tokenizer server overlay, per-run local persistence, disabled W&B and the `--debug_mode=true` pass-through; the merged source config resolves the launcher path, 4,096 context, 1,024 max-new-tokens and 16 samples. The custom launcher's tokenizer/loopback arguments were confirmed with a mocked `python3`. The detached source evaluator's result format and MATH verifier were checked on a synthetic row built from the archived AIME24 dataset. The smoke-rate helper summarizes token counts and projects 100 prompts with a 1.5× margin. These checks are implementation preflight only, not an A7 score or GPU timing.
+- A7 CPU preflight: the wrapper dry-run includes the shared-tokenizer server overlay, per-run local persistence, disabled W&B and the `--debug_mode=true` pass-through; the merged source config resolves the launcher path, 4,096 context, 1,024 max-new-tokens and 16 samples. The custom launcher's tokenizer/loopback arguments were confirmed with a mocked `python3`. The detached source evaluator's result format and MATH verifier were checked on a synthetic row built from the archived AIME24 dataset. The smoke-rate helper uses recorded token counts when available and otherwise re-tokenizes visible candidate answers with the shared tokenizer; here the source token-count column was empty. The 100-prompt projection uses elapsed time scaled by 10× with a 1.5× margin. Two compatibility packages missing from `/venv/main` are installed locally under `/workspace/rebuttal_out` (`peft==0.8.2`, `jsonlines==4.0.0`) and prepended through `PYTHONPATH`; the global PyTorch environment was not modified. The standalone evaluation config also lacked the required runtime and lazy trainer/episode-generator schema; the smoke now composes it over the source `polIter_qwen1_5b_base_spo_chain_MATH.jsonnet` runtime config. The runtime construction preflight selected `PolicyIterationRuntime` and one AIME24 pipeline without starting model inference. The container lacks `/usr/bin/time`; a monotonic-clock wrapper records elapsed time. These checks are compatibility preflight only, not an A7 score or measured smoke throughput.
 
 ## Experiment queue
 
@@ -59,11 +62,11 @@ Running — A0, the CPU analysis helpers, synthetic T checks, and the vLLM smoke
 | A1 | Blocked | No saved trees, demos, queue records or merged edges |
 | T | Completed | Synthetic result plus derivation/assumption note |
 | S | Completed | 826.93 tokens/s; 20,218 MiB peak sampled GPU memory |
-| A3 | Running | 90/112 parents at the 23:06 UTC checkpoint; first-90-record pace is about 50 s/parent (naive ~18 min remaining); tracked PID 23238 |
-| A5 | Ready after A3 | CPU command implemented; uses A3's held-out MC and candidate child values |
-| A2 | Ready after A3 | CPU noise-sensitivity command implemented |
-| A4 | Ready after A3 | CPU TV/value calibration command implemented |
-| A7 | Ready after A3/A5 | Detached evaluator ref, dataset aliases, dual-env runtime path, 16-sample override, local saved results, shared-tokenizer vLLM launcher and paired bootstrap pass CPU-only preflight; SPO tokenizer absent, use shared VDRA235 tokenizer and report limitation; effective source pipeline seed is 2746318213 |
+| A3 | Completed | 112/112 parents; 12,029,177 generated continuation tokens in 5,640.6 s; measured 2,674 continuation tokens/s during generation requests; bank SHA-256 and size are in `results/MANIFEST.md` |
+| A5 | Completed | 27 allocation summaries, 432 prompt-strategy rows and 448 held-out edges; interpretations are descriptive MC proxies |
+| A2 | Completed | Five proxy-noise levels × 50 repetitions over 16 prompt clusters; compact outputs published |
+| A4 | Completed | 672 candidate pairs; published calibration output; child samples are reused, so this is descriptive |
+| A7 | Running | Timed smokes project 3,399.5 s (~57 min) for the full matched evaluation with 1.5× margin. The first full run (VDRA235/AIME24) started at 2026-10-30 23:42 UTC; six policy-by-dataset runs proceed sequentially. |
 | X | Deferred pending A7 | Iteration 150 only if time remains; otherwise camera-ready |
 
 ## Publication
@@ -71,3 +74,19 @@ Running — A0, the CPU analysis helpers, synthetic T checks, and the vLLM smoke
 - The destination repository is public; publishing rebuttal code/results can compromise double-blind anonymity. Repository visibility was not changed.
 - Local commits `f8e28ee625fc1c1c759702c83246dc8743018f37`, `5c16176`, and `b0cdec9` contain the audit, CPU helpers, configs, smoke summary, tests, A2/A4/A5 analyses and A7 preflight wrapper. Three push attempts to `origin/rebuttal` were rejected with HTTP 403: `Permission to ihbkaiser/VDRA1.git denied to ihbkaiser`; the branch remains absent and no remote commit was created. Continue locally and retry at the next publication checkpoint.
 - `gh_token` and `hf_token` are ignored, mode 600, untracked and absent from `git log --all -p`; the documented history scan returns no matches. Before each push, staged files are checked for credentials, files over 20 MiB and raw listings/tree dumps. No credential was printed or staged.
+
+## Completed A3 bank and diagnostics (2026-10-30 23:26 UTC)
+
+- A3 completed 112 parent nodes across 16 pre-registered prompts. The bank contains 12,029,177 continuation tokens, took 5,640.6 seconds wall time, and averaged 2,674 generated continuation tokens/s during generation requests. It is 7,345,343 bytes compressed, SHA-256 `4a86ea455e35fe68502f04c7d59a380479496d43a8cd110ac0cf9bfa1ac3a3ea`; raw generations remain outside Git.
+- A2 completed 80 per-prompt/noise rows and five aggregate noise levels (50 repetitions per prompt); A4 completed 672 pair rows; A5 completed 432 prompt-strategy rows, 27 strategy/bound summaries and 448 held-out edges. Compact outputs are in `results/a3_iter100/analysis/` and listed in the manifest.
+- The frozen probe is not a training replay. A4 reuses the child samples for descriptive calibration; A5 `L_node`, `L_edge` and `L_heldout` are finite-MC proxies, not true gradient error.
+
+- A7 launch debugging (2026-10-30): Five launcher/config attempts failed before inference because `/usr/bin/time`, `peft`, and `jsonlines` were missing and the standalone pipeline config omitted required runtime fields. A sixth attempt loaded vLLM but stopped before sampling because AIME24 columns are title-cased. These are now resolved. The VDRA235 debug smoke completed 10 prompts × 16 samples in 111.315 s (161,539 visible output tokens; 1,451 tokens/s); SPO235 completed in 115.316 s (160,875 visible output tokens; 1,395 tokens/s). Token counts were reconstructed from saved answer text because the source field was empty. The combined 100-prompt projection with 1.5× margin is 3,399.5 s (~57 min); no smoke accuracy figures will be treated as benchmark results.
+
+## A7 timed smoke gate (2026-10-30 23:42 UTC)
+
+- VDRA235: 10 AIME24 prompts × 16 samples, 111.315 s, 161,539 visible answer tokens, 1,451 tokens/s, projected 100-prompt time with 1.5× margin 1,669.7 s.
+- SPO235: same smoke protocol, 115.316 s, 160,875 visible answer tokens, 1,395 tokens/s, projected 100-prompt time with 1.5× margin 1,729.7 s.
+- Combined projection: 3,399.5 s (~57 min), which fits with more than 24 hours before the hard cutoff. The six full policy-by-dataset evaluations began at 2026-10-30 23:42 UTC, sequentially over AIME24/AIME25/AMC23. Debug-only smoke metrics are excluded from accuracy analysis.
+
+- A7 full evaluation started in a detached logged process (PID 41374) at 2026-10-30 23:42 UTC after the timed-smoke gate. Current unit: VDRA235 × AIME24. Outputs and logs remain under `/workspace/rebuttal_out/a7_iter235/`; no raw predictions are staged.

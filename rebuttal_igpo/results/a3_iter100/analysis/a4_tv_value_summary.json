@@ -1,0 +1,69 @@
+{
+  "n_pairs": 672,
+  "spearman_tv_vs_absolute_value_gap": -0.049323444846912576,
+  "top_quartile_overlap": 0.17261904761904762,
+  "calibration_bins": [
+    {
+      "bin": 0,
+      "n": 67,
+      "mean_proxy": 0.0,
+      "mean_target": 0.043843283582089554
+    },
+    {
+      "bin": 1,
+      "n": 67,
+      "mean_proxy": 0.0,
+      "mean_target": 0.06343283582089553
+    },
+    {
+      "bin": 2,
+      "n": 67,
+      "mean_proxy": 0.0,
+      "mean_target": 0.05783582089552239
+    },
+    {
+      "bin": 3,
+      "n": 67,
+      "mean_proxy": 3.707531328318654e-27,
+      "mean_target": 0.06436567164179105
+    },
+    {
+      "bin": 4,
+      "n": 68,
+      "mean_proxy": 3.340880229945519e-20,
+      "mean_target": 0.04963235294117647
+    },
+    {
+      "bin": 5,
+      "n": 67,
+      "mean_proxy": 4.790061188403096e-14,
+      "mean_target": 0.10634328358208955
+    },
+    {
+      "bin": 6,
+      "n": 67,
+      "mean_proxy": 8.040282827269076e-11,
+      "mean_target": 0.051305970149253734
+    },
+    {
+      "bin": 7,
+      "n": 67,
+      "mean_proxy": 6.475048222425139e-08,
+      "mean_target": 0.07742537313432836
+    },
+    {
+      "bin": 8,
+      "n": 67,
+      "mean_proxy": 2.2761721956828173e-05,
+      "mean_target": 0.016791044776119403
+    },
+    {
+      "bin": 9,
+      "n": 68,
+      "mean_proxy": 0.0016568607927732373,
+      "mean_target": 0.03125
+    }
+  ],
+  "target_definition": "absolute difference of two candidate child means from their fixed 16-completion reward samples",
+  "independence_note": "child sample values are reused for this descriptive calibration; this is not an independent test set"
+}

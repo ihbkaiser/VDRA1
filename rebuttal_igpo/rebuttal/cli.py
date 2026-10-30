@@ -49,6 +49,7 @@ def main(argv: list[str] | None = None) -> int:
     rate_cmd.add_argument("--output", required=True)
     rate_cmd.add_argument("--prompts-in-full-eval", type=int, default=100)
     rate_cmd.add_argument("--safety-margin", type=float, default=1.5)
+    rate_cmd.add_argument("--tokenizer")
     args = parser.parse_args(argv)
     if args.command == "sim-eq5-eq7":
         return sim_main()
@@ -72,6 +73,7 @@ def main(argv: list[str] | None = None) -> int:
             output_file=args.output,
             prompts_in_full_eval=args.prompts_in_full_eval,
             safety_margin=args.safety_margin,
+            tokenizer_path=args.tokenizer,
         )
         print(json.dumps(result, sort_keys=True))
         return 0

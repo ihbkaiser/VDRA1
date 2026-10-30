@@ -1,6 +1,20 @@
 import pytest
 
+from rebuttal_igpo.rebuttal import eval_bootstrap
 from rebuttal_igpo.rebuttal.eval_bootstrap import paired_bootstrap, summarize_smoke_token_rate
+
+
+def test_smoke_retokenization_counts_visible_candidate_text():
+    class WhitespaceTokenizer:
+        def encode(self, text, *, add_special_tokens=False):
+            assert add_special_tokens is False
+            return text.split()
+
+    counts = eval_bootstrap.recount_candidate_answer_tokens(
+        [["one two", "three"], ["", "four five six"]],
+        WhitespaceTokenizer(),
+    )
+    assert counts == [[2, 1], [0, 3]]
 
 
 def test_paired_eval_bootstrap_matches_prompts_and_reports_difference():
@@ -43,3 +57,4 @@ def test_eval_smoke_rate_uses_recorded_tokens_and_projects_with_margin():
     assert result["smoke_completions"] == 4
     assert result["output_tokens_per_second"] == pytest.approx(10.0)
     assert result["projected_full_eval_seconds_with_margin"] == pytest.approx(750.0)
+    assert result["token_count_source"] == "recorded"

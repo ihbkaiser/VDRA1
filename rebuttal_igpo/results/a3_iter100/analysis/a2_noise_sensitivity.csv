@@ -1,0 +1,6 @@
+allocation_rule,budget_rule,heldout_J_ci_high,heldout_J_ci_low,mean_heldout_J_Rb,mean_rollout_share_reassigned,n_prompt_clusters,noise_sigma,reassigned_ci_high,reassigned_ci_low,repetitions_per_prompt
+eq7_exact on noisy proxy; evaluated on R_b sample variance,6 * nodes per prompt; lower=1; uncapped,0.34875964080931954,0.0806997710980593,0.19250267840720403,0.0,16,0.0,0.0,0.0,50
+eq7_exact on noisy proxy; evaluated on R_b sample variance,6 * nodes per prompt; lower=1; uncapped,0.3418610667440477,0.07494850368222054,0.1911998043492965,0.04086309523809523,16,0.25,0.04410714285714285,0.03767857142857143,50
+eq7_exact on noisy proxy; evaluated on R_b sample variance,6 * nodes per prompt; lower=1; uncapped,0.343703282866862,0.07096750440703237,0.19204489245746167,0.07979166666666666,16,0.5,0.0844345238095238,0.075,50
+eq7_exact on noisy proxy; evaluated on R_b sample variance,6 * nodes per prompt; lower=1; uncapped,0.3435365522241181,0.08132766617905757,0.2023848615927747,0.15395833333333334,16,1.0,0.16357142857142856,0.1444642857142857,50
+eq7_exact on noisy proxy; evaluated on R_b sample variance,6 * nodes per prompt; lower=1; uncapped,0.4031564865983145,0.08637401580104503,0.23131294518599516,0.2855357142857143,16,2.0,0.30541666666666667,0.2623809523809524,50

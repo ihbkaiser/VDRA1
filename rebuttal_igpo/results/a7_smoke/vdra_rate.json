@@ -1,0 +1,12 @@
+{
+  "elapsed_seconds": 111.314528,
+  "mean_output_tokens_per_completion": 1009.61875,
+  "output_tokens": 161539,
+  "output_tokens_per_second": 1451.1942232733538,
+  "projected_full_eval_seconds_with_margin": 1669.71792,
+  "prompts_in_full_eval": 100,
+  "safety_margin": 1.5,
+  "smoke_completions": 160,
+  "smoke_prompts": 10,
+  "token_count_source": "re-tokenized visible candidate answer text"
+}

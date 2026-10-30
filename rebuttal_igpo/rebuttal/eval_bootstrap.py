@@ -87,13 +87,29 @@ def score_dataset(dataset, *, evaluator_root: str | Path, samples: int = 16) -> 
     return output
 
 
+def recount_candidate_answer_tokens(
+    candidate_answers: Sequence[Sequence[str]], tokenizer: Any
+) -> list[list[int]]:
+    """Count visible completion text when the evaluator did not save token counts."""
+    counts: list[list[int]] = []
+    for row_index, answers in enumerate(candidate_answers):
+        row_counts = []
+        for answer in answers:
+            if not isinstance(answer, str):
+                raise ValueError(f"candidate answer at row {row_index} is not text")
+            row_counts.append(len(tokenizer.encode(answer, add_special_tokens=False)))
+        counts.append(row_counts)
+    return counts
+
+
 def summarize_smoke_token_rate(
     token_counts: Sequence[Sequence[int]],
     *,
     elapsed_seconds: float,
     prompts_in_full_eval: int = 100,
     safety_margin: float = 1.5,
-) -> dict[str, float | int]:
+    token_count_source: str = "recorded",
+) -> dict[str, float | int | str]:
     if not token_counts or elapsed_seconds <= 0 or prompts_in_full_eval < 1 or safety_margin < 1:
         raise ValueError("smoke rows, positive duration/prompt count and margin >= 1 are required")
     completion_counts = [len(row) for row in token_counts]
@@ -116,6 +132,7 @@ def summarize_smoke_token_rate(
         ),
         "prompts_in_full_eval": prompts_in_full_eval,
         "safety_margin": safety_margin,
+        "token_count_source": token_count_source,
     }
 
 
@@ -126,16 +143,37 @@ def summarize_saved_smoke(
     output_file: str | Path,
     prompts_in_full_eval: int = 100,
     safety_margin: float = 1.5,
-) -> dict[str, float | int]:
+    tokenizer_path: str | Path | None = None,
+) -> dict[str, float | int | str]:
     dataset = _load_prediction_dataset(result_root)
     if "_treetune__candidate_num_tokens" not in dataset.column_names:
         raise ValueError("saved results lack _treetune__candidate_num_tokens")
+    token_counts = dataset["_treetune__candidate_num_tokens"]
+    candidate_answers = dataset["_treetune__candidate_answers"]
+    recorded_counts_complete = (
+        len(token_counts) == len(candidate_answers)
+        and all(len(counts) == len(answers) for counts, answers in zip(token_counts, candidate_answers))
+    )
+    token_count_source = "recorded candidate token counts"
+    if not recorded_counts_complete:
+        if tokenizer_path is None:
+            raise ValueError(
+                "saved candidate token counts are incomplete; pass tokenizer_path to count visible answers"
+            )
+        from transformers import AutoTokenizer
+
+        tokenizer = AutoTokenizer.from_pretrained(
+            str(tokenizer_path), local_files_only=True
+        )
+        token_counts = recount_candidate_answer_tokens(candidate_answers, tokenizer)
+        token_count_source = "re-tokenized visible candidate answer text"
     elapsed_seconds = float(Path(elapsed_file).read_text(encoding="utf-8").strip())
     result = summarize_smoke_token_rate(
-        dataset["_treetune__candidate_num_tokens"],
+        token_counts,
         elapsed_seconds=elapsed_seconds,
         prompts_in_full_eval=prompts_in_full_eval,
         safety_margin=safety_margin,
+        token_count_source=token_count_source,
     )
     output_file = Path(output_file)
     output_file.parent.mkdir(parents=True, exist_ok=True)
