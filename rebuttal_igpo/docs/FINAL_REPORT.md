@@ -2,7 +2,7 @@
 
 ## Trạng thái xuất bản và kiểm tra
 
-Toàn bộ công việc đã commit trên nhánh cục bộ `rebuttal`; kết quả iter150 nằm trong commit `0cd2909`, báo cáo này được commit sau đó. Tám lần push tới `origin/rebuttal` đều bị GitHub từ chối HTTP 403 (`Permission to ihbkaiser/VDRA1.git denied to ihbkaiser`), nên không có commit URL từ xa. Lần thử HTTPS gần nhất, dùng `gh_token` mới, là 2026-10-31 09:20 UTC và vẫn bị từ chối. Lúc 09:23 UTC, không có SSH key/agent hoặc GitHub CLI; GitHub connector cũng bị 403 khi tạo tree/ref. Việc publish đang bị chặn cho tới khi tài khoản có quyền ghi vào repository đích; không lên lịch thử lại tự động. `/workspace` không phải volume bền vững trên instance này.
+Toàn bộ công việc đã commit trên nhánh cục bộ `rebuttal`; kết quả iter150 nằm trong commit `0cd2909`, báo cáo này được commit sau đó. Chín lần push tới `origin/rebuttal` đều bị GitHub từ chối HTTP 403 (`Permission to ihbkaiser/VDRA1.git denied to ihbkaiser`), nên không có commit URL từ xa. Lần thử gần nhất lúc 09:25 UTC dùng GitHub CLI 2.103.3 làm credential helper với `GH_TOKEN`; tài khoản xác thực là `ihbkaiser` nhưng Git vẫn trả 403. Token không được lưu bởi `gh`. SSH key/agent không có; GitHub connector cũng bị 403 khi tạo tree/ref. Việc publish đang bị chặn cho tới khi tài khoản có quyền ghi vào repository đích; không lên lịch thử lại tự động. `/workspace` không phải volume bền vững trên instance này.
 
 `gh_token` và `hf_token` đang bị ignore, untracked và không có trong lịch sử commit. Bộ kiểm thử CPU cuối cùng: `pytest -q rebuttal_igpo/tests` → 41 passed.
 
