@@ -68,12 +68,12 @@ Running — A0, CPU helpers, T, S, A3, A2/A4/A5 and A7 are complete. The iterati
 | A2 | Completed | Five proxy-noise levels × 50 repetitions over 16 prompt clusters; compact outputs published |
 | A4 | Completed | 672 candidate pairs; published calibration output; child samples are reused, so this is descriptive |
 | A7 | Completed | Six evaluations and paired 1,000-replicate bootstrap completed; compact summaries are published under `results/a7_iter235/analysis/`. |
-| X | Running, iter150 32/112 | Iteration 50 completed 112/112 in 5,853.9 s; iter150 is 32/112 after 1,366.7 s. Conservative 1.5× smoke projections total 13.23 h; about 23 h remain to the hard GPU cutoff. |
+| X | Running, iter150 34/112 | Iteration 50 completed 112/112 in 5,853.9 s; iter150 is 34/112 after 1,448.4 s. Conservative 1.5× smoke projections total 13.23 h; about 23 h remain to the hard GPU cutoff. |
 
 ## Publication
 
 - The destination repository is public; publishing rebuttal code/results can compromise double-blind anonymity. Repository visibility was not changed.
-- The initial local commits and later experiment commits remain on branch `rebuttal`. Four actual push attempts to `origin/rebuttal` have returned HTTP 403: `Permission to ihbkaiser/VDRA1.git denied to ihbkaiser`; the remote branch remains absent and no remote commit was created. The latest retry was at 2026-10-31 00:06 UTC; next retry is due around 02:06 UTC. Continue locally. A separate initial attempt used the wrong askpass path and never contacted GitHub; the corrected helper at `/workspace/VDRA1/.git/askpass.sh` was used for the 403 retry.
+- The local commits remain on branch `rebuttal` through `500876b`. Five push attempts to `origin/rebuttal` have returned HTTP 403: `Permission to ihbkaiser/VDRA1.git denied to ihbkaiser`; the remote branch remains absent and no remote commit was created. The latest retry was at 2026-10-31 02:06 UTC; next retry is due around 04:06 UTC. Continue locally. A separate initial attempt used the wrong askpass path and never contacted GitHub; the corrected helper at `/workspace/VDRA1/.git/askpass.sh` was used for the 403 retry.
 - `gh_token` and `hf_token` are ignored, mode 600, untracked and absent from `git log --all -p`; the documented history scan returns no matches. Before each push, staged files are checked for credentials, files over 20 MiB and raw listings/tree dumps. No credential was printed or staged.
 
 ## Completed A3 bank and diagnostics (2026-10-30 23:26 UTC)
@@ -105,9 +105,9 @@ Running — A0, CPU helpers, T, S, A3, A2/A4/A5 and A7 are complete. The iterati
 - Iteration 50 completed 112/112 parents in 5,853.9 s (4,698.7 s of continuation calls; 13,327,123 continuation tokens; 2,836 continuation tokens/s). The gzip bank is 8,440,187 bytes, SHA-256 `d7f494ec0a237d555d3e2f318340892887fa61b2292eba86deff4befb488a62d`, and remains local. A2/A4/A5 CPU analyses completed and compact CSV/JSON files are published under `results/x_iter050/analysis/`.
 - Iteration 150 launched sequentially at 2026-10-31 01:41 UTC under tracked session PID 62009, after the iteration-50 vLLM process exited. The first durable parent was recorded at 01:42 UTC.
 
-## X iteration-150 progress (2026-10-31 02:04 UTC)
+## X iteration-150 progress (2026-10-31 02:06 UTC)
 
-- The iter150 bank has 32/112 durable parent records after 1,366.7 seconds. vLLM remains healthy on loopback, with the probe using the checkpoint-specific `iter150` alias. At the running average, the bank is projected to finish in about 57 more minutes; this remains within the smoke-based 6.72-hour budget and the hard cutoff.
+- The iter150 bank has 34/112 durable parent records after 1,448.4 seconds. vLLM remains healthy on loopback, with the probe using the checkpoint-specific `iter150` alias. At the running average, the bank is projected to finish in about 55 more minutes; this remains within the smoke-based 6.72-hour budget and the hard cutoff.
 
 ## X preflight (2026-10-30 23:47 UTC)
 
