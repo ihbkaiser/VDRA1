@@ -2,7 +2,7 @@
 
 ## Status
 
-Running — A0, CPU helpers, synthetic T checks, the vLLM smoke, A3, and A2/A4/A5 are complete. A7 matched timed smokes are complete; the full paired 4K evaluation fits the remaining GPU window. The source GEAR estimator passed its one-parent GPU integration check.
+Running — A0, CPU helpers, T, S, A3, A2/A4/A5 and A7 are complete. The iteration-50 X bank is running at its full pre-registered scope; iteration 150 is queued behind it. Both timed-smoke projections fit the GPU window.
 
 ## Decisions
 
@@ -14,13 +14,14 @@ Running — A0, CPU helpers, synthetic T checks, the vLLM smoke, A3, and A2/A4/A
 - The probe's TV estimator uses the archived GEAR snapshot implementation with explicit settings: γ=0.9, hierarchical K=16 (4 first-phase candidates), 120/60-token horizons, half-factor enabled. This tests the snapshot estimator only; it does not establish that the archived checkpoints used those settings.
 - Source MATH reward extraction/grading is used with the snapshot's `math_inplace_no_answer_prefix` task behavior. Unfinished responses receive 0, matching the Qwen config. The full `MATHRewardFunction` module cannot import without the training-only DeepSpeed dependency; its wrapper behavior was reproduced around the imported source `MATH` task methods and checked on a known answer.
 - A3/A5 uses 16 prompts, 112 parents (root plus six depth-1 nodes per prompt), disjoint `R_a=32` / `R_b=32` seed streams per parent, and 16 continuations per TV candidate. Scope was reduced from 32 prompts using compute only: the end-to-end integration smoke ran at about 333 generated tokens/s for small n=2 batches; 32 prompts project to roughly 25 hours before safety margin and over 37 hours with a 1.5× margin, beyond the cutoff. Sixteen prompts project to roughly 12.9 hours before margin and 19.3 hours with margin. This reduces prompt-level power; no subset was selected by outcomes.
-- A7 protocol remains fixed: archived VDRA235 and matched SPO235; AIME24/AIME25/AMC23; 16 samples; temperature 0.6; top-p 0.95; seed 42; 1,024-token continuation cap in a 4,096-token context; source verifier. Run it only if evaluator compatibility is confirmed and measured time fits before 2026-11-01 01:00 UTC.
+- A7 protocol was fixed at archived VDRA235 and matched SPO235; AIME24/AIME25/AMC23; 16 samples; temperature 0.6; top-p 0.95; seed 42; 1,024-token continuation cap in a 4,096-token context; source verifier. Six runs and paired prompt bootstrap completed at 2026-10-30 23:56 UTC.
 - The stock evaluator's vLLM launcher only passed `--model`, so SPO235's missing tokenizer would still have failed despite the task/tokenizer override. Added a `script_path` Jsonnet overlay and a local launcher that passes `APP_EVAL_TOKENIZER` directly to vLLM and binds to loopback. Overlay resolution, mocked server argument construction, the evaluator dry-run and targeted tests pass; neither `treetune/` nor the detached source worktree was modified.
 - A7 will use six separate invocations (one model × one benchmark each) because the source runtime stores selected pipelines under the same `inference_results/test__0__1` path. Each wrapper run explicitly keeps result datasets under its requested local output directory and sets `WANDB_MODE=disabled`; this allows paired prompt-level bootstrap while avoiding remote generation uploads. `eval_bootstrap.py` reuses the evaluator's MATH parser/grader, hashes prompt/reference identity, checks the paired rows match, and computes 1,000-replicate prompt-cluster intervals for avg@16, Pass@16 and their VDRA-minus-SPO differences.
 - Ruling: the plan's standalone `qwen1_5b_base_for_MATH_eval.jsonnet` is pipeline-only and fails `Runtime.from_params` without `runtime_type`, `trainer`, and `episode_generator`. Compose it after the source `polIter_qwen1_5b_base_spo_chain_MATH.jsonnet`, whose required trainer/episode-generator entries are lazy; the evaluation method directly evaluates the provided checkpoint. This costs a config-level deviation from the plan; if the lazy components are unexpectedly instantiated, the source runtime config may have evaluation-side effects that need a bounded audit.
 - Ruling: archived AIME24 columns are `Problem`/`Solution`, while its source task config expects lowercase names. Apply the local field-name overlay only to AIME24; AIME25 and AMC23 schemas already match. This adds a config adaptation; if the archive schema was misread, task prompts or extracted references could change. CPU normalization now succeeds for all three archived datasets.
 - Ruling: the source tree strategy writes candidate answers but leaves `num_tokens` absent, so `_treetune__candidate_num_tokens` is empty. Count visible answer text with the shared checkpoint tokenizer for the smoke throughput estimate; use measured wall time for the projection. This approximates actual generated tokens because EOS/stop tokens may not appear in visible text; if tokenization differs, reported tokens/s is biased, though elapsed-time projection is unchanged.
-- Before the full A7 run, run matched 10-prompt debug smokes (16 samples, temperature 0.6, top-p 0.95, 1,024 max new tokens, 4,096 context) on both iteration-235 policies. The CLI reads saved candidate-token counts and `/usr/bin/time` wall seconds, then estimates the 100-prompt-per-policy workload with a 1.5× margin. Use the measured sum to confirm the deadline fit before launching all six benchmark-policy runs.
+- Ruling: use checkpoint-specific vLLM aliases and record exact checkpoint paths for X; iteration-50/150 tokenizer JSON and config hashes match iteration 100 byte-for-byte, so reuse its regex-fixed tokenizer. Checkpoint-specific 8-prompt smokes measured 855.26/826.55 tokens/s and projected 6.51/6.72 h per bank with the required 1.5× margin; both fit before the cutoff when run sequentially. This leaves token lengths as a projection uncertainty, but the margin is based on the measured rate for each checkpoint.
+- The six A7 runs passed their pre-registered 10-prompt debug smoke gate (16 samples, temperature 0.6, top-p 0.95, 1,024 max new tokens, 4,096 context). Those smoke outputs were excluded from accuracy analysis; the full-run times and paired results are recorded below.
 
 ## Setup and A0 audit — complete
 
@@ -66,8 +67,8 @@ Running — A0, CPU helpers, synthetic T checks, the vLLM smoke, A3, and A2/A4/A
 | A5 | Completed | 27 allocation summaries, 432 prompt-strategy rows and 448 held-out edges; interpretations are descriptive MC proxies |
 | A2 | Completed | Five proxy-noise levels × 50 repetitions over 16 prompt clusters; compact outputs published |
 | A4 | Completed | 672 candidate pairs; published calibration output; child samples are reused, so this is descriptive |
-| A7 | Running, 5/6 complete | VDRA235/SPO235 completed on AIME24/AIME25; VDRA235 also completed AMC23 (151.21 s). Current unit: SPO235/AMC23. |
-| X | Ready after A7; smoke gate required | Iterations 50 and 150 checkpoints are present. Their tokenizer JSON/config hashes match iteration 100. Timed smokes and a measured 1.5× projection are required before either bank. |
+| A7 | Completed | Six evaluations and paired 1,000-replicate bootstrap completed; compact summaries are published under `results/a7_iter235/analysis/`. |
+| X | Running, iter050 1/112 | Both checkpoint smokes passed. Conservative 1.5× projections are 6.51 h (iter050) and 6.72 h (iter150), 13.23 h total; about 25 h remain to the hard GPU cutoff. Iteration 150 is queued sequentially. |
 
 ## Publication
 
@@ -83,13 +84,25 @@ Running — A0, CPU helpers, synthetic T checks, the vLLM smoke, A3, and A2/A4/A
 
 - A7 launch debugging (2026-10-30): Five launcher/config attempts failed before inference because `/usr/bin/time`, `peft`, and `jsonlines` were missing and the standalone pipeline config omitted required runtime fields. A sixth attempt loaded vLLM but stopped before sampling because AIME24 columns are title-cased. These are now resolved. The VDRA235 debug smoke completed 10 prompts × 16 samples in 111.315 s (161,539 visible output tokens; 1,451 tokens/s); SPO235 completed in 115.316 s (160,875 visible output tokens; 1,395 tokens/s). Token counts were reconstructed from saved answer text because the source field was empty. The combined 100-prompt projection with 1.5× margin is 3,399.5 s (~57 min); no smoke accuracy figures will be treated as benchmark results.
 
-## A7 timed smoke gate (2026-10-30 23:42 UTC)
+## A7 evaluation complete (2026-10-30 23:56 UTC)
 
 - VDRA235: 10 AIME24 prompts × 16 samples, 111.315 s, 161,539 visible answer tokens, 1,451 tokens/s, projected 100-prompt time with 1.5× margin 1,669.7 s.
 - SPO235: same smoke protocol, 115.316 s, 160,875 visible answer tokens, 1,395 tokens/s, projected 100-prompt time with 1.5× margin 1,729.7 s.
 - Combined projection: 3,399.5 s (~57 min), which fits with more than 24 hours before the hard cutoff. The six full policy-by-dataset evaluations began at 2026-10-30 23:42 UTC, sequentially over AIME24/AIME25/AMC23. Debug-only smoke metrics are excluded from accuracy analysis.
 
-- A7 full evaluation started in a detached logged process (PID 41374) at 2026-10-30 23:42 UTC after the timed-smoke gate. As of 2026-10-30 23:53 UTC, VDRA235/SPO235 completed AIME24/AIME25, and VDRA235 completed AMC23 (151.21 s); SPO235/AMC23 is running. Outputs and logs remain under `/workspace/rebuttal_out/a7_iter235/`; no raw predictions are staged.
+- The six full policy-by-dataset runs completed sequentially in 797.36 s total. Per-run wall seconds: VDRA235 AIME24 128.13, SPO235 AIME24 122.14, VDRA235 AIME25 132.17, SPO235 AIME25 123.46, VDRA235 AMC23 151.21, SPO235 AMC23 140.24. Paired prompt-cluster bootstrap used 1,000 replicates on all 100 prompts (30/30/40 per dataset); all prompt IDs paired. Numeric/hash-only summaries are published under `results/a7_iter235/analysis/`; generations and full evaluator logs remain local.
+- Paired VDRA-minus-SPO avg@16 estimates (95% prompt bootstrap CI): AIME24 +1.67 pp `[0.00, 3.96]`, AIME25 +1.67 pp `[0.00, 3.96]`, AMC23 +2.66 pp `[-0.94, 6.41]`. Pass@16 differences: AIME24 +13.33 pp `[3.33, 26.67]`, AIME25 0.00 pp `[0, 0]`, AMC23 0.00 pp `[-12.50, 15.00]`. These are single-seed, 16-sample frozen-checkpoint diagnostics, not official benchmark scores or training-replay evidence. The SPO tokenizer is absent; both arms use the VDRA tokenizer and SPO identity remains unverified.
+
+## X timed smokes and launch decision (2026-10-31 00:00 UTC)
+
+- Iteration 50: 8 fixed smoke prompts × 6 completions; 42,722 visible completion tokens in 49.952 s (855.26 tokens/s), peak sampled VRAM 20,220 MiB. Projected bank time with margin: `ceil(12,029,177 / 855.26 + 112 × 14) × 1.5` = 23,449.5 s (6.51 h).
+- Iteration 150: same smoke protocol; 38,460 visible completion tokens in 46.531 s (826.55 tokens/s), peak sampled VRAM 20,220 MiB. Projected bank time with margin: 24,183 s (6.72 h).
+- Combined projection is 13.23 h, less than the roughly 25 h remaining before the 2026-11-01 01:00 UTC GPU cutoff. Both probes therefore proceed at full pre-registered scope (16 prompts, 112 parents, `R_a=R_b=32`, 16 child samples), sequentially. Smoke outputs are excluded from results.
+- Smoke summaries remain local in `/workspace/rebuttal_out/x_iter050/smoke/rate.json` and `/workspace/rebuttal_out/x_iter150/smoke/rate.json`; checkpoint and served-model alias are recorded in each file.
+
+## X iteration-50 bank (2026-10-31 00:03 UTC)
+
+- The initial detached `nohup` shell disappeared before starting vLLM; its server log was empty and no inference/bank row was produced. Relaunched under a tracked foreground session (PID 45870) with the same resumable command. vLLM started and the bank now has 1/112 durable parent records; the first node took 59.3 seconds. GPU is occupied only by this probe.
 
 ## X preflight (2026-10-30 23:47 UTC)
 

@@ -1,0 +1,176 @@
+{
+  "checkpoint": "/workspace/src/vdra_iter_0050/checkpoints/ckpt--iter_0050--epoch_1.00--step_0200/hf_pretrained",
+  "served_model": "iter050",
+  "model": "Qwen2 causal LM from checkpoint config.json",
+  "base_url": "http://127.0.0.1:18000/v1",
+  "gpu": "NVIDIA GeForce RTX 3090",
+  "gpu_compute_capability": [
+    8,
+    6
+  ],
+  "precision": "bfloat16",
+  "tokenizer_path": "/workspace/rebuttal_out/tokenizer_iter100_fixed",
+  "fix_mistral_regex": true,
+  "wall_seconds": 49.95180104812607,
+  "requests_completed": 8,
+  "completions_requested": 48,
+  "completion_tokens": 42722,
+  "completion_tokens_per_second": 855.2644570080563,
+  "peak_observed_gpu_memory_mib": 20220,
+  "memory_samples_mib": 94,
+  "prompt_manifest": "/workspace/rebuttal_out/x_iter050/smoke/controlled_prompt_manifest.json",
+  "calls": [
+    {
+      "ordinal": 0,
+      "row_index": 327,
+      "prompt_id": "train/intermediate_algebra/1206.json",
+      "prompt_sha256": "669641ed884a2a69fed922ba3d28de3b6e013ec5a34a605612144710656b9592",
+      "prompt_chars": 717,
+      "request_seed": 42,
+      "elapsed_seconds": 7.085611966904253,
+      "prompt_tokens": 180,
+      "completion_tokens": 6144,
+      "finish_reasons": [
+        "length",
+        "length",
+        "length",
+        "length",
+        "length",
+        "length"
+      ]
+    },
+    {
+      "ordinal": 1,
+      "row_index": 57,
+      "prompt_id": "test/algebra/2662.json",
+      "prompt_sha256": "066bf1f52ef1e77c258ef12a1739ddddfba0b98762768962ec31b7b6c48afae6",
+      "prompt_chars": 416,
+      "request_seed": 43,
+      "elapsed_seconds": 6.290402002865449,
+      "prompt_tokens": 100,
+      "completion_tokens": 4706,
+      "finish_reasons": [
+        "stop",
+        "stop",
+        "stop",
+        "stop",
+        "stop",
+        "stop"
+      ]
+    },
+    {
+      "ordinal": 2,
+      "row_index": 12,
+      "prompt_id": "train/intermediate_algebra/83.json",
+      "prompt_sha256": "899c78abc6e92fe06360c164db3cba7a7a21835caf8742f87c6f148a342bd7cc",
+      "prompt_chars": 453,
+      "request_seed": 44,
+      "elapsed_seconds": 6.553394603077322,
+      "prompt_tokens": 113,
+      "completion_tokens": 5737,
+      "finish_reasons": [
+        "length",
+        "stop",
+        "length",
+        "length",
+        "length",
+        "length"
+      ]
+    },
+    {
+      "ordinal": 3,
+      "row_index": 379,
+      "prompt_id": "test/algebra/1623.json",
+      "prompt_sha256": "8398d014f8ce3da2698dc672e0187fc4ed1b15c891bac4c407200fa8a8a0c25c",
+      "prompt_chars": 432,
+      "request_seed": 45,
+      "elapsed_seconds": 3.4381767879240215,
+      "prompt_tokens": 106,
+      "completion_tokens": 2525,
+      "finish_reasons": [
+        "stop",
+        "stop",
+        "stop",
+        "stop",
+        "stop",
+        "stop"
+      ]
+    },
+    {
+      "ordinal": 4,
+      "row_index": 140,
+      "prompt_id": "test/counting_and_probability/789.json",
+      "prompt_sha256": "161729978539e85bb426ba390caa125b77f8fee8589295e0920ebd4502f20e6c",
+      "prompt_chars": 880,
+      "request_seed": 46,
+      "elapsed_seconds": 6.591988970991224,
+      "prompt_tokens": 191,
+      "completion_tokens": 5705,
+      "finish_reasons": [
+        "length",
+        "stop",
+        "length",
+        "stop",
+        "stop",
+        "length"
+      ]
+    },
+    {
+      "ordinal": 5,
+      "row_index": 125,
+      "prompt_id": "test/algebra/1621.json",
+      "prompt_sha256": "40fc518efa7c79cc8b8373c1c10428de9d27dbde63c7963ac8a235149f96e7db",
+      "prompt_chars": 544,
+      "request_seed": 47,
+      "elapsed_seconds": 6.596609367057681,
+      "prompt_tokens": 134,
+      "completion_tokens": 5927,
+      "finish_reasons": [
+        "length",
+        "length",
+        "length",
+        "length",
+        "stop",
+        "stop"
+      ]
+    },
+    {
+      "ordinal": 6,
+      "row_index": 114,
+      "prompt_id": "train/geometry/721.json",
+      "prompt_sha256": "20649b8358fce5f24e658ab7e8e39c2354bdd88ccd54cea76458d974abbca3d0",
+      "prompt_chars": 966,
+      "request_seed": 48,
+      "elapsed_seconds": 6.796770594082773,
+      "prompt_tokens": 320,
+      "completion_tokens": 6144,
+      "finish_reasons": [
+        "length",
+        "length",
+        "length",
+        "length",
+        "length",
+        "length"
+      ]
+    },
+    {
+      "ordinal": 7,
+      "row_index": 71,
+      "prompt_id": "train/algebra/878.json",
+      "prompt_sha256": "57426095c9bec57ce5ea030bf995f89eeba7e5b22d3ef6e3a673812d9802ad2e",
+      "prompt_chars": 522,
+      "request_seed": 49,
+      "elapsed_seconds": 6.5969546269625425,
+      "prompt_tokens": 118,
+      "completion_tokens": 5834,
+      "finish_reasons": [
+        "length",
+        "stop",
+        "stop",
+        "stop",
+        "length",
+        "length"
+      ]
+    }
+  ]
+}
