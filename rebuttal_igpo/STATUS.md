@@ -73,7 +73,7 @@ Running — A0, CPU helpers, T, S, A3, A2/A4/A5 and A7 are complete. The iterati
 ## Publication
 
 - The destination repository is public; publishing rebuttal code/results can compromise double-blind anonymity. Repository visibility was not changed.
-- All commits remain local on branch `rebuttal`. Five push attempts to `origin/rebuttal` have returned HTTP 403: `Permission to ihbkaiser/VDRA1.git denied to ihbkaiser`; the remote branch remains absent and no remote commit was created. The latest retry was at 2026-10-31 02:06 UTC; next retry is due around 04:06 UTC. Continue locally. A separate initial attempt used the wrong askpass path and never contacted GitHub; the corrected helper at `/workspace/VDRA1/.git/askpass.sh` was used for the 403 retry.
+- All commits remain local on branch `rebuttal`. Six push attempts to `origin/rebuttal` have returned HTTP 403: `Permission to ihbkaiser/VDRA1.git denied to ihbkaiser`; the remote branch remains absent and no remote commit was created. The latest retry was at 2026-10-31 04:06 UTC; next retry is due around 06:06 UTC. Continue locally. A separate initial attempt used the wrong askpass path and never contacted GitHub; the corrected helper at `/workspace/VDRA1/.git/askpass.sh` was used for the 403 retry.
 - `gh_token` and `hf_token` are ignored, mode 600, untracked and absent from `git log --all -p`; the documented history scan returns no matches. Before each push, staged files are checked for credentials, files over 20 MiB and raw listings/tree dumps. No credential was printed or staged.
 
 ## Completed A3 bank and diagnostics (2026-10-30 23:26 UTC)

@@ -2,7 +2,7 @@
 
 ## Trạng thái xuất bản và kiểm tra
 
-Toàn bộ công việc đã commit trên nhánh cục bộ `rebuttal`; kết quả iter150 nằm trong commit `0cd2909`, báo cáo này được commit sau đó. Năm lần push tới `origin/rebuttal` đều bị GitHub từ chối HTTP 403 (`Permission to ihbkaiser/VDRA1.git denied to ihbkaiser`), nên chưa có URL commit từ xa. Lần thử tiếp theo được ghi trong `STATUS.md` là 2026-10-31 04:06 UTC. `/workspace` không phải volume bền vững trên instance này.
+Toàn bộ công việc đã commit trên nhánh cục bộ `rebuttal`; kết quả iter150 nằm trong commit `0cd2909`, báo cáo này được commit sau đó. Sáu lần push tới `origin/rebuttal` đều bị GitHub từ chối HTTP 403 (`Permission to ihbkaiser/VDRA1.git denied to ihbkaiser`), nên chưa có URL commit từ xa. Lần từ chối gần nhất là 2026-10-31 04:06 UTC; `STATUS.md` ghi lần thử tiếp theo lúc 06:06 UTC. `/workspace` không phải volume bền vững trên instance này.
 
 `gh_token` và `hf_token` đang bị ignore, untracked và không có trong lịch sử commit. Bộ kiểm thử CPU cuối cùng: `pytest -q rebuttal_igpo/tests` → 41 passed.
 
