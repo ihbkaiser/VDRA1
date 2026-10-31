@@ -53,7 +53,27 @@ Only AIME24 Pass@16 excludes zero in this unadjusted interval set; the other pai
 
 Checkpoint-specific timed smokes passed for both iterations. Iteration 50 produced 42,722 visible tokens in 49.95 seconds (855.26 tokens/s), projecting 6.51 hours with a 1.5× margin. Iteration 150 produced 38,460 visible tokens in 46.53 seconds (826.55 tokens/s), projecting 6.72 hours. Their combined 13.23-hour projection fits the 25-hour window before the GPU cutoff.
 
-At report preparation, the full iteration-50 bank is running and iteration 150 is queued behind it. No X outcome is included yet. The rate summaries are in `results/x_smoke/`; the iteration-specific commands and checkpoints are documented in `docs/EXPERIMENT_COMMANDS.md`.
+Iteration 50 completed 112/112 parents in 5,853.9 seconds, collecting 13,327,123 continuation tokens (2,836 tokens/s during continuation calls). Its 8,440,187-byte raw bank remains local; hash and compact outputs are listed in `results/MANIFEST.md`.
+
+For iteration 50, the GEAR proxy variance and independent `R_b` reward sample variance had Spearman correlation 0.175 (95% prompt-cluster bootstrap CI [−0.190, 0.440]); this is a noisy finite-MC reference. A2 again shows increasing allocation churn with proxy noise, alongside a modest increase in the held-out objective:
+
+| Noise σ | Mean held-out `J_Rb` | 95% prompt-bootstrap CI | Rollout share reassigned |
+|---:|---:|---:|---:|
+| 0 | 0.3393 | [0.1707, 0.5119] | 0.0% |
+| 0.25 | 0.3427 | [0.1760, 0.5380] | 2.8% |
+| 0.5 | 0.3452 | [0.1794, 0.5102] | 5.7% |
+| 1 | 0.3566 | [0.1834, 0.5428] | 11.1% |
+| 2 | 0.3962 | [0.2132, 0.6018] | 21.7% |
+
+A4 measured 672 pairs; TV vs. absolute child-value gap Spearman correlation was 0.0161 and top-quartile overlap was 26.2%. This reuses the fixed child samples and remains descriptive. A5 `J_Rb` point estimates are shown below; full intervals for all rules are in the published summary CSV. The `oracle` selects with `R_a` and is evaluated on `R_b`.
+
+| Budget regime | Uniform | Exact Eq. (7) | GEAR snapshot defaults | Oracle (`R_a`) |
+|---|---:|---:|---:|---:|
+| Uncapped | 0.1762 | 0.4088 | 0.2943 | 0.1718 |
+| Capped | 0.1762 | 0.2748 | 0.1953 | 0.1705 |
+| Candidate-bounded `capped_k` | 0.1762 | 0.1762 | 0.1762 | 0.1762 |
+
+Oracle has the lowest point estimate in the uncapped and capped regimes, but intervals overlap. `capped_k` constrains all rules to the same counts. These outcomes are finite-MC allocation diagnostics, not policy-gradient error or an as-trained replay. Iteration 150 started at 2026-10-31 01:41 UTC and is still running; no result is available yet. The rate summaries are in `results/x_smoke/`, and commands/checkpoint paths are in `docs/EXPERIMENT_COMMANDS.md`.
 
 ## Blocked evidence and interpretation limits
 
