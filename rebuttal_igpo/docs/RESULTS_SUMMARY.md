@@ -73,7 +73,27 @@ A4 measured 672 pairs; TV vs. absolute child-value gap Spearman correlation was 
 | Capped | 0.1762 | 0.2748 | 0.1953 | 0.1705 |
 | Candidate-bounded `capped_k` | 0.1762 | 0.1762 | 0.1762 | 0.1762 |
 
-Oracle has the lowest point estimate in the uncapped and capped regimes, but intervals overlap. `capped_k` constrains all rules to the same counts. These outcomes are finite-MC allocation diagnostics, not policy-gradient error or an as-trained replay. Iteration 150 started at 2026-10-31 01:41 UTC and is still running; no result is available yet. The rate summaries are in `results/x_smoke/`, and commands/checkpoint paths are in `docs/EXPERIMENT_COMMANDS.md`.
+Oracle has the lowest point estimate in the uncapped and capped regimes, but intervals overlap. `capped_k` constrains all rules to the same counts. These outcomes are finite-MC allocation diagnostics, not policy-gradient error or an as-trained replay. The rate summaries are in `results/x_smoke/`, and commands/checkpoint paths are in `docs/EXPERIMENT_COMMANDS.md`.
+
+Iteration 150 also completed all 112 parents: 11,205,934 continuation tokens in 5,460.7 seconds (4,315.3 seconds of continuation calls; 2,597 tokens/s). Its 6,257,986-byte bank remains local; the SHA-256 and analysis file hashes are in `results/MANIFEST.md`. The GEAR proxy variance and independent `R_b` reward sample variance had Spearman correlation −0.342 (95% prompt-cluster bootstrap CI [−0.653, 0.062]).
+
+| Noise σ | Mean held-out `J_Rb` | 95% prompt-bootstrap CI | Rollout share reassigned |
+|---:|---:|---:|---:|
+| 0 | 0.1919 | [0.0543, 0.3671] | 0.0% |
+| 0.25 | 0.1953 | [0.0475, 0.3805] | 4.1% |
+| 0.5 | 0.1968 | [0.0459, 0.3784] | 8.0% |
+| 1 | 0.2034 | [0.0430, 0.3784] | 15.4% |
+| 2 | 0.2290 | [0.0702, 0.4310] | 29.0% |
+
+A4 measured 672 candidate pairs; TV vs. absolute child-value gap Spearman correlation was −0.0632 and top-quartile overlap was 17.9%. This is descriptive because A4 reuses the candidate samples. A5 `J_Rb` point estimates are below; full prompt-cluster intervals are in the analysis CSV.
+
+| Budget regime | Uniform | Exact Eq. (7) | GEAR snapshot defaults | Oracle (`R_a`) |
+|---|---:|---:|---:|---:|
+| Uncapped | 0.1026 | 0.2217 | 0.1445 | 0.1001 |
+| Capped | 0.1026 | 0.1667 | 0.1155 | 0.1014 |
+| Candidate-bounded `capped_k` | 0.1026 | 0.1026 | 0.1026 | 0.1026 |
+
+Oracle again has the lowest point estimates in uncapped and capped regimes, with broadly overlapping intervals. All rules receive identical counts under the candidate-bounded constraint. These are finite-MC frozen-checkpoint diagnostics, not as-trained replay or full clipped-PPO gradient error. Iterations 50 and 150 each used the same 16 pre-registered prompts and one seed; the prompt-cluster intervals are wide.
 
 ## Blocked evidence and interpretation limits
 

@@ -68,7 +68,7 @@ Running — A0, CPU helpers, T, S, A3, A2/A4/A5 and A7 are complete. The iterati
 | A2 | Completed | Five proxy-noise levels × 50 repetitions over 16 prompt clusters; compact outputs published |
 | A4 | Completed | 672 candidate pairs; published calibration output; child samples are reused, so this is descriptive |
 | A7 | Completed | Six evaluations and paired 1,000-replicate bootstrap completed; compact summaries are published under `results/a7_iter235/analysis/`. |
-| X | Running, iter150 34/112 | Iteration 50 completed 112/112 in 5,853.9 s; iter150 is 34/112 after 1,448.4 s. Conservative 1.5× smoke projections total 13.23 h; about 23 h remain to the hard GPU cutoff. |
+| X | Completed | Iterations 50/150 both completed 112/112 parents; compact A2/A3/A4/A5 analyses are published. Raw-bank paths, sizes and hashes are in `results/MANIFEST.md`. |
 
 ## Publication
 
@@ -100,10 +100,10 @@ Running — A0, CPU helpers, T, S, A3, A2/A4/A5 and A7 are complete. The iterati
 - Combined projection is 13.23 h, less than the roughly 25 h remaining before the 2026-11-01 01:00 UTC GPU cutoff. Both probes therefore proceed at full pre-registered scope (16 prompts, 112 parents, `R_a=R_b=32`, 16 child samples), sequentially. Smoke outputs are excluded from results.
 - Smoke summaries remain local in `/workspace/rebuttal_out/x_iter050/smoke/rate.json` and `/workspace/rebuttal_out/x_iter150/smoke/rate.json`; checkpoint and served-model alias are recorded in each file.
 
-## X iteration-50 complete; iteration-150 running (2026-10-31 01:41 UTC)
+## X iterations 50 and 150 complete (2026-10-31 03:13 UTC)
 
 - Iteration 50 completed 112/112 parents in 5,853.9 s (4,698.7 s of continuation calls; 13,327,123 continuation tokens; 2,836 continuation tokens/s). The gzip bank is 8,440,187 bytes, SHA-256 `d7f494ec0a237d555d3e2f318340892887fa61b2292eba86deff4befb488a62d`, and remains local. A2/A4/A5 CPU analyses completed and compact CSV/JSON files are published under `results/x_iter050/analysis/`.
-- Iteration 150 launched sequentially at 2026-10-31 01:41 UTC under tracked session PID 62009, after the iteration-50 vLLM process exited. The first durable parent was recorded at 01:42 UTC.
+- Iteration 150 launched sequentially at 2026-10-31 01:41 UTC after the iteration-50 vLLM process exited. It completed 112/112 parents in 5,460.7 s (4,315.3 s of continuation calls; 11,205,934 continuation tokens; 2,597 continuation tokens/s). Its gzip bank is 6,257,986 bytes, SHA-256 `527f6992029b4b3b83fff8a4edb411e838c6c7cac1afea8e1cd0ea28995b9585`; raw output remains local. Compact analyses are published under `results/x_iter150/analysis/`. The vLLM server stopped cleanly after the probe.
 
 ## X iteration-150 progress (2026-10-31 02:06 UTC)
 
