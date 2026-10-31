@@ -22,13 +22,13 @@ A4 measured 672 candidate pairs. Spearman correlation between TV and absolute ch
 
 A5 compared controlled-bank allocation rules using `J_Rb`, not true policy-gradient error. The table gives estimates and 95% prompt-cluster bootstrap intervals. `gear_online_snapshot_defaults` uses source-snapshot defaults; it is not an as-trained replay. Under the candidate-bounded `capped_k` regime, the common feasible budget forces all rules to the same allocation.
 
-| Budget regime | Uniform `J_Rb` | Exact Eq. (7) `J_Rb` | GEAR snapshot defaults `J_Rb` |
-|---|---:|---:|---:|
-| Uncapped | 0.1057 [0.0414, 0.1798] | 0.2229 [0.0891, 0.3806] | 0.1655 [0.0722, 0.2718] |
-| Capped | 0.1057 [0.0423, 0.1786] | 0.1701 [0.0698, 0.2815] | 0.1203 [0.0472, 0.2055] |
-| Candidate-bounded `capped_k` | 0.1057 [0.0428, 0.1751] | 0.1057 [0.0432, 0.1778] | 0.1057 [0.0478, 0.1763] |
+| Budget regime | Uniform `J_Rb` | Exact Eq. (7) `J_Rb` | GEAR snapshot defaults `J_Rb` | Oracle (`R_a`) `J_Rb` |
+|---|---:|---:|---:|---:|
+| Uncapped | 0.1057 [0.0414, 0.1798] | 0.2229 [0.0891, 0.3806] | 0.1655 [0.0722, 0.2718] | 0.1043 [0.0400, 0.1792] |
+| Capped | 0.1057 [0.0423, 0.1786] | 0.1701 [0.0698, 0.2815] | 0.1203 [0.0472, 0.2055] | 0.1008 [0.0385, 0.1785] |
+| Candidate-bounded `capped_k` | 0.1057 [0.0428, 0.1751] | 0.1057 [0.0432, 0.1778] | 0.1057 [0.0478, 0.1763] | 0.1057 [0.0422, 0.1751] |
 
-Uniform had the lowest point estimate in the first two regimes on this bank, while intervals overlap. This does not establish superiority beyond this controlled sample. `L_node`, `L_edge`, and `L_heldout` are finite-MC proxies, and `L_heldout` is identical across allocation rules by construction.
+The independent-reference Oracle (`R_a` for allocation, `R_b` for evaluation) has the lowest point estimates in the uncapped and capped regimes; the prompt-cluster intervals overlap broadly. The candidate-bounded constraint forces identical feasible counts. These estimates do not establish superiority beyond this controlled sample. `L_node`, `L_edge`, and `L_heldout` are finite-MC proxies, and `L_heldout` is identical across allocation rules by construction.
 
 ## Figures
 
