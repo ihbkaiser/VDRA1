@@ -6,6 +6,8 @@ This report separates measured outputs from missing run evidence. The archive do
 
 A3 collected 112 parent states from 16 pre-registered MATH validation prompts at iteration 100. The bank contains 12,029,177 continuation tokens, took 5,640.6 seconds wall time, and averaged 2,674 generated continuation tokens/s during generation calls. Its 7,345,343-byte compressed file remains local; the SHA-256 is recorded in `results/MANIFEST.md`.
 
+Across the 112 parents, GEAR proxy variance and the independent `R_b` reward sample variance had Spearman correlation −0.148 (95% prompt-cluster bootstrap CI [−0.518, 0.259]). The interval is broad and includes zero; the per-parent plot is descriptive, with `R_b` still a finite-MC reference.
+
 A2 perturbed the proxy `C` with log-normal noise and evaluated allocations using the independent `R_b` reference half. Across 16 prompt clusters and 50 repetitions per prompt, reallocated rollout share increased with noise; the held-out MC objective remained similar through σ=1 and increased at σ=2.
 
 | Noise σ | Mean held-out `J_Rb` | 95% prompt-bootstrap CI | Rollout share reassigned |
@@ -27,6 +29,10 @@ A5 compared controlled-bank allocation rules using `J_Rb`, not true policy-gradi
 | Candidate-bounded `capped_k` | 0.1057 [0.0428, 0.1751] | 0.1057 [0.0432, 0.1778] | 0.1057 [0.0478, 0.1763] |
 
 Uniform had the lowest point estimate in the first two regimes on this bank, while intervals overlap. This does not establish superiority beyond this controlled sample. `L_node`, `L_edge`, and `L_heldout` are finite-MC proxies, and `L_heldout` is identical across allocation rules by construction.
+
+## Figures
+
+Reproducible vector PDFs and 300-DPI PNGs for the A2–A5 summaries are in `results/figures/`: [A2 noise sensitivity](../results/figures/fig_A2.pdf), [A3 proxy vs. held-out variance](../results/figures/fig_A3.pdf), [A4 TV/value calibration](../results/figures/fig_A4.pdf), and [A5 allocator comparisons](../results/figures/fig_A5.pdf). Generate them with `PYTHONPATH=/workspace/rebuttal_out/plotdeps:/workspace/VDRA1/.worktrees/rebuttal /venv/main/bin/python -m rebuttal_igpo.rebuttal.plot_results`. The numeric A3 plot source is `results/a3_iter100/analysis/a3_proxy_variance.csv`; it contains hashed prompt IDs and summary statistics only. An A1 figure is unavailable because the archived training trees and queues required for A1 are missing.
 
 ## A7: iteration-235 evaluation
 

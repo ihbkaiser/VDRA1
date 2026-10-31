@@ -22,6 +22,20 @@ pytest -q rebuttal_igpo/tests
 /venv/main/bin/python -m rebuttal_igpo.rebuttal.sim_eq5_eq7 > "$OUT/eq5_eq7_simulation.json"
 ```
 
+## Reproducible figures
+
+Matplotlib is installed in an isolated target directory so the base PyTorch environment remains unchanged. The plot command reads the compact A2/A4/A5 outputs and the local A3 bank, writes only hashed prompt identifiers and numeric statistics to the published A3 scatter source, then emits vector PDFs and 300-DPI PNGs:
+
+```bash
+uv pip install --target "$OUT/plotdeps" 'matplotlib>=3.8,<4'
+cd "$REPO"
+PYTHONPATH="$OUT/plotdeps:$REPO" /venv/main/bin/python \
+  -m rebuttal_igpo.rebuttal.plot_results \
+  --results-root "$REPO/rebuttal_igpo/results" \
+  --bank "$OUT/a3_iter100/bank.jsonl.gz" \
+  --output-dir "$REPO/rebuttal_igpo/results/figures"
+```
+
 ## vLLM smoke server
 
 The tested isolated environment is `/workspace/vllm-venv` with vLLM 0.20.1 and Torch 2.11.0+cu129. Bind to loopback; this smoke service is not exposed through Caddy or an external port.

@@ -1,0 +1,9 @@
+{
+  "bootstrap_replicates": 1000,
+  "n_parents": 112,
+  "n_prompt_clusters": 16,
+  "note": "R_b sample variance is a finite-MC reference; bootstrap resamples prompts.",
+  "spearman_prompt_bootstrap_ci_high": 0.2593449491723998,
+  "spearman_prompt_bootstrap_ci_low": -0.5175880773521098,
+  "spearman_proxy_vs_Rb_variance": -0.14793770473802298
+}
